@@ -1,2 +1,2 @@
-# msc-swe-thesis
-Reproducibility pack for MSc in Software Engineering Thesis
+# MSc in Software Engineering Thesis - Reproducibility Pack
+This repository is a Reproducibility Pack which contains the relevant materials to replicate this thesis. 
