@@ -1,0 +1,85 @@
+#!/usr/bin/perl
+
+#this script computes the intersection of any number of sets.
+#This can be used to calculate both CELEMS and IIELEMS
+#Place all testcase files in the arguments to get the common software elements
+#Place only test case files that exhibit your feature of interest
+#in the argument list to calculate IIELEMS
+
+#the base file is the first file in the argument list
+#users of the script are oblivious to this.
+#The contents of this file are compared against all others to find intersection
+if ($#ARGV < 0)
+{
+    die "Not enough arguments\n Usage: intersection \[file1 ... filen\]\n Computes the intersection of one or more files.\n";
+}
+
+open BASE_COMPARISON, $ARGV[0] or die "cannot open file $ARGV[0]\n";
+
+#read in the base file
+@base = <BASE_COMPARISON>;
+
+if ($#ARGV == 0)
+{
+    print @base;
+    exit;
+}
+
+
+$count = 0;
+$guard = 0;
+close BASE_COMPARISON;
+
+#the final output is placed in this variable
+@intersection;
+
+for ($i = 0; $i <= $#base ; $i++)
+{
+#this array is used to indicate whether an element intersects or not.0yes,1no
+$intersected[$i] = 0;
+}
+
+#checks the intersection ... main part of the script
+foreach $file (@ARGV)
+{
+open AFILE, $file or die "cannot open file $ARGV[0]\n";
+@tempfile = <AFILE>;
+
+foreach $line (@base)
+{
+ foreach $line2 (@tempfile)
+ {
+  if ($line eq $line2)
+  {
+	$guard = 1;
+	last;
+  }	
+ }
+
+ if ($guard == 0)
+ {
+  $intersected[$count] = 1;
+ }
+ 
+ $guard = 0;
+ $count++;
+}
+$count = 0;
+close AFILE;
+$#tempfile = 0;
+}
+
+$count = 0;
+
+#places the elements marked as intersecting in an array
+foreach $entry (@base)
+{
+ if ($intersected[$count] == 0)
+ {
+  push(@intersection, $entry);
+ }  
+ $count++;
+}
+
+print @intersection;
+

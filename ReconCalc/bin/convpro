@@ -1,0 +1,50 @@
+#!/usr/bin/perl
+
+open BLOATED_MODEL, $ARGV[0] or die "cannot open file $ARGV[0]";
+
+#read in the profile
+@bloated_contents = <BLOATED_MODEL>;
+
+#this will store just the profile section of the file
+@just_profile;
+
+#this will store a simple list of what files and procedures got executed
+@just_elements;
+
+#this holds the list of strings in the format that will be outputted
+@output_format;
+
+$count = 2;
+$thisline = $bloated_contents[$count];
+
+#gather just the profile information from the profile 
+until ($thisline =~ /^\./)
+{
+push(@just_profile, $bloated_contents[$count]);
+$count = $count + 1;
+$thisline = $bloated_contents[$count];
+}
+
+#pull out only the procedure information for each profile
+
+foreach $profile (@just_profile)
+{
+$where = index($profile, "\"");
+$where2 = index($profile, "\"",$where + 1);
+push(@just_elements, (substr($profile, $where + 1, $where2 - $where - 1)));
+}
+
+foreach $element (@just_elements)
+{
+$where = index($element, " ");
+if ($where == -1)
+{
+push(@output_format, $element."\n");
+}
+else
+{
+push(@output_format, (substr($element, $where+1)).",".(substr($element, 0, $where))."\n");
+}
+}
+
+print @output_format;

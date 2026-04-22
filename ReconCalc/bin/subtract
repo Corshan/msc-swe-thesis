@@ -1,0 +1,90 @@
+#!/usr/bin/perl
+
+# this script will sbbtract from the base set (argument1) the union of several
+# other sets.
+# use this to calculate the relevant software elements (IIELEMS-CELEMS)
+# the unique software elements (IELEMS - [elements of test cases that 
+# don't exhibit your feature]) and the shared software elements
+# (IIELEMS - UELEMS - CELEMS)
+
+if ($#ARGV < 0)
+{
+    print "Not enough arguments.\n Usage: subtract \[base, \[file1 ... filen\]\] \n The base file is the file from which you wish to subtract elements from. \n Subsequent files contain elements that the program will attempt to subtract \n from the base.\n";
+    die;
+}
+
+@output;
+@base_elems;
+
+#put the base elements into their own array
+open BASE, $ARGV[0] or die "cannot open file $ARGV[0]\n";
+@base_elems = <BASE>;
+
+close BASE;
+
+if ($#ARGV == 0)
+{
+    print @base_elems;
+    exit;
+}
+
+# put what is to be subtracted into another array
+# first join all the files together in this entry
+@everything;
+
+#then get rid if repitition and put it in this file
+@reduced;
+
+$guard = 0;
+
+#this loop joins all the files together
+for ($i=1; $i <= $#ARGV ; $i++)
+{
+open AFILE, $ARGV[$i] or die "cannot open file $ARGV[$i]\n";
+@tempstuff = <AFILE>;
+push(@everything, @tempstuff);
+$#tempstuff = 0;
+close AFILE;
+}
+
+#this loop get rid of repition in the set
+push(@reduced, $everything[0]);
+foreach $element (@everything)
+{
+ foreach $element2 (@reduced)
+ {
+  if ($element eq $element2)
+  {
+   $guard = 1;
+  }
+ }
+ 
+ if ($guard == 0)
+ {
+  push(@reduced, $element);
+ }
+ $guard = 0;
+}
+
+$guard = 0;
+
+#subtract reduced from base_elems
+foreach $element (@base_elems)
+{
+ foreach $element2 (@reduced)
+ {
+   if ($element eq $element2)
+   {
+     $guard = 1;
+   }
+ }
+  if ($guard == 0)
+  {
+   push(@output, $element);
+  }
+  $guard = 0;
+ 
+}
+
+print @output;
+

@@ -1,0 +1,521 @@
+#! /usr/bin/perl
+
+use Tk;
+
+@features;
+@testCases;
+@mapping;
+$numberOfTestCases;
+$numberOfFeatures;
+$currentSelectionFeature = '';
+$profileType = "pro";
+
+$main = MainWindow->new();
+$main->title("ReconCalc Control File Creator.");
+
+
+# ---------------------
+# Set up the menu
+# ---------------------
+$menuBarArea = $main->Frame();
+
+# --- File Menu ---
+$fileMenuItem = $menuBarArea->Menubutton(-text => 'File',
+				  -borderwidth => 2
+				  )->pack(-side => 'left',
+					  -padx => 2
+					  );
+
+# File Open Menu Item
+#$fileMenuItem->command('-label' => 'Open project',
+#		       -command => [\&OpenRecon]
+#		       );
+# File Save Menu Item
+$fileMenuItem->command('-label' => 'Create and save control file.',
+		       -command => [\&SaveRecon]
+		       );
+# Close Menu Item
+$fileMenuItem->command('-label' => 'Exit',
+		       -command => [\&ExitRecon]
+		       );
+
+
+
+# --- Configure Menu ---
+$configureMenuItem = $menuBarArea->Menubutton(-text => 'Configure',
+				  -borderwidth => 2
+					      )->pack(-side => 'left',
+						      -padx => 2
+						      );
+
+# Set output dir menu item
+$configureMenuItem->command('-label' => 'Set profile type as Generic Profiling Format',
+		       -command => [\&SetProfileTypeToPRO]
+		       );
+$configureMenuItem->command('-label' => 'Set profile type as Progress Profiling Format',
+		       -command => [\&SetProfileTypeToPPF]
+		       );
+
+# Set pdf viewer menu item
+#$configureMenuItem->command('-label' => 'Set PDF Viewer',
+#		       -command => [\&OpenRecon]
+#			    );
+
+
+
+# --- Help Menu ---
+$helpMenuItem = $menuBarArea->Menubutton(-text => 'Help',
+				  -borderwidth => 2
+				  )->pack(-side => 'left',
+					  -padx => 2
+					  );
+
+
+# About ReconCalc menu item
+#$helpMenuItem->command('-label' => 'User Guide',
+#		       -command => [\&OpenRecon]
+#			    );
+
+
+# User guide menu item 
+$helpMenuItem->command('-label' => 'About ReconCalc',
+		       -command => [\&DisplayAbout]
+			    );
+
+
+# ----------------
+#  Set up main UI
+# ----------------
+
+# 'Add Feature' Widgets.  A button and a text box.
+$addFeatureButtonArea = $main->Button(-text => 'Add Feature');
+$addFeatureButtonArea->configure(-command => [\&AddFeature]);
+
+$addFeatureTextBoxArea = $main->Entry(-textvariable => \$featureName);
+$addFeatureTextBoxArea->focus;
+$featureName = "Enter Feature Name";
+
+# 'Add Test Case' Button.
+
+$addTestCaseButtonArea = $main->Button(-text => 'Add Test Case');
+$addTestCaseButtonArea->configure(-command => [\&AddTestCase]);
+
+
+# 'Feature and Test Case Lists
+$featuresLabel = $main->Label(-text=>'Features');
+
+$featuresListBox = $main->Listbox(-selectmode=>"browse", -width=>0, -height=>0);
+$featuresListBox->bind('<ButtonPress-1>', [\&featureSelected]);
+
+$exhibitedByLabel = $main->Label(-text=>'exhibited by ...');
+$exhibitedByListBox = $main->Listbox(-selectmode=>"multiple", -width=>0, -height=>0);
+
+$testCasesLeftButton = $main->Button(-text=>"<<");
+$testCasesLeftButton->configure(-command => [\&addToExhibitedBy]);
+
+#$testCasesRightButton = $main->Button(-text=>">>");
+
+$testCasesLabel = $main->Label(-text=>'Test Cases');
+$testCasesListBox = $main->Listbox(-selectmode=>"multiple", -width=>0, -height=>0);
+
+
+# ------------------------
+# Layout the form
+# -----------------------
+$menuBarArea->grid(-row=>0, -column=>0, -columnspan=>1, -sticky=>'ew');
+$addFeatureButtonArea->grid(-row=>1, -column=>0, -columnspan=>2, -sticky=>'ew');
+$addFeatureTextBoxArea->grid(-row=>1, -column=>2, -columnspan=>2, -sticky=>'ew');
+$addTestCaseButtonArea->grid(-row=>1, -column=>5, -columnspan=>2, -sticky=>'ew');
+$featuresLabel->grid(-row=>2, -column=>0, -columnspan=>2);
+$exhibitedByLabel->grid(-row=>2, -column=>2, -columnspan=>2);
+$testCasesLabel->grid(-row=>2, -column=>5, -columnspan=>2);
+$featuresListBox->grid(-row=>3, -column=>0, -rowspan=>4, -columnspan=>2, -sticky=>'ew');
+$exhibitedByListBox->grid(-row=>3, -column=>2, -rowspan=>4, -columnspan=>2, -sticky=>'ew');
+$testCasesLeftButton->grid(-row=>3, -column=>4, -rowspan=>1, -columnspan=>1, -sticky=>'ew');
+#$testCasesRightButton->grid(-row=>4, -column=>4, -rowspan=>1, -columnspan=>1, -sticky=>'ew');
+$testCasesListBox->grid(-row=>3, -column=>5, -rowspan=>4, -columnspan=>2, -sticky=>'ew');
+
+
+
+
+
+MainLoop();
+
+# Currently unused
+sub OpenRecon
+{
+    print "all about me 2";
+}
+
+
+# Adds a feature to the features listbox
+sub AddFeature
+{
+    my $count = 0;
+    my $alreadyThere = 0;
+
+    for(my $i = 0; $i<=$#features ; $i++)
+    {
+	if ($features[$i] eq $addFeatureTextBoxArea->get())
+	{
+	    $alreadyThere = 1;
+	}
+    }
+
+    if ($alreadyThere == 0)
+    {
+	my @temp;
+	push(@features,$addFeatureTextBoxArea->get());
+	#$mapping{$addFeatureTextBoxArea->get()} = @temp;
+	refreshWindow();
+    }
+
+
+}
+
+# Adds a test case to the test cases listbox
+sub AddTestCase
+{
+    my $alreadyThere = 0;
+    my $types;
+    my $file;
+    #   Type names		Extension(s)	Mac File Type(s)
+    #
+    #---------------------------------------------------------
+    @types =
+      ( ["All files",		'*'],
+	["Text files",           [qw/.txt .doc/]],
+       ["Log files",	['.log']],
+       ["Generic Profiler File",     ['.pro']],
+      );
+
+    $file = $main->getOpenFile(-filetypes => \@types);
+
+
+    if (defined $file and $file ne '') 
+    {
+
+	for(my $i = 0; $i<=$#testCases ; $i++)
+	{
+	    if ($testCases[$i] eq substr($file, rindex($file,'/')+1))
+	    {
+		$alreadyThere = 1;
+	    }
+	}
+
+	if ($alreadyThere == 0)
+	{
+	    push(@testCases, substr($file, rindex($file,'/')+1));
+	    refreshWindow();
+	}
+    }
+    
+    	&updateTestCasesAndExhibitedBy;
+
+}
+
+sub refreshWindow
+{
+    $featuresListBox->delete(0,'end');
+    $numberOfFeatures = $#features;
+    for(my $i = 0 ; $i <= $numberOfFeatures ; $i++)
+    {
+	$featuresListBox->insert('end', $features[$i]);
+    }
+   
+    $testCasesListBox->delete(0,'end');
+    $numberOfTestCases = $#testCases;
+    for(my $j=0; $j<=$numberOfTestCases ; $j++)
+    {
+	$testCasesListBox->insert('end', $testCases[$j]);
+    }
+
+}
+
+sub addToExhibitedBy
+{
+    my $featureIndex = -1;
+
+    if ($currentSelectionFeature eq '')
+    {
+	#Can't add to a feature unless you have one selected
+	print "Can't add to a feature unless you have one selected.\n";
+    }
+    else
+    {
+	for (my $i = 0 ; $i<=$#features ; $i++)
+	{
+	    if ($featuresListBox->get($currentSelectionFeature) eq $features[$i])
+	    {
+		$featureIndex = $i;
+	    }
+	}
+
+	# Some Error handling and reporting.
+	if ($featureIndex == -1)
+	{
+	    print "ERROR: couldn't find the feature in the master list of features! This shouldn't be able to happen!\n";
+	    print "Currently selected feature is ".($featuresListBox->get($currentSelectionFeature))." with id ".$currentSelectionFeature."\n";
+	    print "The features logged so far include ...\n";
+	    foreach $feature (@features)
+	    {
+		print $feature."\n";
+	    }
+	    exit;
+	}
+
+	# -------------------
+
+	my @selectedTestCases = $testCasesListBox->curselection();
+	my @newTestCases;
+
+	foreach $testCaseID (@selectedTestCases)
+	{
+	    push(@newTestCases,$testCasesListBox->get($testCaseID));
+	}
+
+	push(@{$mapping[$featureIndex]},@newTestCases);
+	
+	&updateTestCasesAndExhibitedBy;
+	
+    }
+}
+
+
+#currently unused
+sub deleteFromExhibitedBy
+{
+     my $featureIndex = -1;
+
+    if ($currentSelectionFeature eq '')
+    {
+	#can't add to a feature unless you have one selected
+    }
+    else
+    {
+	for (my $i = 0 ; $i<=$#features ; $i++)
+	{
+	    if ($featuresListBox->get($currentSelectionFeature) eq $features[$i])
+	    {
+		$featureIndex = $i;
+	    }
+	}
+
+	# Some Error handling and reporting.
+	if ($featureIndex == -1)
+	{
+	    print "ERROR: couldn't find the feature in the master list of features! This shouldn't be able to happen!\n";
+	    print "Currently selected feature is ".($featuresListBox->get($currentSelectionFeature))." with id ".$currentSelectionFeature."\n";
+	    print "The features logged so far include ...\n";
+	    foreach $feature (@features)
+	    {
+		print $feature."\n";
+	    }
+	    exit;
+	}
+
+	# -------------------
+
+	my @selectedTestCases = $exhibitedByListBox->curselection();
+	my @newTestCases;
+
+	foreach $testCaseID (@selectedTestCases)
+	{
+	    push(@newTestCases,$testCasesListBox->get($testCaseID));
+	}
+
+	for($k=0 ; $k <=$#newTestCases ; $k++)
+	{
+	    for ($j = 0 ; $j <=$#{$mapping[$featureIndex]} ; $j++)
+	    {
+		if (${$mapping[$featureIndex]}[$j] eq $newTestCases[$k])
+		{
+		    splice(@{$mapping[$featureIndex]},$j,1);
+		    last;
+		}
+	    }
+	}
+	
+	&updateTestCasesAndExhibitedBy;
+	
+	
+    }
+}
+
+sub featureSelected
+{
+    $oldSelection = $currentSelectionFeature;
+    $currentSelectionFeature = $featuresListBox->curselection();
+
+    if ($currentSelectionFeature eq '')
+    {
+	#can't add to a feature unless you have one selected
+	$currentSelectionFeature = $oldSelection;
+    }
+    else
+    {
+	$exhibitedByLabel->configure(-text=>"Exhibited by '".$featuresListBox->get($currentSelectionFeature)."'");
+	&updateTestCasesAndExhibitedBy;
+    }
+ 
+}
+
+sub updateTestCasesAndExhibitedBy
+{
+	$exhibitedByListBox->delete(0,'end');
+	$testCasesListBox->delete(0,'end');
+
+  if ($currentSelectionFeature ne '')
+  {
+    my $currentSelectionFeatureName = $featuresListBox->get($currentSelectionFeature);
+
+    my $indexOfFeature = -1;
+    my $isInExhibitedBy = 0;
+    
+    
+    # Find the currently selected feature first.
+    for (my $i = 0 ; $i <= $#features ; $i++)
+    {
+	if ($currentSelectionFeatureName eq $features[$i])
+	{
+	    $indexOfFeature = $i;
+	    last;
+	}
+    }
+
+	
+    # Update the list of test cases exhibited by that feature.
+	
+	for (my $j = 0 ; $j <= $#{$mapping[$indexOfFeature]} ; $j++)
+	{
+		$exhibitedByListBox->insert('end',${$mapping[$indexOfFeature]}[$j]);
+	}
+	
+    # Update the remaining testcases.
+	for (my $k = 0 ; $k <= $#testCases ; $k++)
+	{
+		$isInExhibitedBy = 0;
+		
+		for (my $l = 0 ; $l <= $#{$mapping[$indexOfFeature]} ; $l++)
+		{
+			if (${$mapping[$indexOfFeature]}[$l] eq $testCases[$k])
+			{
+				$isInExhibitedBy = 1;
+				last;
+			}
+		}
+	
+		if ($isInExhibitedBy == 0)
+		{
+			$testCasesListBox->insert('end',$testCases[$k]);
+		}
+	}
+  } else {
+  	for (my $kk = 0 ; $kk <= $#testCases ; $kk++)
+	{
+			$testCasesListBox->insert('end',$testCases[$kk]);
+	}
+	
+  }
+}
+
+sub SetProfileTypeToPPF
+{
+	$profileType = "ppf";
+}
+
+sub SetProfileTypeToPRO
+{
+	$profileType = "pro";
+}
+
+sub ExitRecon
+{
+	exit;
+}
+
+sub SaveRecon
+{
+	my $controlFile = "";
+	
+    my $alreadyThere = 0;
+    my $types;
+    my $file;
+    #   Type names		Extension(s)	Mac File Type(s)
+    #
+    #---------------------------------------------------------
+    @types =
+      (["Control File",           [qw/.ctl/]],
+       ["All files",		'*']
+      );
+
+	$file = $main->getSaveFile(-filetypes => \@types,
+      	-initialfile=> 'Default',
+      	-defaultextension => '.ctl');
+      	
+	open OUTFILE, ">".$file or die "Cannot open file $file\n";
+	
+	#write the profiler type to the control file
+	$controlFile = $profileType."\n";
+	print STDERR $profileType."\n";
+	
+	
+	#write the list of features to the control file
+	print STDERR @features;
+	print STDERR "***";
+	for (my $i = 0 ; $i <= $#features ; $i++)
+	{
+		if ($i == $#features)
+		{
+			$controlFile = $controlFile.$features[$i]."\n";			
+		} else {
+			$controlFile = $controlFile.$features[$i].";";
+		}
+	}
+
+	#write the list of test cases to the control file
+	print STDERR @testCases;
+	print STDERR "***";
+	for (my $j = 0 ; $j <= $#testCases ; $j++)
+	{
+		if ($j == $#testCases)
+		{
+			$controlFile = $controlFile.$testCases[$j]."\n";			
+		} else {
+			$controlFile = $controlFile.$testCases[$j].";";
+		}
+	}
+	
+	#write the mappings for each test case to the file
+	
+	for (my	$k = 0 ; $k <=$#mapping ; $k++)
+	{
+		print STDERR @{$mapping[$k]};
+		print STDERR "***";
+		for (my $l = 0 ; $l <= $#{$mapping[$k]} ; $l++)
+		{
+			if ($l == $#{$mapping[$k]})
+			{
+				$controlFile = $controlFile.(${$mapping[$k]}[$l]);
+			} else {
+				$controlFile = $controlFile.(${$mapping[$k]}[$l]).";";			
+			}
+		}
+		$controlFile = $controlFile."\n";
+	}
+
+	print OUTFILE $controlFile;
+	
+	close OUTFILE;
+    
+
+}
+
+sub DisplayAbout
+{
+	$main->messageBox(-title => "About Control File Generator",
+			-message => "Control File Generator V1.0\n Created By Andrew Le Gear\n 19th June 2006\n",
+			-type =>"ok",
+			-icon =>"info");
+}
+

@@ -1,0 +1,614 @@
+#!/usr/bin/perl
+
+#This program generates pretty reports on the software reconnaissance 
+# in pdf format
+# The same control file used to generate the reconnaissance is used as input to the tool
+
+open WHOLE_FILE, $ARGV[0] or die "Cannot open file $ARGV[0]\n";
+
+@allfile = <WHOLE_FILE>;
+close WHOLE_FILE;
+
+#read in the names of all the features 
+chomp($allfile[1]);
+@features = split /;/, $allfile[1];
+
+#read in the list of all the test cases
+chomp($allfile[2]);
+@testcases = split /;/, $allfile[2];
+
+# this array will contain a lost of all procedures profiles from
+# all our test cases
+@allprocedures;
+
+$guard = 0;
+
+# ----------------------------------------------------------------------------------
+#   Gather all information necessary to decompose the system in terms of features
+# ----------------------------------------------------------------------------------
+
+
+# create the list of profiled procedures
+foreach $testcase (@testcases)
+{
+    open TCASE, $testcase or die "Cannot open file $testcase.";
+    chomp(@testcasefile = <TCASE>);
+    close TCASE;
+    if ($#allprocedures == -1)
+    {
+	push(@allprocedures, $testcasefile[0]);
+    }
+
+    foreach $line (@testcasefile)
+    {
+	foreach $line2 (@allprocedures)
+	{
+	    if ($line2 eq $line)
+	    {
+		$guard = 1;
+		last;
+	    }
+	}
+
+	if ($guard == 0)
+	{
+	    push (@allprocedures, $line);
+	    $guard = 0;
+	}
+	$guard = 0;
+    }
+}
+
+#what procedures are common
+open COMMON, "celems.pro" or die "Cannot open file celems.pro\n";
+
+chomp(@celems = <COMMON>);
+
+@incelems;
+$#incelems = $#allprocedures;
+foreach $element (@incelems)
+{
+    # 0 will mean that the procedure is not a member of celems
+    $element = 0;
+}
+
+close COMMON;
+$count = 0;
+
+foreach $line (@celems)
+{
+    $count = 0;
+    foreach $line2 (@allprocedures)
+    {
+	if ($line eq $line2)
+	{
+	    $incelems[$count] = 1;
+	    last;
+	}
+	$count++;
+    }
+}
+
+#what procedures are unique
+@inuelems;
+$#inuelems = $#allprocedures;
+foreach $element (@inuelems)
+{
+    # -1 means that no feature has this procedure uniquely
+    $element = -1;
+}
+
+for ($i = 1 ; $i <= $#features+1 ; $i++)
+{
+    open UNIQUE, "./uelems/uelems".$i."\.pro" or die "Cannot open file $_\n";
+    chomp(@uelems = <UNIQUE>);
+    close UNIQUE;
+    foreach $line (@uelems)
+    {
+	$count = 0;
+	foreach $line2 (@allprocedures)
+	{
+	    if ($line eq $line2)
+	    {
+		if ($inuelems[$count] == -1)
+		{
+		    $inuelems[$count]=$i;
+		}
+		else
+		{
+		    $inuelems[$count] = $inuelems[$count].":".$i;
+		}
+		last;
+	    }
+	    $count++;
+	}
+    }
+    $#uelems=0;
+}
+
+#what procedures are shared
+@inshared;
+$#inshared = $#allprocedures;
+foreach $element (@inshared)
+{
+    # -1 means that no feature has this procedure shared
+    $element = -1;
+}
+
+for ($i = 1 ; $i <= $#features+1 ; $i++)
+{
+    open SHARED, "./shared/shared".$i."\.pro" or die "Cannot open file $_\n";
+    chomp(@shared = <SHARED>);
+    close SHARED;
+    foreach $line (@shared)
+    {
+	$count = 0;
+	foreach $line2 (@allprocedures)
+	{
+	    if ($line eq $line2)
+	    {
+		if ($inshared[$count] == -1)
+		{
+		    $inshared[$count]=$i;
+		}
+		else
+		{
+		    $inshared[$count] = $inshared[$count].":".$i;
+		}
+		last;
+	    }
+	    $count++;
+	}
+    }
+    $#shared = 0;
+}
+
+#what procedures are relevant
+@inrelevant;
+$#inrelevant = $#allprocedures;
+foreach $element (@inrelevant)
+{
+    # -1 means that no feature has this procedure shared
+    $element = -1;
+}
+
+for ($i = 1 ; $i <= $#features+1 ; $i++)
+{
+    open RELEVANT, "./relems/relems".$i."\.pro" or die "Cannot open file $_\n";
+    chomp(@relevant = <RELEVANT>);
+    close RELEVANT;
+    foreach $line (@relevant)
+    {
+	$count = 0;
+	foreach $line2 (@allprocedures)
+	{
+	    if ($line eq $line2)
+	    {
+		if ($inrelevant[$count] == -1)
+		{
+		    $inrelevant[$count]=$i;
+		}
+		else
+		{
+		    $inrelevant[$count] = $inrelevant[$count].":".$i;
+		}
+		last;
+	    }
+	    $count++;
+	}
+    }
+    $#relevant = 0;
+}
+
+
+#what procedures are indispensibly involved
+@iniinvolved;
+$#iniinvolved = $#allprocedures;
+foreach $element (@iniinvolved)
+{
+    # -1 means that no feature has this procedure shared
+    $element = -1;
+}
+
+for ($i = 1 ; $i <= $#features+1 ; $i++)
+{
+    open IINVOLVED, "./iielems/iielems".$i."\.pro" or die "Cannot open file $_\n";
+    chomp(@iinvolved = <IINVOLVED>);
+    close IINVOLVED;
+    foreach $line (@iinvolved)
+    {
+	$count = 0;
+	foreach $line2 (@allprocedures)
+	{
+	    if ($line eq $line2)
+	    {
+		if ($iniinvolved[$count] == -1)
+		{
+		    $iniinvolved[$count]=$i;
+		}
+		else
+		{
+		    $iniinvolved[$count] = $iniinvolved[$count].":".$i;
+		}
+		last;
+	    }
+	    $count++;
+	}
+    }
+    $#iinvolved = 0;
+}
+
+
+#what procedures are involved
+@ininvolved;
+$#ininvolved = $#allprocedures;
+foreach $element (@ininvolved)
+{
+    # -1 means that no feature has this procedure shared
+    $element = -1;
+}
+
+for ($i = 1 ; $i <= $#features+1 ; $i++)
+{
+    open INVOLVED, "./ielems/ielems".$i."\.pro" or die "Cannot open file $_\n";
+    chomp(@involved = <INVOLVED>);
+    close INVOLVED;
+    foreach $line (@involved)
+    {
+	$count = 0;
+	foreach $line2 (@allprocedures)
+	{
+	    if ($line eq $line2)
+	    {
+		if ($ininvolved[$count] == -1)
+		{
+		    $ininvolved[$count]=$i;
+		}
+		else
+		{
+		    $ininvolved[$count] = $ininvolved[$count].":".$i;
+		}
+		last;
+	    }
+	    $count++;
+	}
+    }
+    $#involved = 0;
+}
+
+
+# -----------------------------------------------------
+#            Reporting Facility
+# -----------------------------------------------------
+
+$latexbegin = "\\documentclass\[10pt,english\]\{book\}
+\\usepackage\{geometry\}
+\\geometry\{verbose,a3paper,landscape,lmargin=1.5in,rmargin=1.5in\}
+
+\\begin\{document\}
+\\begin\{tiny\}
+\\begin\{tabular\}\{\|c\|c\|c\|c\|c\|c\|c\|\}
+\\hline Procedures \&  Common \& Unique \& Shared \& Relevant \& Always Involved \& Involved \\\\ \\hline 
+";
+
+foreach $entry (@incelems)
+{
+    $_ = $entry;
+    s/1/Yes/g;
+    s/0/No/g;
+    $entry = $_;
+}
+
+foreach $entry (@inuelems)
+{
+    $_ = $entry;
+    s/-1/n\/a/g;
+    s/:/,/g;
+    $entry = $_;
+}
+
+foreach $entry (@inshared)
+{
+    $_ = $entry;
+    s/-1/n\/a/g;
+    s/:/,/g;
+    $entry = $_;
+}
+
+foreach $entry (@inrelevant)
+{
+    $_ = $entry;
+    s/-1/n\/a/g;
+    s/:/,/g;
+    $entry = $_;
+}
+
+foreach $entry (@iniinvolved)
+{
+    $_ = $entry;
+    s/-1/n\/a/g;
+    s/:/,/g;
+    $entry = $_;
+}
+
+foreach $entry (@ininvolved)
+{
+    $_ = $entry;
+    s/-1/n\/a/g;
+    s/:/,/g;
+    $entry = $_;
+}
+
+for ($i = 0 ; $i < $#allprocedures ; $i++)
+{
+    $_ = $allprocedures[$i];
+    s/\\/\\\\/g;
+    $allprocedures[$i] = $_;
+    $latexcontent = $latexcontent."$allprocedures[$i] \& $incelems[$i] \& $inuelems[$i] \& $inshared[$i] \& $inrelevant[$i] \& $iniinvolved[$i] \& $ininvolved[$i] \\\\ \\hline
+"; 
+}
+
+$latexend = "\\end\{tabular\} 
+\\end\{tiny\}
+\\end\{document\}
+";
+
+$latexall = $latexbegin.$latexcontent.$latexend;
+$_ = $latexall;
+s/\_/\\\_/g;
+$latexall = $_;
+
+open LATEXOUT, ">procedure_summary.tex" or die "Cannot open file procedure_summary.tex\n";
+print LATEXOUT $latexall;
+close LATEXOUT;
+
+system "latex procedure_summary.tex -o procedure_summary.dvi";
+system "dvips -P cmz -t a3 -t landscape procedure_summary.dvi -o procedure_summary.ps";
+system "ps2pdf procedure_summary.ps procedure_summary.pdf";
+
+
+$longlatexbegin = "\\documentclass\[10pt,english\]\{report\}
+\\usepackage\{times\}
+\\usepackage\[T1\]\{fontenc\}
+\\usepackage\[latin1\]\{inputenc\}
+\\usepackage\{geometry\}
+\\geometry\{verbose,a4paper,lmargin=2.0in,rmargin=1.5in\}
+\\pagestyle\{headings\}
+\\setcounter\{secnumdepth\}\{3\}
+\\setcounter\{tocdepth\}\{3\}
+\\usepackage\{array\}
+\\usepackage\{varioref\}
+\\usepackage\{float\}
+\\usepackage\{amsmath\}
+\\usepackage\{makeidx\}
+\\makeindex
+\\usepackage\[dvips\]\{graphicx\}
+\\usepackage\{setspace\}
+\\doublespacing
+\\usepackage\{amssymb\}
+
+\\usepackage\{fancyhdr\}
+
+\\newcommand\{\\captionfonts\}\{\\sf\}
+
+\\makeatletter  
+\\long\\def\\\@makecaption\#1\#2\{\%
+  \\vskip\\abovecaptionskip
+  \\sbox\\\@tempboxa\{\{\\captionfonts \#1: \#2\}\}
+  \\ifdim \\wd\\\@tempboxa >\\hsize
+    \{\\captionfonts \#1: \#2\\par\}
+  \\else
+    \\hbox to\\hsize\{\\hfil\\box\\\@tempboxa\\hfil\}
+  \\fi
+  \\vskip\\belowcaptionskip\}
+\\makeatother 
+
+\\pagestyle\{fancy\}
+\\renewcommand\{\\chaptermark\}\[1\]\{\\markboth\{\#1\}\{\}\}
+\\renewcommand\{\\sectionmark\}\[1\]\{\\markright\{\\thesection\\ \#1\}\}
+\\fancyhf\{\}
+\\fancyhead\[LE,RO\]\{\\bfseries\\thepage\}
+\\fancyhead\[LO\]\{\\bfseries\\rightmark\}
+\\fancyhead\[RE\]\{\\bfseries\\leftmark\}
+\\renewcommand\{\\headrulewidth\}\{0.5pt\}
+\\renewcommand\{\\footrulewidth\}\{0pt\}
+\\addtolength\{\\headheight\}\{0.5pt\}
+\\fancypagestyle\{plain\}\{
+  \\fancyhead\{\}
+  \\renewcommand\{\\headrulewidth\}\{0pt\}
+\}
+\\usepackage\[authoryear\]\{natbib\}
+
+\\makeatletter
+
+
+
+\\usepackage\{babel\}
+
+\\title\{Reconnaissance Report\}
+
+\\begin\{document\}
+
+
+\\maketitle
+
+\\tableofcontents
+
+
+\\begin\{singlespace\}
+
+\\chapter\{Introduction\}
+This document is intended as a reference guide to the 19 features mapped using software reconnaissance as part of the AIM shipping module collaboration during June 2005. It's intent is to provide quick starting points when trying to locate and understand the implementation of features exhibited by the shipping module.
+
+The document is divided into sections for each feature.  Each of these sections is divided into further sub-sections that should be used in the following order:
+
+\\begin\{description\}
+\\item \[Unique procedures:\] These procedures should be the first place you look when trying to locate a feature in source.  The unique procedures are those that are used only for that feature and no other. Occasionally there may be no unique elements for a feature in which case you should look to the next biggest set - the relevant software elements.
+\\item \[Relevant procedures:\] These procedures should be looked at next after the unique procedures.  These can be used as a starting point if there are no unique procedures for that feature or they can be used to give better context for the implementation of that feature. The set contains procedures that implement the feature, however it excludes any utility and initialisation code that is always executed when the program is run.
+\\item \[Involved procedures and Always involved procedures:\] These two sets can be used next, after locating the feature using the unique and relevant procedures, to give better context for the implementation of that feature.
+\\item \[Common procedures:\] These procedures are utility and initialisation code that is always executed when the program is run. 
+\\item \[Shared procedures:\] These procedures are not utility code or unique procedures - They are used to implement two or more features under examination.  It is useful to examine these listings to help understand how features implmented by the system interact and influence one another.
+\\item \[Reuse perspective:\] This is very similar to the shared procedures.  However, this listing is not from the point of view of any particular feature - it is simply a list of all procedures shared by features. This is usually useful to help understand the core architecture from which all other features are implemented.
+
+\\end\{description\}
+
+
+\\chapter\{Features Examined\}
+
+The following is a list of the features eaxmined for the shipping module:
+\\bigskip
+
+\\begin\{tabular\}\{\|c\|c\|\}
+\\hline Feature No. \& Description \\\\ \\hline 
+";
+
+$count = 1;
+foreach $ftr (@features)
+{
+$longlatexfeatures = $longlatexfeatures."$count \& $ftr \\\\ \\hline 
+";
+$count++;
+}
+
+$longlatexfeatures = $longlatexfeatures."\\end\{tabular\} 
+
+\\chapter\{Feature Mappings\}
+";
+
+open CELEMS, "./celems.pro" or die "Cannot open file celems.pro\n";
+@celems = <CELEMS>;
+close CELEMS;
+if ($#celems < 0)
+{
+    push(@celems, "There are no common procedures.\n");
+} else {
+
+}
+
+open RPER, "./shared/reuseperspective.pro" or die "Cannot open file .reuseperspective.pro";
+@rper = <RPER>;
+close RPER;
+if ($#rper < 0)
+{
+    push(@rper, "The reuse perspective is empty.\n");
+}
+
+$count = 1;
+foreach $ftr (@features)
+{
+    open UELEMS, "./uelems/uelems".$count.".pro" or die "Cannot open file ./uelems/uelems".$count.".pro";
+    @uelems = <UELEMS>;
+    close UELEMS;
+    if ($#uelems < 0)
+    {
+	push(@uelems, "There are no unique procedures for this feature.\n");
+    }
+    
+    open RELEMS, "./relems/relems".$count.".pro" or die "Cannot open file ./relems/relems".$count.".pro";
+    @relems = <RELEMS>;
+    close RELEMS;
+    if ($#relems < 0)
+    {
+	push(@relems, "There are no relevant procedures for this feature.\n");
+    }
+    
+    open IIELEMS, "./iielems/iielems".$count.".pro" or die "Cannot open file ./iielems/iielems".$count.".pro";
+    @iielems = <IIELEMS>;
+    close IIELEMS;
+    if ($#iielems < 0)
+    {
+	push(@iielems, "There are no always involved procedures for this feature.\n");
+    }
+    
+    
+    open IELEMS, "./ielems/ielems".$count.".pro" or die "Cannot open file ./ielems/ielems".$count.".pro";
+    @ielems = <IELEMS>;
+    close IELEMS;
+    if ($#ielems < 0)
+    {
+	push(@ielems, "There are no involved for this feature.\n");
+    }
+    
+    open SHARED, "./shared/shared".$count.".pro" or die "Cannot open file ./shared/shared".$count.".pro";
+    @shared = <SHARED>;
+    close SHARED;
+    if ($#shared < 0)
+    {
+	push(@shared, "There are no unique procedures for this feature.\n");
+    }
+    
+ 
+				$longlatexmaincontent = $longlatexmaincontent."\\section\{Feature ".$count.": ".$ftr."\}
+\\subsection\{Unique Procedures\}
+\\begin\{small\}
+\\begin\{verbatim\}
+@uelems
+\\end\{verbatim\}
+\\end\{small\}
+
+\\subsection\{Relevant Procedures\}
+\\begin\{small\}
+\\begin\{verbatim\}
+@relems
+\\end\{verbatim\}
+\\end\{small\}
+
+\\subsection\{Always Involved Procedures\}
+\\begin\{small\}
+\\begin\{verbatim\}
+@iielems
+\\end\{verbatim\}
+\\end\{small\}
+
+\\subsection\{Involved Procedures\}
+\\begin\{small\}
+\\begin\{verbatim\}
+@ielems
+\\end\{verbatim\}
+\\end\{small\}
+
+\\subsection\{Shared Procedures\}
+\\begin\{small\}
+\\begin\{verbatim\}
+@shared
+\\end\{verbatim\}
+\\end\{small\}
+
+";
+
+$count++;    
+}
+
+$longlatexcommon = "\\section\{Common Procedures\}
+\\begin\{small\}
+\\begin\{verbatim\}
+@celems
+\\end\{verbatim\}
+\\end\{small\}
+";
+
+$longlatexrper = "\\section\{The Reuse Perspective\}
+\\begin\{small\}
+\\begin\{verbatim\}
+@rper
+\\end\{verbatim\}
+\\end\{small\}
+";
+
+$longlatexend = "\\end\{singlespace\}
+
+\\end\{document\}
+
+";
+
+$longlatexall = $longlatexbegin.$longlatexfeatures.$longlatexmaincontent.$longlatexcommon.$longlatexrper.$longlatexend;
+open LONGLATEX, ">reconnaissance_report.tex" or die "Cannot open reconnaissance_report.tex\n";
+print LONGLATEX $longlatexall;
+close LONGLATEX;
+
+system "latex reconnaissance_report.tex -o reconnaissance_report.dvi";
+system "latex reconnaissance_report.tex -o reconnaissance_report.dvi";
+system "latex reconnaissance_report.tex -o reconnaissance_report.dvi";
+system "dvips -P cmz reconnaissance_report.dvi -o reconnaissance_report.ps";
+system "ps2pdf reconnaissance_report.ps reconnaissance_report.pdf";
+

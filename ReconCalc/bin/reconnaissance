@@ -1,0 +1,370 @@
+#!/usr/bin/perl
+
+# this is the driver reconnaissance program
+# provide a valid control file as the only argument
+# make sure to run the program in the directory where your test cases are
+
+mkdir "ielems", 0755 or warn "Cannot make ielems directory: $!\n";
+mkdir "iielems", 0755 or warn "Cannot make iielems directory: $!\n";
+mkdir "relems", 0755 or warn "Cannot make relems directory: $!\n";
+mkdir "uelems", 0755 or warn "Cannot make uelems directory: $!\n";
+mkdir "shared", 0755 or warn "Cannot make shared directory: $!\n";
+
+open WHOLE_FILE, $ARGV[0] or die "Cannot open file $ARGV[0]\n";
+
+@allfile = <WHOLE_FILE>;
+close WHOLE_FILE;
+
+
+#determining the input file format
+
+$format = 0;
+
+if ($allfile[0] eq "rci\n")
+{
+    $format = 1;
+    print "Input profile format is the reconnaissance calculators internal format - rci\n";
+}
+
+if ($allfile[0] eq "ppf\n")
+{
+    $format = 2;
+    print "Input profile format is standard progress profiling format - ppf\n";
+}
+
+if ($format == 0)
+{
+    die "The profile format is undefined, exiting\n";
+}
+
+#read in the names of all the features 
+chomp($allfile[1]);
+@features = split /;/, $allfile[1];
+$count = 1;
+
+foreach $feature (@features)
+{
+    print "Feature $count: $feature\n";
+    $count++;
+}
+
+$numfeatures = $#features+1;
+print "There are $numfeatures features\n";
+
+#read in the list of all the test cases
+chomp($allfile[2]);
+@testcases = split /;/, $allfile[2];
+$count=1;
+
+print "Test Case Files:\n";
+foreach $testcase (@testcases)
+{
+    print "$testcase\n";
+}
+
+$numtestcases = $#testcases+1;
+print "There are $numtestcases test case files.\n";
+
+#read in the details of the test cases that exhibit each feature
+for ($i=0 ; $i <= $numfeatures-1 ; $i++)
+{
+    chomp($allfile[$i+3]);
+    push (@mapping, [ split /;/, $allfile[$i+3] ]);
+    
+}
+
+for ($i=0 ; $i <= $numfeatures-1 ; $i++)
+{
+    print "Feature ".($i+1)."\"".$features[$i]."\" is exhibited by: ";
+    foreach $tcase (0..@{$mapping[$i]})
+    {
+	print $mapping[$i][$tcase]." ";
+    }
+    print "\n";
+}
+
+#figure out lists of test cases that don't exhibit specific features
+for ($i=0 ; $i <= $numfeatures-1 ; $i++)
+{
+    @temparr = ();
+    $guard = 0;
+    foreach $testcase (@testcases)
+    {
+	foreach $tcase (0..@{$mapping[$i]})
+	{
+	    if ($testcase eq $mapping[$i][$tcase])
+	    {
+		$guard = 1;
+	    }
+	}
+	if ($guard == 0)
+	{
+	    push (@temparr, $testcase);
+	}
+	$guard = 0;
+    }
+    
+    foreach $entry (0..@temparr)
+    {
+	$notexhibit[$i][$entry] = $temparr[$entry];
+    }
+}
+
+for ($i = 0 ; $i <= $numfeatures-1 ; $i++)
+{
+    print "Feature ".($i+1)." (\"$features[$i]\") is not exhibited by: ";
+    foreach $entry (0..@{$notexhibit[$i]})
+    {
+	print "$notexhibit[$i][$entry] ";
+    }
+
+    print "\n";
+}
+
+# -----------------------------------------------------------------------
+# Begin generating shell commands to execute the software reconnaissance
+# -----------------------------------------------------------------------
+
+# first create the command to convert the profiles from their current 
+# format to that used in my programs
+
+if ($format == 2)
+{
+    foreach $testcase (@testcases)
+    {
+	push(@newtestcases, $testcase.".pro");
+	push(@convpro, "convpro ".$testcase." > ".$testcase.".pro");
+    }
+    
+    print "The internal test cases used:\n";
+
+    foreach $newtestcase (@newtestcases)
+    {
+	print $newtestcase."\n";
+    }
+    
+    print "The conversion commands will be:\n";
+    foreach $cmd (@convpro)
+    {
+	print $cmd."\n";
+    }
+}
+
+# create a command that will produce the common software elements
+
+$celemscmd = "intersection";
+
+foreach $testcase (@testcases)
+{
+    if ($format == 2)
+    {
+	$celemscmd = $celemscmd." ".$testcase.".pro";
+    }
+    if ($format == 1)
+    {
+	$celemscmd = $celemscmd." ".$testcase;
+    }
+}
+
+$celemscmd = $celemscmd." > celems.pro";
+
+print "The common software elements command will be:\n$celemscmd\n";
+
+# create the commands for ielems
+
+for ($i=0 ; $i <= $numfeatures-1 ; $i++)
+{
+    $tempcmd = ();
+    $tempcmd = "union";
+ 
+    foreach $tcase (0..((@{$mapping[$i]})-1))
+    {
+	if ($format == 1)
+	{
+	    $tempcmd = $tempcmd." ".$mapping[$i][$tcase];
+	}
+	if ($format == 2)
+	{
+	    $tempcmd = $tempcmd." ".$mapping[$i][$tcase].".pro";
+	}
+    }
+    $tempcmd = $tempcmd." > ./ielems/ielems".($i+1).".pro";
+    if ((@{$mapping[$i]}) ne 0)
+    {
+	push(@ielemscmds, $tempcmd);
+    }
+}
+
+print "The ielems commands will be:\n";
+
+foreach $cmd (@ielemscmds)
+{
+    print $cmd."\n";
+}
+
+# create the commands for iielems
+for ($i=0 ; $i <= $numfeatures-1 ; $i++)
+{
+    $tempcmd = ();
+    $tempcmd = "intersection";
+ 
+    foreach $tcase (0..((@{$mapping[$i]})-1))
+    {
+	if ($format == 1)
+	{
+	    $tempcmd = $tempcmd." ".$mapping[$i][$tcase];
+	}
+	if ($format == 2)
+	{
+	    $tempcmd = $tempcmd." ".$mapping[$i][$tcase].".pro";
+	}
+    }
+    $tempcmd = $tempcmd." > ./iielems/iielems".($i+1).".pro";
+    if ((@{$mapping[$i]}) ne 0)
+    {
+	push(@iielemscmds, $tempcmd);
+    }
+}
+
+print "The ielems commands will be:\n";
+
+foreach $cmd (@iielemscmds)
+{
+    print $cmd."\n";
+}
+
+# create the commands for relems
+
+for ($i = 0 ; $i < $numfeatures ; $i++)
+{
+    $tempcmd = ();
+    $tempcmd = "subtract ./iielems/iielems".($i+1).".pro celems.pro > ./relems/relems".($i+1).".pro";
+    if ((@{$mapping[$i]}) ne 0)
+    {
+	push (@relemscmds, $tempcmd);
+    }
+}
+
+print "The relems commands are:\n";
+
+foreach $cmd (@relemscmds)
+{
+    print $cmd."\n";
+}
+
+# create the commands for uelems
+
+for ($i = 0 ; $i <= $numfeatures-1 ; $i++)
+{
+    $tempcmd = ();
+    $tempcmd = "subtract ./ielems/ielems".($i+1).".pro";
+    foreach $entry (0..(@{$notexhibit[$i]}-2))
+    {
+	if ($format == 2)
+	{
+	    $tempcmd = $tempcmd." ".($notexhibit[$i][$entry]).".pro";
+	}
+	if ($format == 1)
+	{
+	    $tempcmd = $tempcmd." ".($notexhibit[$i][$entry]);
+	}
+    }
+    $tempcmd = $tempcmd." > ./uelems/uelems".($i+1).".pro";
+    if ((@{$mapping[$i]}) ne 0)
+    {
+	push (@uelemscmds, $tempcmd);
+    }
+
+}
+
+print "The commands for uelems are:\n";
+foreach $cmd (@uelemscmds)
+{
+    print $cmd."\n";
+}
+
+#create the commands for shared
+
+for ($i = 0 ; $i <= $numfeatures-1 ; $i++) {
+    $tempcmd = (); 
+    $tempcmd = "subtract ./iielems/iielems".($i+1).".pro ./uelems/uelems".($i+1).".pro celems.pro > ./shared/shared".($i+1).".pro";
+
+    if ((@{$mapping[$i]}) ne 0)
+    {
+	push (@sharedcmds, $tempcmd);
+    }
+}
+
+$sharedallcmd = "union ";
+for ($i = 0 ; $i <= $numfeatures-1 ; $i++) {
+    if ((@{$mapping[$i]}) ne 0)
+    {
+	$sharedallcmd = $sharedallcmd." ./shared/shared".($i+1).".pro";
+    }
+}
+$sharedallcmd = $sharedallcmd." > ./shared/reuseperspective.pro";
+
+print "The commands for shared are:\n";
+foreach $cmd (@sharedcmds)
+{
+    print $cmd."\n";
+}
+print $sharedallcmd."\n";
+
+# ******************************
+#   Execute the commands
+# ******************************
+
+# convert files
+if ($format == 2)
+{
+    print STDERR "Converting files ...\n";
+    foreach $cmd (@convpro)
+    {
+	system $cmd;
+    }
+}
+
+#common software elements
+print STDERR "Calculating common software elements ...\n";
+system $celemscmd;
+
+#potentially involved software elements
+print STDERR "Calculating the potentially involved software elements ...\n";
+
+foreach $cmd (@ielemscmds)
+{
+    system $cmd;
+}
+
+#indispensibly involved software elements
+print STDERR "Calculating the indispensibly involved software elements ...\n";
+foreach $cmd (@iielemscmds)
+{
+    system $cmd;
+}
+
+#relevant software elements
+print STDERR "Calculating the relevant software elements ...\n";
+foreach $cmd (@relemscmds)
+{
+    system $cmd;
+}
+
+#unique software elements
+print STDERR "Calculating the unique software elements ...\n";
+foreach $cmd (@uelemscmds)
+{
+    system $cmd;
+}
+
+#shared software elements
+print STDERR "Calculating the shared software elements ...\n";
+foreach $cmd (@sharedcmds)
+{
+    system $cmd;
+}
+
+system $sharedallcmd;
+
+print STDERR "Finished.\n";

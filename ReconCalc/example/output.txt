@@ -1,0 +1,57 @@
+Input profile format is the reconnaissance calculators internal format - rci
+Feature 1: Start and stop the application
+Feature 2: Rotate house
+Feature 3: Translate house
+Feature 4: Scale house
+Feature 5: Change house colour
+There are 5 features
+Test Case Files:
+testcase1reduced.txt
+testcase2reduced.txt
+testcase3reduced.txt
+testcase4reduced.txt
+testcase5reduced.txt
+There are 5 test case files.
+Feature 1"Start and stop the application" is exhibited by: testcase1reduced.txt testcase2reduced.txt testcase3reduced.txt testcase4reduced.txt testcase5reduced.txt  
+Feature 2"Rotate house" is exhibited by: testcase2reduced.txt  
+Feature 3"Translate house" is exhibited by: testcase3reduced.txt  
+Feature 4"Scale house" is exhibited by: testcase4reduced.txt  
+Feature 5"Change house colour" is exhibited by: testcase5reduced.txt  
+Feature 1 ("Start and stop the application") is not exhibited by:   
+Feature 2 ("Rotate house") is not exhibited by: testcase1reduced.txt testcase3reduced.txt testcase4reduced.txt testcase5reduced.txt   
+Feature 3 ("Translate house") is not exhibited by: testcase1reduced.txt testcase2reduced.txt testcase4reduced.txt testcase5reduced.txt   
+Feature 4 ("Scale house") is not exhibited by: testcase1reduced.txt testcase2reduced.txt testcase3reduced.txt testcase5reduced.txt   
+Feature 5 ("Change house colour") is not exhibited by: testcase1reduced.txt testcase2reduced.txt testcase3reduced.txt testcase4reduced.txt   
+The common software elements command will be:
+intersection testcase1reduced.txt testcase2reduced.txt testcase3reduced.txt testcase4reduced.txt testcase5reduced.txt > celems.pro
+The ielems commands will be:
+union testcase1reduced.txt testcase2reduced.txt testcase3reduced.txt testcase4reduced.txt testcase5reduced.txt > ./ielems/ielems1.pro
+union testcase2reduced.txt > ./ielems/ielems2.pro
+union testcase3reduced.txt > ./ielems/ielems3.pro
+union testcase4reduced.txt > ./ielems/ielems4.pro
+union testcase5reduced.txt > ./ielems/ielems5.pro
+The ielems commands will be:
+intersection testcase1reduced.txt testcase2reduced.txt testcase3reduced.txt testcase4reduced.txt testcase5reduced.txt > ./iielems/iielems1.pro
+intersection testcase2reduced.txt > ./iielems/iielems2.pro
+intersection testcase3reduced.txt > ./iielems/iielems3.pro
+intersection testcase4reduced.txt > ./iielems/iielems4.pro
+intersection testcase5reduced.txt > ./iielems/iielems5.pro
+The relems commands are:
+subtract ./iielems/iielems1.pro celems.pro > ./relems/relems1.pro
+subtract ./iielems/iielems2.pro celems.pro > ./relems/relems2.pro
+subtract ./iielems/iielems3.pro celems.pro > ./relems/relems3.pro
+subtract ./iielems/iielems4.pro celems.pro > ./relems/relems4.pro
+subtract ./iielems/iielems5.pro celems.pro > ./relems/relems5.pro
+The commands for uelems are:
+subtract ./ielems/ielems1.pro > ./uelems/uelems1.pro
+subtract ./ielems/ielems2.pro testcase1reduced.txt testcase3reduced.txt testcase4reduced.txt testcase5reduced.txt > ./uelems/uelems2.pro
+subtract ./ielems/ielems3.pro testcase1reduced.txt testcase2reduced.txt testcase4reduced.txt testcase5reduced.txt > ./uelems/uelems3.pro
+subtract ./ielems/ielems4.pro testcase1reduced.txt testcase2reduced.txt testcase3reduced.txt testcase5reduced.txt > ./uelems/uelems4.pro
+subtract ./ielems/ielems5.pro testcase1reduced.txt testcase2reduced.txt testcase3reduced.txt testcase4reduced.txt > ./uelems/uelems5.pro
+The commands for shared are:
+subtract ./iielems/iielems1.pro ./uelems/uelems1.pro celems.pro > ./shared/shared1.pro
+subtract ./iielems/iielems2.pro ./uelems/uelems2.pro celems.pro > ./shared/shared2.pro
+subtract ./iielems/iielems3.pro ./uelems/uelems3.pro celems.pro > ./shared/shared3.pro
+subtract ./iielems/iielems4.pro ./uelems/uelems4.pro celems.pro > ./shared/shared4.pro
+subtract ./iielems/iielems5.pro ./uelems/uelems5.pro celems.pro > ./shared/shared5.pro
+union  ./shared/shared1.pro ./shared/shared2.pro ./shared/shared3.pro ./shared/shared4.pro ./shared/shared5.pro > ./shared/reuseperspective.pro

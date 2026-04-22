@@ -1,0 +1,45 @@
+#!/usr/bin/perl
+
+# this script will calculate the union of sets.
+# use this to calculate the involved software elements, IELEMS
+# pass all the test case files that exhibit your feature as arguments
+
+# first join all the files together in this entry
+@everything;
+
+#then get rid if repitition and put it in this file
+@reduced;
+
+$guard = 0;
+
+#this loop joins all the files together
+foreach $file (@ARGV)
+{
+    open AFILE, $file or die "cannot open file $file\n";
+    @tempstuff = <AFILE>;
+    push(@everything, @tempstuff);
+    $#tempstuff = 0;
+    close AFILE;
+}
+
+#this loop get rid of repition in the set
+push(@reduced, $everything[0]);
+foreach $element (@everything)
+{
+    foreach $element2 (@reduced)
+    {
+	if ($element eq $element2)
+	{
+	    $guard = 1;
+	}
+    }
+    
+    if ($guard == 0)
+    {
+	push(@reduced, $element);
+    }
+    $guard = 0;
+}
+
+print @reduced;
+
