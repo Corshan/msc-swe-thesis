@@ -1,0 +1,13 @@
+# Virtual environment
+.venv/
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+__pycache__/
+*.pyc
+*.pyo
+
+# uv lock file - keep this for reproducible installs
+# uv.lock
