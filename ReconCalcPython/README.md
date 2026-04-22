@@ -6,7 +6,7 @@ A modern Python translation of the ReconCalc software reconnaissance tool.
 - **Core Analyzer**: Performs set operations (union, intersection, subtraction) on execution profiles to map features to code elements.
 - **Support for Formats**: Supports standard `rci` control files and handles bloated `ppf` profiles.
 - **Flexible Reporting**: Generates beautiful HTML and Markdown reports.
-- **Web UI**: Modern interactive dashboard built with Gradio for easy feature mapping and analysis.
+- **Web UI**: Modern interactive dashboard built with **Streamlit** for easy feature mapping and analysis.
 - **CLI**: Command-line interface for batch processing.
 
 ## Project Structure
@@ -29,10 +29,10 @@ This will automatically create a `.venv` folder and install all required package
 
 ## Usage
 
-### Web UI (Gradio)
+### Web UI (Streamlit)
 To launch the interactive web interface:
 ```bash
-uv run python app.py
+uv run streamlit run app.py
 ```
 
 ### CLI
