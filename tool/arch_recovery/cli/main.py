@@ -28,6 +28,14 @@ def instrument(project_path: str, language: str):
 
     config = Config.from_project_path(project_path, language)
 
+    # Step 1: Instrumentation
+    click.echo("Step 1: Instrumenting source code...")
+    instrumentor = Instrumentor(config)
+    try:
+        instrumentor.instrument()
+    except RuntimeError as e:
+        click.echo(f"Skipping instrumentation due to missing dependencies: {e}")
+
 @cli.command()
 @project_path_option
 @langauage_option
@@ -51,13 +59,13 @@ def recover(project_path: str, language: str, test_command: str, output: str):
     click.echo("Step 1: Instrumenting source code...")
     instrumentor = Instrumentor(config)
     try:
-        instrumentor.instrument(trace_file_path)
+        instrumented_path = instrumentor.instrument()
     except RuntimeError as e:
         click.echo(f"Skipping instrumentation due to missing dependencies: {e}")
     
     # Step 2: Trace Collection
     click.echo("Step 2: Collecting execution traces...")
-    collector = TraceCollector(test_command, config.project_path)
+    collector = TraceCollector(test_command, instrumented_path)
     collector.collect(trace_file_path)
     
     # Mock traces for demonstration if empty
