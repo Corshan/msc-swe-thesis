@@ -9,6 +9,7 @@ from arch_recovery.static_extraction.extractor import StaticExtractor
 from arch_recovery.lsi_mapping.mapper import LSIMapper
 from arch_recovery.reflexion.engine import ReflexionEngine
 from arch_recovery.reporting.mermaid_generator import MermaidGenerator
+from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option
 
 @click.group()
 def cli():
@@ -16,10 +17,22 @@ def cli():
     pass
 
 @cli.command()
-@click.argument('project_path', type=click.Path(exists=True, file_okay=False))
-@click.option('--language', type=str, help="Target system language (e.g. python, java, cpp)")
-@click.option('--test-command', type=str, required=True, help="Command to run the feature test suites (e.g., 'pytest')")
-@click.option('--output', type=click.Path(), default="architecture_recovery.md", help="Output markdown file")
+@project_path_option
+@langauage_option
+def instrument(project_path: str, language: str):
+    """
+    Run the Instumentation phase of the architecture recovery pipeline.
+    """
+    print(f"{language=} {project_path=}")
+    print("Instrumenting architecture...")
+
+    config = Config.from_project_path(project_path, language)
+
+@cli.command()
+@project_path_option
+@langauage_option
+@test_command_option
+@output_option
 def recover(project_path: str, language: str, test_command: str, output: str):
     """
     Run the full architecture recovery pipeline.

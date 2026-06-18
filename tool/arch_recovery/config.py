@@ -1,3 +1,4 @@
+from typing import Self
 import os
 from dataclasses import dataclass, field
 from typing import List, Optional
@@ -9,7 +10,7 @@ class Config:
     ignore_paths: List[str] = field(default_factory=list)
     
     @classmethod
-    def from_project_path(cls, path: str, lang: Optional[str] = None) -> "Config":
+    def from_project_path(cls, path: str, lang: Optional[str] = None) -> Self:
         config = cls(project_path=path, language=lang)
         if not config.language:
             config.language = config._detect_language()
