@@ -1,3 +1,4 @@
+import tempfile
 from typing import Self
 import os
 from dataclasses import dataclass, field
@@ -15,6 +16,7 @@ class Config:
         if not config.language:
             config.language = config._detect_language()
         config._load_ignore_paths()
+        config._create_temp_trace_file()
         return config
 
     def _detect_language(self) -> str:
@@ -52,3 +54,7 @@ class Config:
                 self.ignore_paths.extend(["target", "build", ".gradle", ".m2"])
             elif self.language == "cpp":
                 self.ignore_paths.extend(["build", "out", "bin"])
+
+    def _create_temp_trace_file(self) -> None:
+        with tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.trace') as temp_trace_file:
+            self.trace_file_path = temp_trace_file.name
