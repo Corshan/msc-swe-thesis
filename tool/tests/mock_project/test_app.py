@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 from app import Auth, Database
 
 def test_login():
