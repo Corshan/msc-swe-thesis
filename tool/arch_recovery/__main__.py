@@ -1,4 +1,4 @@
-from arch_recovery.cli.main import cli
+from arch_recovery.cli.cli import cli
 
 def main():
     cli()
