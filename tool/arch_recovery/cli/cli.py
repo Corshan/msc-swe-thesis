@@ -2,13 +2,13 @@ import click
 import os
 import tempfile
 from arch_recovery.config import Config
-from arch_recovery.instrumentation.instrumentor import Instrumentor
-from arch_recovery.tracing.collector import TraceCollector
-from arch_recovery.reconnaissance.analyzer import ReconnaissanceAnalyzer
-from arch_recovery.static_extraction.extractor import StaticExtractor
-from arch_recovery.lsi_mapping.mapper import LSIMapper
-from arch_recovery.reflexion.engine import ReflexionEngine
-from arch_recovery.reporting.mermaid_generator import MermaidGenerator
+from arch_recovery.pipleline.instrumentor import Instrumentor
+from arch_recovery.pipleline.collector import TraceCollector
+from arch_recovery.pipleline.analyzer import ReconnaissanceAnalyzer
+from arch_recovery.pipleline.extractor import StaticExtractor
+from arch_recovery.pipleline.mapper import LSIMapper
+from arch_recovery.pipleline.engine import ReflexionEngine
+from arch_recovery.pipleline.mermaid_generator import MermaidGenerator
 from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option
 
 @click.group()
@@ -28,8 +28,9 @@ def instrument(project_path: str, language: str):
 
     config = Config.from_project_path(project_path, language)
 
-    # Step 1: Instrumentation
-    click.echo("Step 1: Instrumenting source code...")
+    _instrument(config)
+
+def _instrument(config: Config):
     instrumentor = Instrumentor(config)
     try:
         instrumentor.instrument()
@@ -48,25 +49,14 @@ def recover(project_path: str, language: str, test_command: str, output: str):
     click.echo(f"Starting Architecture Recovery for {project_path}...")
     
     config = Config.from_project_path(project_path, language)
-    click.echo(f"Detected/Configured language: {config.language}")
-    click.echo(f"Ignore paths loaded: {len(config.ignore_paths)} paths")
-
-    # Temporary trace file
-    with tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.trace') as temp_trace_file:
-        trace_file_path = temp_trace_file.name
-
+   
     # Step 1: Instrumentation
-    click.echo("Step 1: Instrumenting source code...")
-    instrumentor = Instrumentor(config)
-    try:
-        instrumented_path = instrumentor.instrument()
-    except RuntimeError as e:
-        click.echo(f"Skipping instrumentation due to missing dependencies: {e}")
+    instrumented_path = _instrument(config)
     
     # Step 2: Trace Collection
     click.echo("Step 2: Collecting execution traces...")
     collector = TraceCollector(test_command, instrumented_path)
-    collector.collect(trace_file_path)
+    collector.collect(config.trace_file_path)
     
     # Mock traces for demonstration if empty
     traces = {"test_login": {"auth::login", "db::query"}, "test_logout": {"auth::logout"}}
