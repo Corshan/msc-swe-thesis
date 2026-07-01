@@ -104,13 +104,19 @@ class Instrumentor:
                     expr = ET.SubElement(new_stmt, '{http://www.srcML.org/srcML/src}expr')
                     
                     if self.config.language == "python":
-                        code = f'with open(r"{self.config.trace_file_path}", "a") as __f: __f.write("ENTER: {file_name}::{func_name}\\n")\n    '
+                        code = f'with open(r"{self.config.trace_file_path}", "a") as __f: __f.write("ENTER: {file_name}::{func_name}\\n")'
                     elif self.config.language == "java":
-                        code = f'try (java.io.FileWriter __fw = new java.io.FileWriter("{trace_file}", true)) {{ __fw.write("ENTER: {file_name}::{func_name}\\n"); }} catch (java.io.IOException e) {{}}\n'
+                        code = f'try (java.io.FileWriter __fw = new java.io.FileWriter("{trace_file}", true)) {{ __fw.write("ENTER: {file_name}::{func_name}\\n"); }} catch (java.io.IOException e) {{}}'
                     elif self.config.language == "cpp":
-                        code = f'{{ std::ofstream __ofs("{trace_file}", std::ios_base::app); __ofs << "ENTER: {file_name}::{func_name}\\n"; }}\n'
+                        code = f'{{ std::ofstream __ofs("{trace_file}", std::ios_base::app); __ofs << "ENTER: {file_name}::{func_name}\\n"; }}'
                     else:
                         code = ""
                         
                     expr.text = code
+                    
+                    # Fix indentation by duplicating the leading whitespace of the block_content
+                    # and appending it after our newly inserted statement.
+                    if block_content.text:
+                        new_stmt.tail = block_content.text
+                        
                     block_content.insert(0, new_stmt)
