@@ -1,19 +1,18 @@
 import subprocess
 import os
+from arch_recovery.config import Config
 
 class TraceCollector:
-    def __init__(self, test_command: str, project_path: str):
-        self.test_command = test_command
-        self.project_path = project_path
+    def __init__(self, config: Config):
+        self.test_command = config.test_command
+        self.project_path = config.instrumented_path
+        self.trace_file_path = config.trace_file_path
 
-    def collect(self, trace_file: str) -> None:
+    def collect(self) -> None:
         """
         Executes the test command so the instrumented code can generate traces.
         """
-        env = os.environ.copy()
-        # Ensure the test process knows where to log traces
-        env["ARCH_RECOVERY_TRACE_FILE"] = trace_file
-
+        
         print(f"Running test suite to collect traces: {self.test_command}")
         
         try:
@@ -22,7 +21,6 @@ class TraceCollector:
                 self.test_command, 
                 shell=True, 
                 cwd=self.project_path, 
-                env=env,
                 check=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,

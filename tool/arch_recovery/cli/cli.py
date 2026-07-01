@@ -1,6 +1,7 @@
 import click
 import os
 import tempfile
+import shutil
 from arch_recovery.config import Config
 from arch_recovery.pipleline.instrumentor import Instrumentor
 from arch_recovery.pipleline.collector import TraceCollector
@@ -16,26 +17,6 @@ def cli():
     """Automated Software Architecture Recovery CLI."""
     pass
 
-@cli.command()
-@project_path_option
-@langauage_option
-def instrument(project_path: str, language: str):
-    """
-    Run the Instumentation phase of the architecture recovery pipeline.
-    """
-    print(f"{language=} {project_path=}")
-    print("Instrumenting architecture...")
-
-    config = Config.from_project_path(project_path, language)
-
-    _instrument(config)
-
-def _instrument(config: Config):
-    instrumentor = Instrumentor(config)
-    try:
-        instrumentor.instrument()
-    except RuntimeError as e:
-        click.echo(f"Skipping instrumentation due to missing dependencies: {e}")
 
 @cli.command()
 @project_path_option
@@ -48,50 +29,58 @@ def recover(project_path: str, language: str, test_command: str, output: str):
     """
     click.echo(f"Starting Architecture Recovery for {project_path}...")
     
-    config = Config.from_project_path(project_path, language)
+    config = Config(project_path=project_path, language=language, test_command=test_command)
    
     # Step 1: Instrumentation
-    instrumented_path = _instrument(config)
+    instrumentor = Instrumentor(config)
+    instrumentor.instrument()
     
     # Step 2: Trace Collection
     click.echo("Step 2: Collecting execution traces...")
-    collector = TraceCollector(test_command, instrumented_path)
-    collector.collect(config.trace_file_path)
+    trace_collector = TraceCollector(config)
+    trace_collector.collect()
     
-    # Mock traces for demonstration if empty
-    traces = {"test_login": {"auth::login", "db::query"}, "test_logout": {"auth::logout"}}
+    # # Mock traces for demonstration if empty
+    # traces = {"test_login": {"auth::login", "db::query"}, "test_logout": {"auth::logout"}}
 
-    # Step 4: Static Extraction (Done before 3 and 5 so we have the texts)
-    click.echo("Step 4: Extracting static dependencies...")
-    extractor = StaticExtractor(config.project_path, config.language)
-    function_texts, static_deps = extractor.extract()
+    # # Step 4: Static Extraction (Done before 3 and 5 so we have the texts)
+    # click.echo("Step 4: Extracting static dependencies...")
+    # extractor = StaticExtractor(config.project_path, config.language)
+    # function_texts, static_deps = extractor.extract()
 
-    # If no functions found, put some mock data
-    if not function_texts:
-        function_texts = {"auth::login": "def login(): db.query()", "auth::logout": "def logout(): pass", "db::query": "def query(): pass"}
-        static_deps = {"auth::login": ["db::query"], "auth::logout": [], "db::query": []}
+    # # If no functions found, put some mock data
+    # if not function_texts:
+    #     function_texts = {"auth::login": "def login(): db.query()", "auth::logout": "def logout(): pass", "db::query": "def query(): pass"}
+    #     static_deps = {"auth::login": ["db::query"], "auth::logout": [], "db::query": []}
     
-    # Step 5: LSI Mapping
-    click.echo("Step 5: Automated Feature Mapping via LSI...")
-    mapper = LSIMapper(n_features=2)
-    feature_mapping = mapper.map_features(function_texts, os.path.join(config.project_path, "detected_mapping.yaml"))
+    # # Step 5: LSI Mapping
+    # click.echo("Step 5: Automated Feature Mapping via LSI...")
+    # mapper = LSIMapper(n_features=2)
+    # feature_mapping = mapper.map_features(function_texts, os.path.join(config.project_path, "detected_mapping.yaml"))
     
-    # Step 3: Reconnaissance Sets
-    click.echo("Step 3: Computing Software Reconnaissance sets...")
-    analyzer = ReconnaissanceAnalyzer()
-    # We use feature_mapping (which groups components) and traces (which group test cases)
-    # The actual algorithm links test cases to features, but here we just pass the mock traces and the LSI mapping.
-    recon_sets = analyzer.compute_sets(traces, {"Feature_0": ["test_login"], "Feature_1": ["test_logout"]})
+    # # Step 3: Reconnaissance Sets
+    # click.echo("Step 3: Computing Software Reconnaissance sets...")
+    # analyzer = ReconnaissanceAnalyzer()
+    # # We use feature_mapping (which groups components) and traces (which group test cases)
+    # # The actual algorithm links test cases to features, but here we just pass the mock traces and the LSI mapping.
+    # recon_sets = analyzer.compute_sets(traces, {"Feature_0": ["test_login"], "Feature_1": ["test_logout"]})
     
-    # Step 6: Reflexion Engine
-    click.echo("Step 6: Comparing and generating Reflexion Model...")
-    engine = ReflexionEngine()
-    reflexion_results = engine.compute_reflexion(static_deps, feature_mapping)
+    # # Step 6: Reflexion Engine
+    # click.echo("Step 6: Comparing and generating Reflexion Model...")
+    # engine = ReflexionEngine()
+    # reflexion_results = engine.compute_reflexion(static_deps, feature_mapping)
     
-    # Step 7: Mermaid graph generation
-    click.echo("Step 7: Generating output markdown...")
-    generator = MermaidGenerator(os.path.join(config.project_path, output))
-    generator.generate(feature_mapping, reflexion_results)
+    # # Step 7: Mermaid graph generation
+    # click.echo("Step 7: Generating output markdown...")
+    # generator = MermaidGenerator(os.path.join(config.project_path, output))
+    # generator.generate(feature_mapping, reflexion_results)
+
+    
+    
+    # Clean up
+    if os.path.exists(config.instrumented_path):
+        shutil.rmtree(config.instrumented_path)
+    
     
     click.echo(f"Done! Results written to {os.path.join(config.project_path, output)}")
 
