@@ -1,6 +1,8 @@
 import os
 import tempfile
 import xml.etree.ElementTree as ET
+import shutil
+
 try:
     import pylibsrcml
 except Exception as e:
@@ -13,21 +15,15 @@ class Instrumentor:
     def __init__(self, config: Config):
         self.config = config
 
-    def instrument(self) -> str:
+    def instrument(self) -> None:
         """
         Instruments all valid source files in the project to log function entries and exits.
-        Returns the path to the newly created instrumented project directory.
         """
         if pylibsrcml is None:
             raise RuntimeError("pylibsrcml could not be imported. Ensure srcML is installed on the system.")
-
-        # Normalize paths and strip trailing slashes to avoid _instrumented_instrumented
-        base_path = os.path.normpath(self.config.project_path)
-        instrumented_path = base_path + "_instrumented"
         
-        import shutil
-        if os.path.exists(instrumented_path):
-            shutil.rmtree(instrumented_path)
+        if os.path.exists(self.config.instrumented_path):
+            shutil.rmtree(self.config.instrumented_path)
             
         def ignore_func(dir_path, filenames):
             ignored = []
@@ -37,16 +33,14 @@ class Instrumentor:
                     ignored.append(name)
             return ignored
             
-        shutil.copytree(base_path, instrumented_path, ignore=ignore_func)
+        shutil.copytree(self.config.project_path, self.config.instrumented_path, ignore=ignore_func)
 
-        for root, dirs, files in os.walk(instrumented_path):
+        for root, dirs, files in os.walk(self.config.instrumented_path):
             for file in files:
                 file_path = os.path.join(root, file)
                 if self._is_target_language(file_path):
                     self._instrument_file(file_path)
-                    
-        print(f"Instrumented project created at: {instrumented_path}")
-        return instrumented_path
+         
 
     def _is_ignored(self, path: str) -> bool:
         for ignore_path in self.config.ignore_paths:
@@ -92,7 +86,6 @@ class Instrumentor:
     def _inject_trace_code(self, root: ET.Element, file_path: str) -> None:
         ns = {'src': 'http://www.srcML.org/srcML/src'}
         file_name = os.path.basename(file_path)
-        trace_file = self.config.trace_file_path.replace('\\', '\\\\')
         
         for func in root.findall('.//src:function', ns):
             name_elem = func.find('src:name', ns)
@@ -106,9 +99,9 @@ class Instrumentor:
                     if self.config.language == "python":
                         code = f'with open(r"{self.config.trace_file_path}", "a") as __f: __f.write("ENTER: {file_name}::{func_name}\\n")'
                     elif self.config.language == "java":
-                        code = f'try (java.io.FileWriter __fw = new java.io.FileWriter("{trace_file}", true)) {{ __fw.write("ENTER: {file_name}::{func_name}\\n"); }} catch (java.io.IOException e) {{}}'
+                        code = f'try (java.io.FileWriter __fw = new java.io.FileWriter("{self.config.trace_file_path}", true)) {{ __fw.write("ENTER: {file_name}::{func_name}\\n"); }} catch (java.io.IOException e) {{}}'
                     elif self.config.language == "cpp":
-                        code = f'{{ std::ofstream __ofs("{trace_file}", std::ios_base::app); __ofs << "ENTER: {file_name}::{func_name}\\n"; }}'
+                        code = f'{{ std::ofstream __ofs("{self.config.trace_file_path}", std::ios_base::app); __ofs << "ENTER: {file_name}::{func_name}\\n"; }}'
                     else:
                         code = ""
                         
