@@ -1,7 +1,0 @@
-ENTER: test_app.py::test_login
-ENTER: app.py::__init__
-ENTER: app.py::login
-ENTER: app.py::query
-ENTER: test_app.py::test_logout
-ENTER: app.py::__init__
-ENTER: app.py::logout

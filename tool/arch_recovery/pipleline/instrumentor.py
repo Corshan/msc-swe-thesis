@@ -87,21 +87,37 @@ class Instrumentor:
         ns = {'src': 'http://www.srcML.org/srcML/src'}
         file_name = os.path.basename(file_path)
         
+        parent_map = {c: p for p in root.iter() for c in p}
+        
         for func in root.findall('.//src:function', ns):
             name_elem = func.find('src:name', ns)
             if name_elem is not None and name_elem.text:
                 func_name = name_elem.text
+                
+                class_name = None
+                curr = func
+                while curr in parent_map:
+                    parent = parent_map[curr]
+                    if parent.tag == '{http://www.srcML.org/srcML/src}class':
+                        cname = parent.find('src:name', ns)
+                        if cname is not None and cname.text:
+                            class_name = cname.text
+                        break
+                    curr = parent
+                    
+                display_name = f"{class_name}.{func_name}" if class_name else func_name
+                
                 block_content = func.find('src:block/src:block_content', ns)
                 if block_content is not None:
                     new_stmt = ET.Element('{http://www.srcML.org/srcML/src}expr_stmt')
                     expr = ET.SubElement(new_stmt, '{http://www.srcML.org/srcML/src}expr')
                     
                     if self.config.language == "python":
-                        code = f'with open(r"{self.config.trace_file_path}", "a") as __f: __f.write("ENTER: {file_name}::{func_name}\\n")'
+                        code = f'with open(r"{self.config.trace_file_path}", "a") as __f: __f.write("ENTER: {file_name}::{display_name}\\n")'
                     elif self.config.language == "java":
-                        code = f'try (java.io.FileWriter __fw = new java.io.FileWriter("{self.config.trace_file_path}", true)) {{ __fw.write("ENTER: {file_name}::{func_name}\\n"); }} catch (java.io.IOException e) {{}}'
+                        code = f'try (java.io.FileWriter __fw = new java.io.FileWriter("{self.config.trace_file_path}", true)) {{ __fw.write("ENTER: {file_name}::{display_name}\\n"); }} catch (java.io.IOException e) {{}}'
                     elif self.config.language == "cpp":
-                        code = f'{{ std::ofstream __ofs("{self.config.trace_file_path}", std::ios_base::app); __ofs << "ENTER: {file_name}::{func_name}\\n"; }}'
+                        code = f'{{ std::ofstream __ofs("{self.config.trace_file_path}", std::ios_base::app); __ofs << "ENTER: {file_name}::{display_name}\\n"; }}'
                     else:
                         code = ""
                         
