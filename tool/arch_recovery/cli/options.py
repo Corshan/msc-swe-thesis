@@ -20,6 +20,15 @@ def project_path_option(func):
         help="Path to the project directory"
     )(func)
 
+def project_path_src_option(func):
+    return click.option(
+        '--project-path-src', 
+        '-s', 
+        type=click.Path(exists=True, file_okay=False), 
+        required=True, 
+        help="Path to the project source directory"
+    )(func)
+
 def test_command_option(func):
     return click.option(
         '--test-command', 

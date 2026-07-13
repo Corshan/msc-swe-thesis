@@ -37,7 +37,11 @@ class Instrumentor:
             
         shutil.copytree(self.config.project_path, self.config.instrumented_path, ignore=ignore_func)
 
-        for root, dirs, files in os.walk(self.config.instrumented_path):
+        source_root = os.path.join(self.config.instrumented_path, os.path.basename(self.config.project_src_path))
+        if not os.path.isdir(source_root):
+            source_root = self.config.instrumented_path
+
+        for root, dirs, files in os.walk(source_root):
             for file in files:
                 file_path = os.path.join(root, file)
                 if self._is_target_language(file_path):

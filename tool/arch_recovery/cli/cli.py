@@ -10,7 +10,7 @@ from arch_recovery.pipleline.extractor import StaticExtractor
 from arch_recovery.pipleline.mapper import LSIMapper
 from arch_recovery.pipleline.engine import ReflexionEngine
 from arch_recovery.pipleline.mermaid_generator import MermaidGenerator
-from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option
+from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option, project_path_src_option
 
 @click.group()
 def cli():
@@ -20,20 +20,24 @@ def cli():
 
 @cli.command()
 @project_path_option
+@project_path_src_option
 @langauage_option
 @test_command_option
 @output_option
-def recover(project_path: str, language: str, test_command: str, output: str):
+def recover(project_path: str, project_path_src: str, language: str, test_command: str, output: str):
     """
     Run the full architecture recovery pipeline.
     """
     click.echo(f"Starting Architecture Recovery for {project_path}...")
     
-    config = Config(project_path=project_path, language=language, test_command=test_command)
+    # Config expects both project_path and project_src_path; use the provided project_path for both
+    config = Config(project_path=project_path, project_src_path=project_path_src, language=language, test_command=test_command)
    
     # Step 1: Instrumentation
     instrumentor = Instrumentor(config)
     instrumentor.instrument()
+
+    click.echo(f"Saving traces to {config.trace_file_path}...")
     
     # Step 2: Trace Collection
     click.echo("Step 2: Collecting execution traces...")
@@ -78,11 +82,31 @@ def recover(project_path: str, language: str, test_command: str, output: str):
     
     
     # Clean up
-    if os.path.exists(config.instrumented_path):
-        shutil.rmtree(config.instrumented_path)
+    # if os.path.exists(config.instrumented_path):
+    #     shutil.rmtree(config.instrumented_path)
     
     
     click.echo(f"Done! Results written to {os.path.join(config.project_path, output)}")
+
+
+@cli.command("instrument")
+@project_path_option
+@project_path_src_option
+@langauage_option
+def instrument(project_path: str, project_path_src: str, language: str):
+    """Run only the instrumentation step for the target project."""
+    config = Config(
+        project_path=project_path,
+        project_src_path=project_path_src,
+        language=language,
+        test_command="",
+    )
+
+    instrumentor = Instrumentor(config)
+    instrumentor.instrument()
+
+    click.echo(f"Instrumentation complete for {project_path}")
+
 
 if __name__ == '__main__':
     cli()
