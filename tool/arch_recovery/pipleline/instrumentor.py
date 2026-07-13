@@ -29,7 +29,9 @@ class Instrumentor:
             ignored = []
             for name in filenames:
                 full_path = os.path.join(dir_path, name)
-                if self._is_ignored(full_path):
+                if name.startswith('.') and os.path.isdir(full_path):
+                    ignored.append(name)
+                elif self._is_ignored(full_path):
                     ignored.append(name)
             return ignored
             

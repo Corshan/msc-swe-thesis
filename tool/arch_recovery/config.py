@@ -13,8 +13,9 @@ class Config:
     trace_file_path: str = None
     instrumented_path: str = None
 
-    def __init__(self, project_path: str, language: str, test_command: str) -> None:
+    def __init__(self, project_path: str, language: str, test_command: str, project_src_path: str) -> None:
         self.project_path = Path(project_path).resolve()
+        self.project_src_path = Path(project_src_path).resolve()
         self.instrumented_path = self.project_path.with_name(self.project_path.name + "_instrumented")
         self.test_command = test_command
         self.language = language
