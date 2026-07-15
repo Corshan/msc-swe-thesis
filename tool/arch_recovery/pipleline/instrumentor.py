@@ -129,9 +129,21 @@ class Instrumentor:
                         
                     expr.text = code
                     
-                    # Fix indentation by duplicating the leading whitespace of the block_content
-                    # and appending it after our newly inserted statement.
-                    if block_content.text:
+                    indentation = "\n    "
+                    parent = parent_map.get(func)
+                    if parent is not None:
+                        idx = list(parent).index(func)
+                        prev_text = list(parent)[idx-1].tail if idx > 0 else parent.text
+                        if prev_text is not None and '\n' in prev_text:
+                            base_indent = prev_text.split('\n')[-1]
+                            if not base_indent.strip():
+                                indentation = "\n" + base_indent + "    "
+                    
+                    has_newline = block_content.text is not None and '\n' in block_content.text
+                    if has_newline:
                         new_stmt.tail = block_content.text
+                    else:
+                        block_content.text = indentation
+                        new_stmt.tail = indentation
                         
                     block_content.insert(0, new_stmt)

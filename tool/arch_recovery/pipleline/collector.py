@@ -51,7 +51,8 @@ class TraceCollector:
                 )
         except subprocess.CalledProcessError as e:
             print(f"Command exited with code {e.returncode}. Traces may still have been collected.")
-            print(f"Stderr: {e.stderr}")
+            # print(f"STDOUT: {e.stdout}")
+            print(f"STDERR: {e.stderr}")
 
     def _build_install_commands(self) -> list[tuple[str, str]]:
         project_path = Path(self.project_path)
@@ -70,7 +71,7 @@ class TraceCollector:
                 commands.append((f'"{self.venv_python}" -m pip install -r "{requirement_file}"', str(project_path)))
 
         if not commands:
-            commands.append((f'"{self.venv_python}" -m pip install -e .', str(project_path)))
+            commands.append((f'"{self.venv_python}" -m pip install -e ".[all,test,dev,full]"', str(project_path)))
 
         commands.append((f'"{self.venv_python}" -m pip install pytest pytest-xdist hypothesis', str(project_path)))
         return commands
