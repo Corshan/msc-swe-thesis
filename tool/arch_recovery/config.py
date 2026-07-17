@@ -61,5 +61,6 @@ class Config:
                 self.ignore_paths.extend(["build", "out", "bin"])
 
     def _create_temp_trace_file(self) -> None:
-        with tempfile.NamedTemporaryFile(dir=self.project_path, delete=False, mode='w', suffix='.trace') as temp_trace_file:
-            self.trace_file_path = temp_trace_file.name
+        path = (self.project_path / "out.trace")
+        path.touch(exist_ok=True)
+        self.trace_file_path = path

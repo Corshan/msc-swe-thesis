@@ -1,17 +1,19 @@
+import shutil
+from arch_recovery.paths import ProjectPaths
 import os
 import subprocess
 import sys
 from pathlib import Path
 
-from arch_recovery.config import Config
-
 
 class TraceCollector:
-    def __init__(self, config: Config):
-        self.test_command = config.test_command
-        self.project_path = config.instrumented_path
-        self.project_root = config.project_path
-        self.trace_file_path = config.trace_file_path
+    def __init__(self, project_paths: ProjectPaths, test_command: str, test_name: str):
+        self.test_command = test_command
+        self.test_name = test_name
+        self.project_path = project_paths.instrumented
+        self.project_root = project_paths.root
+        self.trace_file_input_path = project_paths.trace_file
+        self.trace_file_output_path = project_paths.trace_dir / f"{test_name}.trace"
         self.venv_path = Path(self.project_root) / ".venv"
         self.venv_bin = self.venv_path / ("Scripts" if os.name == "nt" else "bin")
         self.venv_python = self.venv_bin / ("python.exe" if os.name == "nt" else "python")
@@ -37,6 +39,9 @@ class TraceCollector:
         commands.extend(self._build_install_commands())
         commands.append((self._build_test_command(), self.project_path))
 
+        if self.trace_file_input_path.exists():
+            os.remove(self.trace_file_input_path)
+
         try:
             for command, cwd in commands:
                 subprocess.run(
@@ -53,6 +58,12 @@ class TraceCollector:
             print(f"Command exited with code {e.returncode}. Traces may still have been collected.")
             # print(f"STDOUT: {e.stdout}")
             print(f"STDERR: {e.stderr}")
+        
+        # create the trace ouput file than copy the input tace file to output
+        self.trace_file_output_path.parent.mkdir(parents=True, exist_ok=True)
+        if not self.trace_file_output_path.exists():
+            self.trace_file_output_path.touch()
+        shutil.copy2(self.trace_file_input_path, self.trace_file_output_path)
 
     def _build_install_commands(self) -> list[tuple[str, str]]:
         project_path = Path(self.project_path)

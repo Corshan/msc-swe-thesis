@@ -38,6 +38,15 @@ def test_command_option(func):
         help="Command to run the feature test suites (e.g., 'pytest')"
     )(func)
 
+def test_name_option(func):
+    return click.option(
+        '--test-name', 
+        '-tn', 
+        type=str, 
+        required=True, 
+        help="Name of the test to run (e.g., 'test_login')"
+    )(func)
+
 def output_option(func):
     return click.option(
         '--output', 
