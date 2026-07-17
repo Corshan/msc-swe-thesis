@@ -51,6 +51,28 @@ def run_tracer(project_path: str, project_path_src: str, test_command: str, test
     
     click.echo(f"Trace collection complete for {project_path}")
 
+@cli.command("compute")
+@project_path_option
+@project_path_src_option
+def compute_recon_sets(project_path: str, project_path_src: str):
+    """
+    Compute the software reconnaissance sets.
+    """
+    project_paths = ProjectPaths.from_root(project_path, project_path_src)
+    
+    analyzer = ReconnaissanceAnalyzer()
+    traces = analyzer.load_traces(project_paths.trace_dir)
+    click.echo(f"Loaded {len(traces)} traces from {project_paths.trace_dir}")
+
+    sets = analyzer.compute_sets(traces)
+
+    for feature in sets:
+        click.echo(f"Feature: {feature}")
+        click.echo(f"  Common: {len(sets[feature].common)}")
+        click.echo(f"  Involved: {len(sets[feature].involved)}")
+        click.echo(f"  Essential: {len(sets[feature].essential)}")
+        click.echo(f"  Unique: {len(sets[feature].unique)}")
+
 @cli.command()
 @project_path_option
 @project_path_src_option
