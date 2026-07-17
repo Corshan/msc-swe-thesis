@@ -1,3 +1,5 @@
+from arch_recovery.cli.options import test_name_option
+from arch_recovery.paths import ProjectPaths
 import click
 import os
 import tempfile
@@ -17,6 +19,37 @@ def cli():
     """Automated Software Architecture Recovery CLI."""
     pass
 
+@cli.command("instrument")
+@project_path_option
+@project_path_src_option
+@langauage_option
+def instrument_only(project_path: str, project_path_src: str, language: str):
+    """
+    Run only the instrumentation step for the target project.
+    """
+    # config = Config(project_path=project_path, project_src_path=project_path_src, language=language, test_command="")
+    project_paths = ProjectPaths.from_root(project_path, project_path_src)
+    
+    instrumentor = Instrumentor(project_paths, language)
+    instrumentor.instrument()
+    
+    click.echo(f"Instrumentation complete for {project_path}")
+
+@cli.command("trace")
+@project_path_option
+@project_path_src_option
+@test_command_option
+@test_name_option
+def run_tracer(project_path: str, project_path_src: str, test_command: str, test_name: str):
+    """
+    Run only the trace collection step for the target project.
+    """
+    project_paths = ProjectPaths.from_root(project_path, project_path_src)
+
+    trace_collector = TraceCollector(project_paths, test_command, test_name)
+    trace_collector.collect()
+    
+    click.echo(f"Trace collection complete for {project_path}")
 
 @cli.command()
 @project_path_option
@@ -34,8 +67,8 @@ def recover(project_path: str, project_path_src: str, language: str, test_comman
     config = Config(project_path=project_path, project_src_path=project_path_src, language=language, test_command=test_command)
    
     # Step 1: Instrumentation
-    instrumentor = Instrumentor(config)
-    instrumentor.instrument()
+    # instrumentor = Instrumentor(config)
+    # instrumentor.instrument()
 
     click.echo(f"Saving traces to {config.trace_file_path}...")
     
@@ -44,68 +77,36 @@ def recover(project_path: str, project_path_src: str, language: str, test_comman
     trace_collector = TraceCollector(config)
     trace_collector.collect()
     
-    # # Mock traces for demonstration if empty
-    # traces = {"test_login": {"auth::login", "db::query"}, "test_logout": {"auth::logout"}}
-
-    # # Step 4: Static Extraction (Done before 3 and 5 so we have the texts)
-    # click.echo("Step 4: Extracting static dependencies...")
-    # extractor = StaticExtractor(config.project_path, config.language)
-    # function_texts, static_deps = extractor.extract()
-
-    # # If no functions found, put some mock data
-    # if not function_texts:
-    #     function_texts = {"auth::login": "def login(): db.query()", "auth::logout": "def logout(): pass", "db::query": "def query(): pass"}
-    #     static_deps = {"auth::login": ["db::query"], "auth::logout": [], "db::query": []}
-    
-    # # Step 5: LSI Mapping
-    # click.echo("Step 5: Automated Feature Mapping via LSI...")
-    # mapper = LSIMapper(n_features=2)
-    # feature_mapping = mapper.map_features(function_texts, os.path.join(config.project_path, "detected_mapping.yaml"))
-    
     # # Step 3: Reconnaissance Sets
     # click.echo("Step 3: Computing Software Reconnaissance sets...")
+    
+    # traces = {}
+    # if os.path.exists(config.trace_file_path):
+    #     executed = set()
+    #     with open(config.trace_file_path, "r", encoding="utf-8") as f:
+    #         for line in f:
+    #             if line.startswith("ENTER: "):
+    #                 executed.add(line.strip()[7:])
+    #     traces["test_run_all"] = executed
+    # else:
+    #     traces = {"test_login": {"auth::login", "db::query"}, "test_logout": {"auth::logout"}}
+        
     # analyzer = ReconnaissanceAnalyzer()
-    # # We use feature_mapping (which groups components) and traces (which group test cases)
-    # # The actual algorithm links test cases to features, but here we just pass the mock traces and the LSI mapping.
-    # recon_sets = analyzer.compute_sets(traces, {"Feature_0": ["test_login"], "Feature_1": ["test_logout"]})
+    # feature_mapping = {"Feature_0": ["test_run_all"]} if "test_run_all" in traces else {"Feature_0": ["test_login"], "Feature_1": ["test_logout"]}
+    # recon_sets = analyzer.compute_sets(traces, feature_mapping)
     
-    # # Step 6: Reflexion Engine
-    # click.echo("Step 6: Comparing and generating Reflexion Model...")
-    # engine = ReflexionEngine()
-    # reflexion_results = engine.compute_reflexion(static_deps, feature_mapping)
-    
-    # # Step 7: Mermaid graph generation
-    # click.echo("Step 7: Generating output markdown...")
-    # generator = MermaidGenerator(os.path.join(config.project_path, output))
-    # generator.generate(feature_mapping, reflexion_results)
-
-    
-    
+    # for feature, fset in recon_sets.items():
+    #     click.echo(f"Feature: {feature}")
+    #     click.echo(f"  Common: {len(fset.common)}")
+    #     click.echo(f"  Involved: {len(fset.involved)}")
+    #     click.echo(f"  Essential: {len(fset.essential)}")
+    #     click.echo(f"  Unique: {len(fset.unique)}")
     # Clean up
     # if os.path.exists(config.instrumented_path):
     #     shutil.rmtree(config.instrumented_path)
     
     
     click.echo(f"Done! Results written to {os.path.join(config.project_path, output)}")
-
-
-@cli.command("instrument")
-@project_path_option
-@project_path_src_option
-@langauage_option
-def instrument(project_path: str, project_path_src: str, language: str):
-    """Run only the instrumentation step for the target project."""
-    config = Config(
-        project_path=project_path,
-        project_src_path=project_path_src,
-        language=language,
-        test_command="",
-    )
-
-    instrumentor = Instrumentor(config)
-    instrumentor.instrument()
-
-    click.echo(f"Instrumentation complete for {project_path}")
 
 
 if __name__ == '__main__':

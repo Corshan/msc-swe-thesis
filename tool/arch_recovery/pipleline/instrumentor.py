@@ -1,3 +1,4 @@
+from click import shell_completion
 import os
 import tempfile
 import xml.etree.ElementTree as ET
@@ -9,11 +10,16 @@ except Exception as e:
     # Catch both ImportError and pylibsrcml.exceptions.srcMLNotFoundError
     pylibsrcml = None
 
-from arch_recovery.config import Config
+from arch_recovery.paths import ProjectPaths
 
 class Instrumentor:
-    def __init__(self, config: Config):
-        self.config = config
+    def __init__(self, project_paths: ProjectPaths, language: str):
+        self.project_path = project_paths.root
+        self.project_path_src = project_paths.src
+        self.instrumented_path = project_paths.instrumented
+        self.trace_file_path = project_paths.trace_file
+        self.language = language
+        self.ignore_paths = []
 
     def instrument(self) -> None:
         """
@@ -22,8 +28,8 @@ class Instrumentor:
         if pylibsrcml is None:
             raise RuntimeError("pylibsrcml could not be imported. Ensure srcML is installed on the system.")
         
-        if os.path.exists(self.config.instrumented_path):
-            shutil.rmtree(self.config.instrumented_path)
+        if os.path.exists(self.instrumented_path):
+            shutil.rmtree(self.instrumented_path)
             
         def ignore_func(dir_path, filenames):
             ignored = []
@@ -35,11 +41,11 @@ class Instrumentor:
                     ignored.append(name)
             return ignored
             
-        shutil.copytree(self.config.project_path, self.config.instrumented_path, ignore=ignore_func)
+        shutil.copytree(self.project_path, self.instrumented_path, ignore=ignore_func)
 
-        source_root = os.path.join(self.config.instrumented_path, os.path.basename(self.config.project_src_path))
+        source_root = os.path.join(self.instrumented_path, os.path.basename(self.project_path_src))
         if not os.path.isdir(source_root):
-            source_root = self.config.instrumented_path
+            source_root = self.instrumented_path
 
         for root, dirs, files in os.walk(source_root):
             for file in files:
@@ -49,18 +55,18 @@ class Instrumentor:
          
 
     def _is_ignored(self, path: str) -> bool:
-        for ignore_path in self.config.ignore_paths:
+        for ignore_path in self.ignore_paths:
             if ignore_path in path:
                 return True
         return False
 
     def _is_target_language(self, path: str) -> bool:
         _, ext = os.path.splitext(path)
-        if self.config.language == "python" and ext == ".py":
+        if self.language == "python" and ext == ".py":
             return True
-        if self.config.language == "java" and ext == ".java":
+        if self.language == "java" and ext == ".java":
             return True
-        if self.config.language == "cpp" and ext in [".cpp", ".h", ".c", ".hpp"]:
+        if self.language == "cpp" and ext in [".cpp", ".h", ".c", ".hpp"]:
             return True
         return False
 
@@ -118,12 +124,12 @@ class Instrumentor:
                     new_stmt = ET.Element('{http://www.srcML.org/srcML/src}expr_stmt')
                     expr = ET.SubElement(new_stmt, '{http://www.srcML.org/srcML/src}expr')
                     
-                    if self.config.language == "python":
-                        code = f'with open(r"{self.config.trace_file_path}", "a") as __f: __f.write("ENTER: {file_name}::{display_name}\\n")'
-                    elif self.config.language == "java":
-                        code = f'try (java.io.FileWriter __fw = new java.io.FileWriter("{self.config.trace_file_path}", true)) {{ __fw.write("ENTER: {file_name}::{display_name}\\n"); }} catch (java.io.IOException e) {{}}'
-                    elif self.config.language == "cpp":
-                        code = f'{{ std::ofstream __ofs("{self.config.trace_file_path}", std::ios_base::app); __ofs << "ENTER: {file_name}::{display_name}\\n"; }}'
+                    if self.language == "python":
+                        code = f'with open(r"{self.trace_file_path}", "a") as __f: __f.write("ENTER: {file_name}::{display_name}\\n")'
+                    elif self.language == "java":
+                        code = f'try (java.io.FileWriter __fw = new java.io.FileWriter("{self.trace_file_path}", true)) {{ __fw.write("ENTER: {file_name}::{display_name}\\n"); }} catch (java.io.IOException e) {{}}'
+                    elif self.language == "cpp":
+                        code = f'{{ std::ofstream __ofs("{self.trace_file_path}", std::ios_base::app); __ofs << "ENTER: {file_name}::{display_name}\\n"; }}'
                     else:
                         code = ""
                         
