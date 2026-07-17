@@ -1,3 +1,4 @@
+import click
 import shutil
 from arch_recovery.paths import ProjectPaths
 import os
@@ -64,6 +65,7 @@ class TraceCollector:
         if not self.trace_file_output_path.exists():
             self.trace_file_output_path.touch()
         shutil.copy2(self.trace_file_input_path, self.trace_file_output_path)
+        click.echo(f"Saved trace to {self.trace_file_output_path}")
 
     def _build_install_commands(self) -> list[tuple[str, str]]:
         project_path = Path(self.project_path)
