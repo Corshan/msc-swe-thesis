@@ -67,11 +67,16 @@ def compute_recon_sets(project_path: str, project_path_src: str):
     sets = analyzer.compute_sets(traces)
 
     for feature in sets:
-        click.echo(f"Feature: {feature}")
-        click.echo(f"  Common: {len(sets[feature].common)}")
-        click.echo(f"  Involved: {len(sets[feature].involved)}")
-        click.echo(f"  Essential: {len(sets[feature].essential)}")
-        click.echo(f"  Unique: {len(sets[feature].unique)}")
+        click.echo(f"\tFeature: {feature}")
+        click.echo(f"\t\tCommon: {len(sets[feature].common)}")
+        click.echo(f"\t\tInvolved: {len(sets[feature].involved)}")
+        click.echo(f"\t\tEssential: {len(sets[feature].essential)}")
+        click.echo(f"\t\tUnique: {len(sets[feature].unique)}")
+    
+    analyzer.save_feature_sets(sets, project_paths.trace_dir)
+    click.echo(f"Saved feature sets to {project_paths.trace_dir / 'feature_sets.json'}")
+
+    
 
 @cli.command()
 @project_path_option
