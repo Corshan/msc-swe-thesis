@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Set, Dict, List
 from pathlib import Path
+import json
 
 @dataclass
 class FeatureSets:
@@ -84,3 +85,21 @@ class ReconnaissanceAnalyzer:
             results[feature] = feature_sets
             
         return results
+
+    def save_feature_sets(self, feature_sets: Dict[str, FeatureSets], output_dir: Path) -> None:
+        """
+        Saves the computed feature sets to a JSON file in the specified output directory.
+        """
+        output_file = output_dir / "feature_sets.json"
+        
+        serializable_sets = {}
+        for feature, feature_set in feature_sets.items():
+            serializable_sets[feature] = {
+                "common": list(feature_set.common),
+                "involved": list(feature_set.involved),
+                "essential": list(feature_set.essential),
+                "unique": list(feature_set.unique)
+            }
+            
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(serializable_sets, f, indent=4)
