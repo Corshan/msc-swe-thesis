@@ -2,16 +2,9 @@ from arch_recovery.cli.options import test_name_option
 from arch_recovery.paths import ProjectPaths
 import click
 import os
-import tempfile
-import shutil
-from arch_recovery.config import Config
 from arch_recovery.pipleline.instrumentor import Instrumentor
 from arch_recovery.pipleline.collector import TraceCollector
 from arch_recovery.pipleline.analyzer import ReconnaissanceAnalyzer
-from arch_recovery.pipleline.extractor import StaticExtractor
-from arch_recovery.pipleline.mapper import LSIMapper
-from arch_recovery.pipleline.engine import ReflexionEngine
-from arch_recovery.pipleline.mermaid_generator import MermaidGenerator
 from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option, project_path_src_option
 
 @click.group()
@@ -75,65 +68,6 @@ def compute_recon_sets(project_path: str, project_path_src: str):
     
     analyzer.save_feature_sets(sets, project_paths.trace_dir)
     click.echo(f"Saved feature sets to {project_paths.trace_dir / 'feature_sets.json'}")
-
-    
-
-@cli.command()
-@project_path_option
-@project_path_src_option
-@langauage_option
-@test_command_option
-@output_option
-def recover(project_path: str, project_path_src: str, language: str, test_command: str, output: str):
-    """
-    Run the full architecture recovery pipeline.
-    """
-    click.echo(f"Starting Architecture Recovery for {project_path}...")
-    
-    # Config expects both project_path and project_src_path; use the provided project_path for both
-    config = Config(project_path=project_path, project_src_path=project_path_src, language=language, test_command=test_command)
-   
-    # Step 1: Instrumentation
-    # instrumentor = Instrumentor(config)
-    # instrumentor.instrument()
-
-    click.echo(f"Saving traces to {config.trace_file_path}...")
-    
-    # Step 2: Trace Collection
-    click.echo("Step 2: Collecting execution traces...")
-    trace_collector = TraceCollector(config)
-    trace_collector.collect()
-    
-    # # Step 3: Reconnaissance Sets
-    # click.echo("Step 3: Computing Software Reconnaissance sets...")
-    
-    # traces = {}
-    # if os.path.exists(config.trace_file_path):
-    #     executed = set()
-    #     with open(config.trace_file_path, "r", encoding="utf-8") as f:
-    #         for line in f:
-    #             if line.startswith("ENTER: "):
-    #                 executed.add(line.strip()[7:])
-    #     traces["test_run_all"] = executed
-    # else:
-    #     traces = {"test_login": {"auth::login", "db::query"}, "test_logout": {"auth::logout"}}
-        
-    # analyzer = ReconnaissanceAnalyzer()
-    # feature_mapping = {"Feature_0": ["test_run_all"]} if "test_run_all" in traces else {"Feature_0": ["test_login"], "Feature_1": ["test_logout"]}
-    # recon_sets = analyzer.compute_sets(traces, feature_mapping)
-    
-    # for feature, fset in recon_sets.items():
-    #     click.echo(f"Feature: {feature}")
-    #     click.echo(f"  Common: {len(fset.common)}")
-    #     click.echo(f"  Involved: {len(fset.involved)}")
-    #     click.echo(f"  Essential: {len(fset.essential)}")
-    #     click.echo(f"  Unique: {len(fset.unique)}")
-    # Clean up
-    # if os.path.exists(config.instrumented_path):
-    #     shutil.rmtree(config.instrumented_path)
-    
-    
-    click.echo(f"Done! Results written to {os.path.join(config.project_path, output)}")
 
 
 if __name__ == '__main__':
