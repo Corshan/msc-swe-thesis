@@ -5,6 +5,7 @@ import os
 from arch_recovery.pipleline.instrumentor import Instrumentor
 from arch_recovery.pipleline.collector import TraceCollector
 from arch_recovery.pipleline.analyzer import ReconnaissanceAnalyzer
+from arch_recovery.pipleline.diagram_generator import DiagramGenerator
 from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option, project_path_src_option
 
 @click.group()
@@ -69,6 +70,24 @@ def compute_recon_sets(project_path: str, project_path_src: str):
     analyzer.save_feature_sets(sets, project_paths.trace_dir)
     click.echo(f"Saved feature sets to {project_paths.trace_dir / 'feature_sets.json'}")
 
+@cli.command("diagram")
+@project_path_option
+@project_path_src_option
+def generate_diagram(project_path: str, project_path_src: str):
+    """
+    Generate an architectural diagram from the computed feature sets.
+    """
+    project_paths = ProjectPaths.from_root(project_path, project_path_src)
+    feature_sets_path = project_paths.trace_dir / "feature_sets.json"
+    
+    diagram_generator = DiagramGenerator(feature_sets_path)
+    output_path = project_paths.trace_dir / "architecture.mmd"
+    
+    try:
+        diagram_generator.generate(output_path)
+        click.echo(f"Generated architectural diagram at {output_path}")
+    except FileNotFoundError as e:
+        click.echo(str(e), err=True)
 
 if __name__ == '__main__':
     cli()
