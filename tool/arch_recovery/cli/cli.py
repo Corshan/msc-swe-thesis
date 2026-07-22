@@ -65,8 +65,8 @@ def compute_recon_sets(project_path: str):
         click.echo(f"\t\tEssential: {len(sets[feature].essential)}")
         click.echo(f"\t\tUnique: {len(sets[feature].unique)}")
     
-    analyzer.save_feature_sets(sets, project_paths.trace_dir)
-    click.echo(f"Saved feature sets to {project_paths.trace_dir / 'feature_sets.json'}")
+    analyzer.save_feature_sets(sets, project_paths.output_dir)
+    click.echo(f"Saved feature sets to {project_paths.output_dir / 'feature_sets.json'}")
 
 @cli.command("diagram")
 @project_path_option
@@ -76,9 +76,9 @@ def generate_diagram(project_path: str, format: str):
     Generate an architectural diagram from the computed feature sets.
     """
     project_paths = ProjectPaths.from_root(project_path, "")
-    feature_sets_path = project_paths.trace_dir / "feature_sets.json"
-    mmd_output_path = project_paths.trace_dir / "architecture.mmd"
-    img_output_path = project_paths.trace_dir / f"architecture.{format}"
+    feature_sets_path = project_paths.output_dir / "feature_sets.json"
+    mmd_output_path = project_paths.diagrams_dir / "architecture.mmd"
+    img_output_path = project_paths.diagrams_dir / f"architecture.{format}"
     
     diagram_generator = FeatureDiagramGenerator(feature_sets_path)
     
@@ -99,8 +99,8 @@ def generate_structure_diagram(project_path: str, project_path_src: str, extensi
     Generate a package-level structural diagram of the source code.
     """
     project_paths = ProjectPaths.from_root(project_path, project_path_src)
-    mmd_output_path = project_paths.trace_dir / "structure.mmd"
-    img_output_path = project_paths.trace_dir / f"structure.{format}"
+    mmd_output_path = project_paths.diagrams_dir / "structure.mmd"
+    img_output_path = project_paths.diagrams_dir / f"structure.{format}"
     
     allowed_exts = tuple(ext.strip() for ext in extensions.split(",")) if extensions else None
     diagram_generator = StructuralDiagramGenerator(project_paths.src, allowed_extensions=allowed_exts)

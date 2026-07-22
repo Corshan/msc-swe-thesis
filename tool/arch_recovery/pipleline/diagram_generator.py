@@ -166,6 +166,7 @@ class FeatureDiagramGenerator(BaseDiagramGenerator):
         for style in link_styles:
             mermaid_lines.append(style)
 
+        output_file.parent.mkdir(parents=True, exist_ok=True)
         with open(output_file, "w", encoding="utf-8") as f:
             f.write("\n".join(mermaid_lines))
 
@@ -248,5 +249,6 @@ class StructuralDiagramGenerator(BaseDiagramGenerator):
         for edge in edges:
             mermaid_lines.append(edge)
 
+        output_file.parent.mkdir(parents=True, exist_ok=True)
         with open(output_file, "w", encoding="utf-8") as f:
             f.write("\n".join(mermaid_lines))
