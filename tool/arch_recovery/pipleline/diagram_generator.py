@@ -1,7 +1,19 @@
 import json
+import os
 from pathlib import Path
+from collections import defaultdict
+from arch_recovery.pipleline.diagram_renderer import DiagramRenderer
 
-class DiagramGenerator:
+class BaseDiagramGenerator:
+    def generate(self, output_file: Path) -> None:
+        raise NotImplementedError
+
+    def generate_and_render(self, mmd_output_path: Path, png_output_path: Path) -> None:
+        self.generate(mmd_output_path)
+        renderer = DiagramRenderer(mmd_output_path)
+        renderer.render(png_output_path)
+
+class FeatureDiagramGenerator(BaseDiagramGenerator):
     def __init__(self, feature_sets_path: Path):
         self.feature_sets_path = feature_sets_path
 
@@ -153,6 +165,88 @@ class DiagramGenerator:
             
         for style in link_styles:
             mermaid_lines.append(style)
+
+        with open(output_file, "w", encoding="utf-8") as f:
+            f.write("\n".join(mermaid_lines))
+
+class StructuralDiagramGenerator(BaseDiagramGenerator):
+    def __init__(self, project_src_path: Path, allowed_extensions: tuple[str, ...] | None = None):
+        self.project_src_path = Path(project_src_path)
+        self.ignore_dirs = {".git", "__pycache__", "venv", ".venv", "node_modules"}
+        self.allowed_extensions = allowed_extensions
+
+    def generate(self, output_file: Path) -> None:
+        if not self.project_src_path.exists() or not self.project_src_path.is_dir():
+            raise FileNotFoundError(f"Source directory {self.project_src_path} does not exist.")
+
+        mermaid_lines = [
+            "%%{init: {'flowchart': {'curve': 'linear'}}}%%",
+            "graph LR"
+        ]
+
+        node_id_map = {}
+        def get_node_id(name: str) -> str:
+            if name not in node_id_map:
+                node_id_map[name] = f"N{len(node_id_map)}"
+            return node_id_map[name]
+        
+        edges = set()
+        nodes_defined = set()
+
+        valid_files_paths = []
+        for root, dirs, files in os.walk(self.project_src_path):
+            dirs[:] = [d for d in dirs if d not in self.ignore_dirs and not d.startswith('.')]
+            for f in files:
+                if f.startswith('.') or f.endswith(('.pyc', '.o', '.class', '.pyo')):
+                    continue
+                if self.allowed_extensions and not f.endswith(self.allowed_extensions):
+                    continue
+                valid_files_paths.append(Path(root) / f)
+
+        valid_dirs = set()
+        for f in valid_files_paths:
+            p = f.parent
+            while p != self.project_src_path.parent:
+                valid_dirs.add(p)
+                if p == self.project_src_path:
+                    break
+                p = p.parent
+                
+        for d in valid_dirs:
+            rel_d = d.relative_to(self.project_src_path)
+            dir_node_name = str(rel_d) if str(rel_d) != "." else self.project_src_path.name
+            dir_display = rel_d.name if str(rel_d) != "." else self.project_src_path.name
+            
+            dir_id = get_node_id(dir_node_name)
+            if dir_id not in nodes_defined:
+                mermaid_lines.append(f"    {dir_id}[\"📁 {dir_display}\"]")
+                nodes_defined.add(dir_id)
+                
+            if d != self.project_src_path:
+                parent = d.parent
+                rel_parent = parent.relative_to(self.project_src_path)
+                parent_node_name = str(rel_parent) if str(rel_parent) != "." else self.project_src_path.name
+                parent_id = get_node_id(parent_node_name)
+                edges.add(f"    {parent_id} --> {dir_id}")
+
+        for f in valid_files_paths:
+            rel_f = f.relative_to(self.project_src_path)
+            file_name = str(rel_f)
+            file_id = get_node_id(file_name)
+            
+            if file_id not in nodes_defined:
+                mermaid_lines.append(f"    {file_id}(\"📄 {f.name}\")")
+                nodes_defined.add(file_id)
+                
+            parent = f.parent
+            rel_parent = parent.relative_to(self.project_src_path)
+            parent_node_name = str(rel_parent) if str(rel_parent) != "." else self.project_src_path.name
+            parent_id = get_node_id(parent_node_name)
+            
+            edges.add(f"    {parent_id} --> {file_id}")
+
+        for edge in edges:
+            mermaid_lines.append(edge)
 
         with open(output_file, "w", encoding="utf-8") as f:
             f.write("\n".join(mermaid_lines))

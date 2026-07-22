@@ -55,3 +55,12 @@ def output_option(func):
         default="architecture_recovery.md", 
         help="Output markdown file"
     )(func)
+
+def extensions_option(func):
+    return click.option(
+        '--extensions', 
+        '-e', 
+        type=str, 
+        default="", 
+        help="Comma-separated list of allowed file extensions (e.g., '.py,.md'). If empty, all non-hidden files are included."
+    )(func)
