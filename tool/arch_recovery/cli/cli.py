@@ -80,34 +80,21 @@ def generate_diagram(project_path: str, project_path_src: str):
     """
     project_paths = ProjectPaths.from_root(project_path, project_path_src)
     feature_sets_path = project_paths.trace_dir / "feature_sets.json"
+    mmd_output_path = project_paths.trace_dir / "architecture.mmd"
+    png_output_path = project_paths.trace_dir / "architecture.png"
     
     diagram_generator = DiagramGenerator(feature_sets_path)
-    output_path = project_paths.trace_dir / "architecture.mmd"
+    renderer = DiagramRenderer(mmd_output_path)
     
     try:
-        diagram_generator.generate(output_path)
-        click.echo(f"Generated architectural diagram at {output_path}")
-    except FileNotFoundError as e:
-        click.echo(str(e), err=True)
+        click.echo("Generating architectural diagram...")
+        diagram_generator.generate(mmd_output_path)
+        click.echo(f"Generated architectural diagram at {mmd_output_path}")
 
-@cli.command("render")
-@project_path_option
-@project_path_src_option
-def render_diagram_cmd(project_path: str, project_path_src: str):
-    """
-    Render the generated .mmd architectural diagram to a .png file.
-    """
-    project_paths = ProjectPaths.from_root(project_path, project_path_src)
-    mmd_path = project_paths.trace_dir / "architecture.mmd"
-    output_path = project_paths.trace_dir / "architecture.png"
-    
-    renderer = DiagramRenderer(mmd_path)
-    
-    try:
-        click.echo(f"Rendering {mmd_path} to {output_path}...")
-        renderer.render(output_path)
-        click.echo(f"Successfully rendered diagram to {output_path}")
-    except Exception as e:
+        click.echo("Rendering architectural diagram...")
+        renderer.render(png_output_path)
+        click.echo(f"Rendered architectural diagram to {png_output_path}")
+    except FileNotFoundError as e:
         click.echo(str(e), err=True)
 
 if __name__ == '__main__':
