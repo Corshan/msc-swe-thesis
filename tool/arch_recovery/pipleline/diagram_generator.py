@@ -8,10 +8,10 @@ class BaseDiagramGenerator:
     def generate(self, output_file: Path) -> None:
         raise NotImplementedError
 
-    def generate_and_render(self, mmd_output_path: Path, png_output_path: Path) -> None:
+    def generate_and_render(self, mmd_output_path: Path, img_output_path: Path) -> None:
         self.generate(mmd_output_path)
         renderer = DiagramRenderer(mmd_output_path)
-        renderer.render(png_output_path)
+        renderer.render(img_output_path)
 
 class FeatureDiagramGenerator(BaseDiagramGenerator):
     def __init__(self, feature_sets_path: Path):

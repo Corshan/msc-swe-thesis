@@ -64,3 +64,12 @@ def extensions_option(func):
         default="", 
         help="Comma-separated list of allowed file extensions (e.g., '.py,.md'). If empty, all non-hidden files are included."
     )(func)
+
+def format_option(func):
+    return click.option(
+        '--format', 
+        '-f', 
+        type=click.Choice(["svg", "png", "pdf"]), 
+        default="svg", 
+        help="Output image format for the diagram."
+    )(func)

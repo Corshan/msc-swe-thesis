@@ -7,7 +7,7 @@ from arch_recovery.pipleline.collector import TraceCollector
 from arch_recovery.pipleline.analyzer import ReconnaissanceAnalyzer
 from arch_recovery.pipleline.diagram_generator import FeatureDiagramGenerator, StructuralDiagramGenerator
 from arch_recovery.pipleline.diagram_renderer import DiagramRenderer
-from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option, project_path_src_option, extensions_option
+from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option, project_path_src_option, extensions_option, format_option
 
 @click.group()
 def cli():
@@ -74,21 +74,22 @@ def compute_recon_sets(project_path: str, project_path_src: str):
 @cli.command("diagram")
 @project_path_option
 @project_path_src_option
-def generate_diagram(project_path: str, project_path_src: str):
+@format_option
+def generate_diagram(project_path: str, project_path_src: str, format: str):
     """
     Generate an architectural diagram from the computed feature sets.
     """
     project_paths = ProjectPaths.from_root(project_path, project_path_src)
     feature_sets_path = project_paths.trace_dir / "feature_sets.json"
     mmd_output_path = project_paths.trace_dir / "architecture.mmd"
-    png_output_path = project_paths.trace_dir / "architecture.png"
+    img_output_path = project_paths.trace_dir / f"architecture.{format}"
     
     diagram_generator = FeatureDiagramGenerator(feature_sets_path)
     
     try:
-        click.echo("Generating and rendering architectural feature diagram...")
-        diagram_generator.generate_and_render(mmd_output_path, png_output_path)
-        click.echo(f"Finished. Saved to {png_output_path}")
+        click.echo(f"Generating and rendering architectural feature diagram ({format.upper()})...")
+        diagram_generator.generate_and_render(mmd_output_path, img_output_path)
+        click.echo(f"Finished. Saved to {img_output_path}")
     except Exception as e:
         click.echo(str(e), err=True)
 
@@ -96,21 +97,22 @@ def generate_diagram(project_path: str, project_path_src: str):
 @project_path_option
 @project_path_src_option
 @extensions_option
-def generate_structure_diagram(project_path: str, project_path_src: str, extensions: str):
+@format_option
+def generate_structure_diagram(project_path: str, project_path_src: str, extensions: str, format: str):
     """
     Generate a package-level structural diagram of the source code.
     """
     project_paths = ProjectPaths.from_root(project_path, project_path_src)
     mmd_output_path = project_paths.trace_dir / "structure.mmd"
-    png_output_path = project_paths.trace_dir / "structure.png"
+    img_output_path = project_paths.trace_dir / f"structure.{format}"
     
     allowed_exts = tuple(ext.strip() for ext in extensions.split(",")) if extensions else None
     diagram_generator = StructuralDiagramGenerator(project_paths.src, allowed_extensions=allowed_exts)
     
     try:
-        click.echo("Generating and rendering package-level structural diagram...")
-        diagram_generator.generate_and_render(mmd_output_path, png_output_path)
-        click.echo(f"Finished. Saved to {png_output_path}")
+        click.echo(f"Generating and rendering package-level structural diagram ({format.upper()})...")
+        diagram_generator.generate_and_render(mmd_output_path, img_output_path)
+        click.echo(f"Finished. Saved to {img_output_path}")
     except Exception as e:
         click.echo(str(e), err=True)
 
