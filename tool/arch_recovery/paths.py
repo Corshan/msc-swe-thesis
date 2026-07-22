@@ -16,7 +16,7 @@ class ProjectPaths:
             root=root,
             src=Path(project_src_path),
             instrumented=Path(f"{root}_instrumented"),
-            trace_dir=root / "tmp",
-            trace_file=root / "tmp" / "out.trace"
+            trace_dir=root / "recon_data",
+            trace_file=root / "recon_data" / "out.trace"
         )
     

@@ -22,7 +22,6 @@ def instrument_only(project_path: str, project_path_src: str, language: str):
     """
     Run only the instrumentation step for the target project.
     """
-    # config = Config(project_path=project_path, project_src_path=project_path_src, language=language, test_command="")
     project_paths = ProjectPaths.from_root(project_path, project_path_src)
     
     instrumentor = Instrumentor(project_paths, language)
@@ -32,14 +31,13 @@ def instrument_only(project_path: str, project_path_src: str, language: str):
 
 @cli.command("trace")
 @project_path_option
-@project_path_src_option
 @test_command_option
 @test_name_option
-def run_tracer(project_path: str, project_path_src: str, test_command: str, test_name: str):
+def run_tracer(project_path: str, test_command: str, test_name: str):
     """
     Run only the trace collection step for the target project.
     """
-    project_paths = ProjectPaths.from_root(project_path, project_path_src)
+    project_paths = ProjectPaths.from_root(project_path, "")
 
     trace_collector = TraceCollector(project_paths, test_command, test_name)
     trace_collector.collect()
@@ -48,12 +46,11 @@ def run_tracer(project_path: str, project_path_src: str, test_command: str, test
 
 @cli.command("compute")
 @project_path_option
-@project_path_src_option
-def compute_recon_sets(project_path: str, project_path_src: str):
+def compute_recon_sets(project_path: str):
     """
     Compute the software reconnaissance sets.
     """
-    project_paths = ProjectPaths.from_root(project_path, project_path_src)
+    project_paths = ProjectPaths.from_root(project_path, "")
     
     analyzer = ReconnaissanceAnalyzer()
     traces = analyzer.load_traces(project_paths.trace_dir)
@@ -73,13 +70,12 @@ def compute_recon_sets(project_path: str, project_path_src: str):
 
 @cli.command("diagram")
 @project_path_option
-@project_path_src_option
 @format_option
-def generate_diagram(project_path: str, project_path_src: str, format: str):
+def generate_diagram(project_path: str, format: str):
     """
     Generate an architectural diagram from the computed feature sets.
     """
-    project_paths = ProjectPaths.from_root(project_path, project_path_src)
+    project_paths = ProjectPaths.from_root(project_path, "")
     feature_sets_path = project_paths.trace_dir / "feature_sets.json"
     mmd_output_path = project_paths.trace_dir / "architecture.mmd"
     img_output_path = project_paths.trace_dir / f"architecture.{format}"
