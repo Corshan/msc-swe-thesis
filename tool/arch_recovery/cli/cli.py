@@ -6,6 +6,7 @@ from arch_recovery.pipleline.instrumentor import Instrumentor
 from arch_recovery.pipleline.collector import TraceCollector
 from arch_recovery.pipleline.analyzer import ReconnaissanceAnalyzer
 from arch_recovery.pipleline.diagram_generator import FeatureDiagramGenerator, StructuralDiagramGenerator
+from arch_recovery.pipleline.layout_generator import LayoutGenerator
 from arch_recovery.pipleline.diagram_renderer import DiagramRenderer
 from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option, project_path_src_option, extensions_option, format_option
 
@@ -91,24 +92,43 @@ def generate_diagram(project_path: str, format: str):
 
 @cli.command("structure-diagram")
 @project_path_option
-@project_path_src_option
-@extensions_option
 @format_option
-def generate_structure_diagram(project_path: str, project_path_src: str, extensions: str, format: str):
+def generate_structure_diagram(project_path: str, format: str):
     """
-    Generate a package-level structural diagram of the source code.
+    Generate a package-level structural diagram from the computed layout.
     """
-    project_paths = ProjectPaths.from_root(project_path, project_path_src)
+    project_paths = ProjectPaths.from_root(project_path, "")
+    layout_json_path = project_paths.output_dir / "layout.json"
     mmd_output_path = project_paths.diagrams_dir / "structure.mmd"
     img_output_path = project_paths.diagrams_dir / f"structure.{format}"
     
-    allowed_exts = tuple(ext.strip() for ext in extensions.split(",")) if extensions else None
-    diagram_generator = StructuralDiagramGenerator(project_paths.src, allowed_extensions=allowed_exts)
+    diagram_generator = StructuralDiagramGenerator(layout_json_path)
     
     try:
         click.echo(f"Generating and rendering package-level structural diagram ({format.upper()})...")
         diagram_generator.generate_and_render(mmd_output_path, img_output_path)
         click.echo(f"Finished. Saved to {img_output_path}")
+    except Exception as e:
+        click.echo(str(e), err=True)
+
+@cli.command("layout")
+@project_path_option
+@project_path_src_option
+@extensions_option
+def generate_layout(project_path: str, project_path_src: str, extensions: str):
+    """
+    Generate a JSON structural layout of the project's source code.
+    """
+    project_paths = ProjectPaths.from_root(project_path, project_path_src)
+    json_output_path = project_paths.output_dir / "layout.json"
+    
+    allowed_exts = tuple(ext.strip() for ext in extensions.split(",")) if extensions else None
+    layout_generator = LayoutGenerator(project_paths.src, allowed_extensions=allowed_exts)
+    
+    try:
+        click.echo("Generating project structural layout (JSON)...")
+        layout_generator.generate(json_output_path)
+        click.echo(f"Finished. Saved to {json_output_path}")
     except Exception as e:
         click.echo(str(e), err=True)
 
