@@ -1,4 +1,5 @@
 # MSc in Software Engineering Thesis — Reproducibility Pack
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21612993.svg)](https://doi.org/10.5281/zenodo.21612993)
 
 This repository is a **Reproducibility Pack** which contains all relevant materials required to replicate the work carried out as part of this MSc thesis.
 
