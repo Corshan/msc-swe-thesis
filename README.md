@@ -8,26 +8,33 @@ This repository is a **Reproducibility Pack** which contains all relevant materi
 
 ```
 msc-swe-thesis/
+├── evaluation/                 # Evaluation scripts and mappings for architectural recovery
 ├── literature-review/          # Literature search artefacts
 │   ├── Relevant(ACM).csv
 │   ├── Relevant(IEEE).csv
 │   ├── Relevant(Science_direct).csv
 │   └── lit_review_paper_clean_up.ipynb
 │
+├── recon_data/                 # Output artefacts from the architectural recovery tool
 ├── ReconCalc/                  # Original Software Reconnaissance tool (Perl)
 │   ├── bin/                    # Perl scripts (reconnaissance, reporter, etc.)
 │   ├── doc/                    # Tool documentation (PDF/PS)
 │   └── example/                # Example control file and test case profiles
 │
-└── ReconCalcPython/            # Python translation of ReconCalc
-    ├── app.py                  # Streamlit web UI
-    ├── cli.py                  # Command-line interface
+├── ReconCalcPython/            # Python translation of ReconCalc
+│   ├── app.py                  # Streamlit web UI
+│   ├── cli.py                  # Command-line interface
+│   ├── pyproject.toml          # Project metadata and dependencies (uv)
+│   ├── uv.lock                 # Locked dependency versions
+│   └── core/
+│       ├── parser.py           # Control file and profile parser
+│       ├── recon_calc.py       # Core set-operation logic
+│       └── reporter.py         # HTML and Markdown report generation
+│
+└── tool/                       # Architectural Recovery Tool (Python)
+    ├── arch_recovery/          # Core recovery logic
     ├── pyproject.toml          # Project metadata and dependencies (uv)
-    ├── uv.lock                 # Locked dependency versions
-    └── core/
-        ├── parser.py           # Control file and profile parser
-        ├── recon_calc.py       # Core set-operation logic
-        └── reporter.py         # HTML and Markdown report generation
+    └── uv.lock                 # Locked dependency versions
 ```
 
 ---
@@ -85,3 +92,35 @@ uv run python cli.py path/to/your.ctl -o output_report
 ```
 
 See [`ReconCalcPython/README.md`](./ReconCalcPython/README.md) for full details.
+
+---
+
+### 4. Architectural Recovery Tool (`tool/`)
+
+A Python-based tool for architectural recovery that instruments source code, traces execution, computes feature sets, and generates architectural diagrams and decompositions.
+
+> Requires [uv](https://docs.astral.sh/uv/) — a fast Python package manager.
+
+**Example commands:**
+```bash
+uv run tool instrument -p "/path/to/project" -s "/path/to/project/src" -l python
+uv run tool trace -p "/path/to/project" -tc "pytest tests" -tn "test_name"
+uv run tool compute -p "/path/to/project"
+uv run tool diagram -p "/path/to/project"
+```
+
+---
+
+### 5. Evaluation (`evaluation/`)
+
+Contains scripts, manual mappings, and output results for evaluating the architectural recovery models.
+
+- `scripts/`: Python scripts for calculating metrics (e.g., Coupling, Cohesion) and evaluating architectural recovery against ground truth.
+- `mappings/`: Manual flat and structural mappings of features to architectural components.
+- `output/`: Output results and metric reports.
+
+---
+
+### 6. Reconnaissance Data (`recon_data/`)
+
+Contains the generated output data and artefacts produced by the architectural recovery tool during test runs, such as traces, feature sets, layout structures, decompositions, and diagrams.
