@@ -1,0 +1,52 @@
+{
+  "metrics": {
+    "cohesion": {
+      "create_theme_command & new_command": 0,
+      "create_theme_command, new_command, render_command": 7,
+      "Only create_theme_command": 1,
+      "new_command & render_command": 18,
+      "Only render_command": 34
+    },
+    "coupling": {
+      "create_theme_command & new_command": 0,
+      "create_theme_command, new_command, render_command": 4,
+      "Only create_theme_command": 3,
+      "new_command & render_command": 20,
+      "Only render_command": 21
+    },
+    "coupling_matrix": {
+      "create_theme_command & new_command": {
+        "create_theme_command, new_command, render_command": 0,
+        "Only create_theme_command": 0,
+        "new_command & render_command": 0,
+        "Only render_command": 0
+      },
+      "create_theme_command, new_command, render_command": {
+        "create_theme_command & new_command": 0,
+        "Only create_theme_command": 0,
+        "new_command & render_command": 1,
+        "Only render_command": 3
+      },
+      "Only create_theme_command": {
+        "create_theme_command & new_command": 1,
+        "create_theme_command, new_command, render_command": 1,
+        "new_command & render_command": 1,
+        "Only render_command": 0
+      },
+      "new_command & render_command": {
+        "create_theme_command & new_command": 1,
+        "create_theme_command, new_command, render_command": 11,
+        "Only create_theme_command": 0,
+        "Only render_command": 8
+      },
+      "Only render_command": {
+        "create_theme_command & new_command": 0,
+        "create_theme_command, new_command, render_command": 8,
+        "Only create_theme_command": 0,
+        "new_command & render_command": 13
+      }
+    },
+    "average_cohesion": 12.0,
+    "average_coupling": 9.6
+  }
+}

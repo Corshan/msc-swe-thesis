@@ -1,0 +1,112 @@
+{
+  "rendercv": [
+    "rendercv/__init__.py",
+    "rendercv/__main__.py",
+    "rendercv/exception.py"
+  ],
+  "rendercv/cli": [
+    "rendercv/cli/__init__.py",
+    "rendercv/cli/app.py",
+    "rendercv/cli/copy_templates.py",
+    "rendercv/cli/entry_point.py",
+    "rendercv/cli/error_handler.py"
+  ],
+  "rendercv/cli/create_theme_command": [
+    "rendercv/cli/create_theme_command/__init__.py",
+    "rendercv/cli/create_theme_command/create_init_file_for_theme.py",
+    "rendercv/cli/create_theme_command/create_theme_command.py"
+  ],
+  "rendercv/cli/new_command": [
+    "rendercv/cli/new_command/__init__.py",
+    "rendercv/cli/new_command/new_command.py",
+    "rendercv/cli/new_command/print_welcome.py"
+  ],
+  "rendercv/cli/render_command": [
+    "rendercv/cli/render_command/__init__.py",
+    "rendercv/cli/render_command/parse_override_arguments.py",
+    "rendercv/cli/render_command/progress_panel.py",
+    "rendercv/cli/render_command/render_command.py",
+    "rendercv/cli/render_command/run_rendercv.py",
+    "rendercv/cli/render_command/watcher.py"
+  ],
+  "rendercv/renderer": [
+    "rendercv/renderer/__init__.py",
+    "rendercv/renderer/html.py",
+    "rendercv/renderer/markdown.py",
+    "rendercv/renderer/path_resolver.py",
+    "rendercv/renderer/pdf_png.py",
+    "rendercv/renderer/typst.py"
+  ],
+  "rendercv/renderer/templater": [
+    "rendercv/renderer/templater/__init__.py",
+    "rendercv/renderer/templater/connections.py",
+    "rendercv/renderer/templater/date.py",
+    "rendercv/renderer/templater/entry_templates_from_input.py",
+    "rendercv/renderer/templater/footer_and_top_note.py",
+    "rendercv/renderer/templater/markdown_parser.py",
+    "rendercv/renderer/templater/model_processor.py",
+    "rendercv/renderer/templater/string_processor.py",
+    "rendercv/renderer/templater/templater.py"
+  ],
+  "rendercv/schema": [
+    "rendercv/schema/__init__.py",
+    "rendercv/schema/json_schema_generator.py",
+    "rendercv/schema/override_dictionary.py",
+    "rendercv/schema/pydantic_error_handling.py",
+    "rendercv/schema/rendercv_model_builder.py",
+    "rendercv/schema/sample_generator.py",
+    "rendercv/schema/variant_pydantic_model_generator.py",
+    "rendercv/schema/yaml_reader.py"
+  ],
+  "rendercv/schema/models": [
+    "rendercv/schema/models/__init__.py",
+    "rendercv/schema/models/base.py",
+    "rendercv/schema/models/custom_error_types.py",
+    "rendercv/schema/models/path.py",
+    "rendercv/schema/models/rendercv_model.py",
+    "rendercv/schema/models/validation_context.py"
+  ],
+  "rendercv/schema/models/cv": [
+    "rendercv/schema/models/cv/__init__.py",
+    "rendercv/schema/models/cv/custom_connection.py",
+    "rendercv/schema/models/cv/cv.py",
+    "rendercv/schema/models/cv/section.py",
+    "rendercv/schema/models/cv/social_network.py"
+  ],
+  "rendercv/schema/models/cv/entries": [
+    "rendercv/schema/models/cv/entries/__init__.py",
+    "rendercv/schema/models/cv/entries/bullet.py",
+    "rendercv/schema/models/cv/entries/education.py",
+    "rendercv/schema/models/cv/entries/experience.py",
+    "rendercv/schema/models/cv/entries/normal.py",
+    "rendercv/schema/models/cv/entries/numbered.py",
+    "rendercv/schema/models/cv/entries/one_line.py",
+    "rendercv/schema/models/cv/entries/publication.py",
+    "rendercv/schema/models/cv/entries/reversed_numbered.py"
+  ],
+  "rendercv/schema/models/cv/entries/bases": [
+    "rendercv/schema/models/cv/entries/bases/__init__.py",
+    "rendercv/schema/models/cv/entries/bases/entry.py",
+    "rendercv/schema/models/cv/entries/bases/entry_with_complex_fields.py",
+    "rendercv/schema/models/cv/entries/bases/entry_with_date.py"
+  ],
+  "rendercv/schema/models/design": [
+    "rendercv/schema/models/design/__init__.py",
+    "rendercv/schema/models/design/built_in_design.py",
+    "rendercv/schema/models/design/classic_theme.py",
+    "rendercv/schema/models/design/color.py",
+    "rendercv/schema/models/design/design.py",
+    "rendercv/schema/models/design/font_family.py",
+    "rendercv/schema/models/design/typst_dimension.py"
+  ],
+  "rendercv/schema/models/locale": [
+    "rendercv/schema/models/locale/__init__.py",
+    "rendercv/schema/models/locale/english_locale.py",
+    "rendercv/schema/models/locale/locale.py"
+  ],
+  "rendercv/schema/models/settings": [
+    "rendercv/schema/models/settings/__init__.py",
+    "rendercv/schema/models/settings/render_command.py",
+    "rendercv/schema/models/settings/settings.py"
+  ]
+}
