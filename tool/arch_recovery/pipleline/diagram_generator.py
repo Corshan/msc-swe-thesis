@@ -284,42 +284,45 @@ class DecompositionDiagramGenerator(BaseDiagramGenerator):
                 node_id_map[name] = f"N{len(node_id_map)}"
             return node_id_map[name]
         
-        edges = set()
-        nodes_defined = set()
         styles = []
-
-        def process_node(node, current_path=""):
+        
+        groups = {}
+        def collect_files(node, current_path=""):
             node_path = f"{current_path}/{node['name']}" if current_path else node["name"]
-            node_id = get_node_id(node_path)
             
-            features = set(node.get("features", {}).keys())
-            node_color = get_color_for_features(features)
-            
-            is_dir = node["type"] == "directory"
-            if is_dir:
-                display = f"📁 {node['name']}"
-                mermaid_lines.append(f"    {node_id}[\"{display}\"]")
+            if node["type"] == "directory":
+                for child in node.get("children", []):
+                    collect_files(child, node_path)
             else:
-                display = f"📄 {node['name']}"
-                mermaid_lines.append(f"    {node_id}(\"{display}\")")
-                
-            nodes_defined.add(node_id)
-            
-            if node_color:
-                styles.append(f"    style {node_id} fill:{node_color},stroke:#333,stroke-width:2px,color:#000;")
-            
-            if "children" in node:
-                for child in node["children"]:
-                    child_id = process_node(child, node_path)
-                    edges.add(f"    {node_id} --> {child_id}")
-                    
-            return node_id
+                features = tuple(sorted(list(node.get("features", {}).keys())))
+                if features not in groups:
+                    groups[features] = []
+                groups[features].append((node_path, node["name"]))
 
-        process_node(root_node)
+        collect_files(root_node)
 
-        for edge in edges:
-            mermaid_lines.append(edge)
+        for f_tuple, files in groups.items():
+            if not f_tuple:
+                group_name = "Unassigned"
+                group_color = "#ffffff"
+            else:
+                group_name = " & ".join(f_tuple)
+                group_color = get_color_for_features(set(f_tuple))
             
+            sg_id = get_node_id(f"group_{group_name}")
+            mermaid_lines.append(f"    subgraph {sg_id} [\"{group_name}\"]")
+            
+            for node_path, name in files:
+                node_id = get_node_id(node_path)
+                display = f"📄 {name}"
+                mermaid_lines.append(f"        {node_id}(\"{display}\")")
+                if group_color != "#ffffff":
+                    styles.append(f"    style {node_id} fill:{group_color},stroke:#333,stroke-width:2px,color:#000;")
+            
+            mermaid_lines.append("    end")
+            if group_color != "#ffffff":
+                styles.append(f"    style {sg_id} fill:{group_color}33,stroke:{group_color},stroke-width:2px,color:#000;")
+
         for style in styles:
             mermaid_lines.append(style)
 
