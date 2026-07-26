@@ -5,8 +5,9 @@ import os
 from arch_recovery.pipleline.instrumentor import Instrumentor
 from arch_recovery.pipleline.collector import TraceCollector
 from arch_recovery.pipleline.analyzer import ReconnaissanceAnalyzer
-from arch_recovery.pipleline.diagram_generator import FeatureDiagramGenerator, StructuralDiagramGenerator
+from arch_recovery.pipleline.diagram_generator import FeatureDiagramGenerator, StructuralDiagramGenerator, DecompositionDiagramGenerator
 from arch_recovery.pipleline.layout_generator import LayoutGenerator
+from arch_recovery.pipleline.reflection_model import DecompositionGenerator
 from arch_recovery.pipleline.diagram_renderer import DiagramRenderer
 from arch_recovery.cli.options import project_path_option, langauage_option, test_command_option, output_option, project_path_src_option, extensions_option, format_option
 
@@ -129,6 +130,47 @@ def generate_layout(project_path: str, project_path_src: str, extensions: str):
         click.echo("Generating project structural layout (JSON)...")
         layout_generator.generate(json_output_path)
         click.echo(f"Finished. Saved to {json_output_path}")
+    except Exception as e:
+        click.echo(str(e), err=True)
+
+@cli.command("decompose")
+@project_path_option
+def generate_decomposition(project_path: str):
+    """
+    Generate the final architectural decomposition by overlaying feature sets onto the structural layout.
+    """
+    project_paths = ProjectPaths.from_root(project_path, "")
+    layout_json_path = project_paths.output_dir / "layout.json"
+    feature_sets_path = project_paths.output_dir / "feature_sets.json"
+    decomposition_output_path = project_paths.output_dir / "decomposition.json"
+    
+    decomposition_generator = DecompositionGenerator(layout_json_path, feature_sets_path)
+    
+    try:
+        click.echo("Generating architectural decomposition (JSON)...")
+        decomposition_generator.generate(decomposition_output_path)
+        click.echo(f"Finished. Saved to {decomposition_output_path}")
+    except Exception as e:
+        click.echo(str(e), err=True)
+
+@cli.command("decomposition-diagram")
+@project_path_option
+@format_option
+def generate_decomposition_diagram(project_path: str, format: str):
+    """
+    Generate an architectural diagram of the decomposition output.
+    """
+    project_paths = ProjectPaths.from_root(project_path, "")
+    decomposition_json_path = project_paths.output_dir / "decomposition.json"
+    mmd_output_path = project_paths.diagrams_dir / "decomposition.mmd"
+    img_output_path = project_paths.diagrams_dir / f"decomposition.{format}"
+    
+    diagram_generator = DecompositionDiagramGenerator(decomposition_json_path)
+    
+    try:
+        click.echo(f"Generating and rendering decomposition diagram ({format.upper()})...")
+        diagram_generator.generate_and_render(mmd_output_path, img_output_path)
+        click.echo(f"Finished. Saved to {img_output_path}")
     except Exception as e:
         click.echo(str(e), err=True)
 

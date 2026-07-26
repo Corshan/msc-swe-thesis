@@ -224,3 +224,118 @@ class StructuralDiagramGenerator(BaseDiagramGenerator):
         output_file.parent.mkdir(parents=True, exist_ok=True)
         with open(output_file, "w", encoding="utf-8") as f:
             f.write("\n".join(mermaid_lines))
+
+class DecompositionDiagramGenerator(BaseDiagramGenerator):
+    def __init__(self, decomposition_json_path: Path):
+        self.decomposition_json_path = Path(decomposition_json_path)
+
+    def generate(self, output_file: Path) -> None:
+        if not self.decomposition_json_path.exists():
+            raise FileNotFoundError(f"{self.decomposition_json_path} does not exist. Run decompose command first.")
+
+        with open(self.decomposition_json_path, "r", encoding="utf-8") as f:
+            root_node = json.load(f)
+
+        mermaid_lines = [
+            "%%{init: {'flowchart': {'curve': 'linear'}}}%%",
+            "graph LR"
+        ]
+
+        all_features = set()
+        def extract_features(node):
+            if "features" in node:
+                all_features.update(node["features"].keys())
+            for child in node.get("children", []):
+                extract_features(child)
+        extract_features(root_node)
+        
+        all_features = sorted(list(all_features))
+        
+        colors = [
+            "#ff595e", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93", 
+            "#f15bb5", "#00bbf9", "#00f5d4", "#f4a261", "#e76f51"
+        ]
+        shared_colors = [
+            "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e",
+            "#e6ab02", "#a6761d", "#a6cee3", "#1f78b4", "#b2df8a"
+        ]
+        
+        feature_colors = {}
+        for i, f_name in enumerate(all_features):
+            feature_colors[f_name] = colors[i % len(colors)]
+            
+        group_colors = {}
+        shared_color_index = 0
+        def get_color_for_features(features_set):
+            if not features_set:
+                return None
+            f_tuple = tuple(sorted(list(features_set)))
+            if len(f_tuple) == 1:
+                return feature_colors[f_tuple[0]]
+            if f_tuple not in group_colors:
+                nonlocal shared_color_index
+                group_colors[f_tuple] = shared_colors[shared_color_index % len(shared_colors)]
+                shared_color_index += 1
+            return group_colors[f_tuple]
+
+        node_id_map = {}
+        def get_node_id(name: str) -> str:
+            if name not in node_id_map:
+                node_id_map[name] = f"N{len(node_id_map)}"
+            return node_id_map[name]
+        
+        edges = set()
+        nodes_defined = set()
+        styles = []
+
+        def process_node(node, current_path=""):
+            node_path = f"{current_path}/{node['name']}" if current_path else node["name"]
+            node_id = get_node_id(node_path)
+            
+            features = set(node.get("features", {}).keys())
+            node_color = get_color_for_features(features)
+            
+            is_dir = node["type"] == "directory"
+            if is_dir:
+                display = f"📁 {node['name']}"
+                mermaid_lines.append(f"    {node_id}[\"{display}\"]")
+            else:
+                display = f"📄 {node['name']}"
+                mermaid_lines.append(f"    {node_id}(\"{display}\")")
+                
+            nodes_defined.add(node_id)
+            
+            if node_color:
+                styles.append(f"    style {node_id} fill:{node_color},stroke:#333,stroke-width:2px,color:#000;")
+            
+            if "children" in node:
+                for child in node["children"]:
+                    child_id = process_node(child, node_path)
+                    edges.add(f"    {node_id} --> {child_id}")
+                    
+            return node_id
+
+        process_node(root_node)
+
+        for edge in edges:
+            mermaid_lines.append(edge)
+            
+        for style in styles:
+            mermaid_lines.append(style)
+
+        if all_features:
+            mermaid_lines.append("    subgraph Legend")
+            for f_name, color in feature_colors.items():
+                l_id = get_node_id(f"legend_{f_name}")
+                mermaid_lines.append(f"        {l_id}[\"{f_name}\"]")
+                mermaid_lines.append(f"        style {l_id} fill:{color},stroke:#333,stroke-width:2px,color:#000;")
+                
+            for f_tuple, color in group_colors.items():
+                l_id = get_node_id(f"legend_{'-'.join(f_tuple)}")
+                mermaid_lines.append(f"        {l_id}[\"{' & '.join(f_tuple)}\"]")
+                mermaid_lines.append(f"        style {l_id} fill:{color},stroke:#333,stroke-width:2px,color:#000;")
+            mermaid_lines.append("    end")
+
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_file, "w", encoding="utf-8") as f:
+            f.write("\n".join(mermaid_lines))
