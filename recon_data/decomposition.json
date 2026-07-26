@@ -1,0 +1,1908 @@
+{
+  "name": "src",
+  "type": "directory",
+  "children": [
+    {
+      "name": "rendercv",
+      "type": "directory",
+      "children": [
+        {
+          "name": "exception.py",
+          "type": "file"
+        },
+        {
+          "name": "__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "__main__.py",
+          "type": "file"
+        },
+        {
+          "name": "cli",
+          "type": "directory",
+          "children": [
+            {
+              "name": "app.py",
+              "type": "file"
+            },
+            {
+              "name": "copy_templates.py",
+              "type": "file",
+              "features": {
+                "create_theme_command": {
+                  "involved": [
+                    "copy_templates.py::copy_templates",
+                    "copy_templates.py::make_tree_writable"
+                  ],
+                  "essential": [
+                    "copy_templates.py::copy_templates",
+                    "copy_templates.py::make_tree_writable"
+                  ]
+                },
+                "new_command": {
+                  "involved": [
+                    "copy_templates.py::copy_templates",
+                    "copy_templates.py::make_tree_writable"
+                  ],
+                  "essential": [
+                    "copy_templates.py::copy_templates",
+                    "copy_templates.py::make_tree_writable"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "entry_point.py",
+              "type": "file"
+            },
+            {
+              "name": "error_handler.py",
+              "type": "file",
+              "features": {
+                "create_theme_command": {
+                  "common": [
+                    "error_handler.py::wrapper",
+                    "error_handler.py::handle_user_errors"
+                  ],
+                  "involved": [
+                    "error_handler.py::wrapper",
+                    "error_handler.py::handle_user_errors"
+                  ],
+                  "essential": [
+                    "error_handler.py::wrapper",
+                    "error_handler.py::handle_user_errors"
+                  ]
+                },
+                "new_command": {
+                  "common": [
+                    "error_handler.py::wrapper",
+                    "error_handler.py::handle_user_errors"
+                  ],
+                  "involved": [
+                    "error_handler.py::wrapper",
+                    "error_handler.py::handle_user_errors"
+                  ],
+                  "essential": [
+                    "error_handler.py::wrapper",
+                    "error_handler.py::handle_user_errors"
+                  ]
+                },
+                "render_command": {
+                  "common": [
+                    "error_handler.py::wrapper",
+                    "error_handler.py::handle_user_errors"
+                  ],
+                  "involved": [
+                    "error_handler.py::wrapper",
+                    "error_handler.py::handle_user_errors"
+                  ],
+                  "essential": [
+                    "error_handler.py::wrapper",
+                    "error_handler.py::handle_user_errors"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "__init__.py",
+              "type": "file"
+            },
+            {
+              "name": "create_theme_command",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "create_init_file_for_theme.py",
+                  "type": "file",
+                  "features": {
+                    "create_theme_command": {
+                      "involved": [
+                        "create_init_file_for_theme.py::create_init_file_for_theme"
+                      ],
+                      "essential": [
+                        "create_init_file_for_theme.py::create_init_file_for_theme"
+                      ],
+                      "unique": [
+                        "create_init_file_for_theme.py::create_init_file_for_theme"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "create_theme_command.py",
+                  "type": "file",
+                  "features": {
+                    "create_theme_command": {
+                      "involved": [
+                        "create_theme_command.py::cli_command_create_theme"
+                      ],
+                      "essential": [
+                        "create_theme_command.py::cli_command_create_theme"
+                      ],
+                      "unique": [
+                        "create_theme_command.py::cli_command_create_theme"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                }
+              ],
+              "features": {
+                "create_theme_command": [
+                  "involved",
+                  "unique",
+                  "essential"
+                ]
+              }
+            },
+            {
+              "name": "new_command",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "new_command.py",
+                  "type": "file",
+                  "features": {
+                    "new_command": {
+                      "involved": [
+                        "new_command.py::build_creation_panel",
+                        "new_command.py::cli_command_new"
+                      ],
+                      "essential": [
+                        "new_command.py::build_creation_panel",
+                        "new_command.py::cli_command_new"
+                      ]
+                    },
+                    "render_command": {
+                      "involved": [
+                        "new_command.py::build_creation_panel",
+                        "new_command.py::cli_command_new"
+                      ],
+                      "essential": [
+                        "new_command.py::build_creation_panel",
+                        "new_command.py::cli_command_new"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "print_welcome.py",
+                  "type": "file",
+                  "features": {
+                    "new_command": {
+                      "involved": [
+                        "print_welcome.py::print_welcome"
+                      ],
+                      "essential": [
+                        "print_welcome.py::print_welcome"
+                      ]
+                    },
+                    "render_command": {
+                      "involved": [
+                        "print_welcome.py::print_welcome"
+                      ],
+                      "essential": [
+                        "print_welcome.py::print_welcome"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                }
+              ],
+              "features": {
+                "new_command": [
+                  "essential",
+                  "involved"
+                ],
+                "render_command": [
+                  "essential",
+                  "involved"
+                ]
+              }
+            },
+            {
+              "name": "render_command",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "parse_override_arguments.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "parse_override_arguments.py::parse_override_arguments"
+                      ],
+                      "essential": [
+                        "parse_override_arguments.py::parse_override_arguments"
+                      ],
+                      "unique": [
+                        "parse_override_arguments.py::parse_override_arguments"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "progress_panel.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "progress_panel.py::ProgressPanel.clear",
+                        "progress_panel.py::ProgressPanel.update_progress",
+                        "progress_panel.py::ProgressPanel.finish_progress",
+                        "progress_panel.py::format_validation_error_location",
+                        "progress_panel.py::ProgressPanel.print_validation_errors",
+                        "progress_panel.py::ProgressPanel.print_progress_panel",
+                        "progress_panel.py::ProgressPanel.__init__",
+                        "progress_panel.py::ProgressPanel.print_user_error"
+                      ],
+                      "essential": [
+                        "progress_panel.py::ProgressPanel.clear",
+                        "progress_panel.py::ProgressPanel.update_progress",
+                        "progress_panel.py::ProgressPanel.finish_progress",
+                        "progress_panel.py::format_validation_error_location",
+                        "progress_panel.py::ProgressPanel.print_validation_errors",
+                        "progress_panel.py::ProgressPanel.print_progress_panel",
+                        "progress_panel.py::ProgressPanel.__init__",
+                        "progress_panel.py::ProgressPanel.print_user_error"
+                      ],
+                      "unique": [
+                        "progress_panel.py::ProgressPanel.clear",
+                        "progress_panel.py::ProgressPanel.update_progress",
+                        "progress_panel.py::ProgressPanel.finish_progress",
+                        "progress_panel.py::format_validation_error_location",
+                        "progress_panel.py::ProgressPanel.print_validation_errors",
+                        "progress_panel.py::ProgressPanel.print_progress_panel",
+                        "progress_panel.py::ProgressPanel.__init__",
+                        "progress_panel.py::ProgressPanel.print_user_error"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "render_command.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "render_command.py::cli_command_render"
+                      ],
+                      "essential": [
+                        "render_command.py::cli_command_render"
+                      ],
+                      "unique": [
+                        "render_command.py::cli_command_render"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "run_rendercv.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "run_rendercv.py::run_rendercv",
+                        "run_rendercv.py::collect_input_file_paths",
+                        "run_rendercv.py::timed_step"
+                      ],
+                      "essential": [
+                        "run_rendercv.py::run_rendercv",
+                        "run_rendercv.py::collect_input_file_paths",
+                        "run_rendercv.py::timed_step"
+                      ],
+                      "unique": [
+                        "run_rendercv.py::run_rendercv",
+                        "run_rendercv.py::collect_input_file_paths",
+                        "run_rendercv.py::timed_step"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "watcher.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "watcher.py::EventHandler.on_modified",
+                        "watcher.py::run_function_if_files_change",
+                        "watcher.py::EventHandler.__init__"
+                      ],
+                      "essential": [
+                        "watcher.py::EventHandler.on_modified",
+                        "watcher.py::run_function_if_files_change",
+                        "watcher.py::EventHandler.__init__"
+                      ],
+                      "unique": [
+                        "watcher.py::EventHandler.on_modified",
+                        "watcher.py::run_function_if_files_change",
+                        "watcher.py::EventHandler.__init__"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                }
+              ],
+              "features": {
+                "render_command": [
+                  "involved",
+                  "unique",
+                  "essential"
+                ]
+              }
+            }
+          ],
+          "features": {
+            "create_theme_command": [
+              "involved",
+              "unique",
+              "essential",
+              "common"
+            ],
+            "new_command": [
+              "involved",
+              "essential",
+              "common"
+            ],
+            "render_command": [
+              "involved",
+              "unique",
+              "essential",
+              "common"
+            ]
+          }
+        },
+        {
+          "name": "renderer",
+          "type": "directory",
+          "children": [
+            {
+              "name": "html.py",
+              "type": "file",
+              "features": {
+                "render_command": {
+                  "involved": [
+                    "html.py::generate_html"
+                  ],
+                  "essential": [
+                    "html.py::generate_html"
+                  ],
+                  "unique": [
+                    "html.py::generate_html"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "markdown.py",
+              "type": "file",
+              "features": {
+                "render_command": {
+                  "involved": [
+                    "markdown.py::generate_markdown"
+                  ],
+                  "essential": [
+                    "markdown.py::generate_markdown"
+                  ],
+                  "unique": [
+                    "markdown.py::generate_markdown"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "path_resolver.py",
+              "type": "file",
+              "features": {
+                "render_command": {
+                  "involved": [
+                    "path_resolver.py::build_name_variants",
+                    "path_resolver.py::resolve_rendercv_file_path",
+                    "path_resolver.py::resolve_output_folder_placeholder"
+                  ],
+                  "essential": [
+                    "path_resolver.py::build_name_variants",
+                    "path_resolver.py::resolve_rendercv_file_path",
+                    "path_resolver.py::resolve_output_folder_placeholder"
+                  ],
+                  "unique": [
+                    "path_resolver.py::build_name_variants",
+                    "path_resolver.py::resolve_rendercv_file_path",
+                    "path_resolver.py::resolve_output_folder_placeholder"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "pdf_png.py",
+              "type": "file",
+              "features": {
+                "render_command": {
+                  "involved": [
+                    "pdf_png.py::generate_pdf",
+                    "pdf_png.py::get_typst_compiler",
+                    "pdf_png.py::read_version_from_typst_toml",
+                    "pdf_png.py::generate_png",
+                    "pdf_png.py::install_bundled_typst_package",
+                    "pdf_png.py::get_package_path"
+                  ],
+                  "essential": [
+                    "pdf_png.py::generate_pdf",
+                    "pdf_png.py::get_typst_compiler",
+                    "pdf_png.py::read_version_from_typst_toml",
+                    "pdf_png.py::generate_png",
+                    "pdf_png.py::install_bundled_typst_package",
+                    "pdf_png.py::get_package_path"
+                  ],
+                  "unique": [
+                    "pdf_png.py::generate_pdf",
+                    "pdf_png.py::get_typst_compiler",
+                    "pdf_png.py::read_version_from_typst_toml",
+                    "pdf_png.py::generate_png",
+                    "pdf_png.py::install_bundled_typst_package",
+                    "pdf_png.py::get_package_path"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "typst.py",
+              "type": "file",
+              "features": {
+                "render_command": {
+                  "involved": [
+                    "typst.py::generate_typst"
+                  ],
+                  "essential": [
+                    "typst.py::generate_typst"
+                  ],
+                  "unique": [
+                    "typst.py::generate_typst"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "__init__.py",
+              "type": "file"
+            },
+            {
+              "name": "templater",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "connections.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "connections.py::parse_connections",
+                        "connections.py::compute_connections",
+                        "connections.py::compute_connections_for_markdown",
+                        "connections.py::compute_connections_for_typst"
+                      ],
+                      "essential": [
+                        "connections.py::parse_connections",
+                        "connections.py::compute_connections",
+                        "connections.py::compute_connections_for_markdown",
+                        "connections.py::compute_connections_for_typst"
+                      ],
+                      "unique": [
+                        "connections.py::parse_connections",
+                        "connections.py::compute_connections",
+                        "connections.py::compute_connections_for_markdown",
+                        "connections.py::compute_connections_for_typst"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "date.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "date.py::format_date_range",
+                        "date.py::build_date_placeholders",
+                        "date.py::date_object_to_string",
+                        "date.py::compute_time_span_string",
+                        "date.py::format_single_date"
+                      ],
+                      "essential": [
+                        "date.py::format_date_range",
+                        "date.py::build_date_placeholders",
+                        "date.py::date_object_to_string",
+                        "date.py::compute_time_span_string",
+                        "date.py::format_single_date"
+                      ],
+                      "unique": [
+                        "date.py::format_date_range",
+                        "date.py::build_date_placeholders",
+                        "date.py::date_object_to_string",
+                        "date.py::compute_time_span_string",
+                        "date.py::format_single_date"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "entry_templates_from_input.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "entry_templates_from_input.py::render_entry_templates",
+                        "entry_templates_from_input.py::remove_connectors_of_missing_placeholders",
+                        "entry_templates_from_input.py::process_url",
+                        "entry_templates_from_input.py::process_date",
+                        "entry_templates_from_input.py::process_authors",
+                        "entry_templates_from_input.py::remove_not_provided_placeholders",
+                        "entry_templates_from_input.py::process_summary",
+                        "entry_templates_from_input.py::process_highlights",
+                        "entry_templates_from_input.py::clean_trailing_parts",
+                        "entry_templates_from_input.py::process_doi"
+                      ],
+                      "essential": [
+                        "entry_templates_from_input.py::render_entry_templates",
+                        "entry_templates_from_input.py::remove_connectors_of_missing_placeholders",
+                        "entry_templates_from_input.py::process_url",
+                        "entry_templates_from_input.py::process_date",
+                        "entry_templates_from_input.py::process_authors",
+                        "entry_templates_from_input.py::remove_not_provided_placeholders",
+                        "entry_templates_from_input.py::process_summary",
+                        "entry_templates_from_input.py::process_highlights",
+                        "entry_templates_from_input.py::clean_trailing_parts",
+                        "entry_templates_from_input.py::process_doi"
+                      ],
+                      "unique": [
+                        "entry_templates_from_input.py::render_entry_templates",
+                        "entry_templates_from_input.py::remove_connectors_of_missing_placeholders",
+                        "entry_templates_from_input.py::process_url",
+                        "entry_templates_from_input.py::process_date",
+                        "entry_templates_from_input.py::process_authors",
+                        "entry_templates_from_input.py::remove_not_provided_placeholders",
+                        "entry_templates_from_input.py::process_summary",
+                        "entry_templates_from_input.py::process_highlights",
+                        "entry_templates_from_input.py::clean_trailing_parts",
+                        "entry_templates_from_input.py::process_doi"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "footer_and_top_note.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "footer_and_top_note.py::render_top_note_template",
+                        "footer_and_top_note.py::render_footer_template"
+                      ],
+                      "essential": [
+                        "footer_and_top_note.py::render_top_note_template",
+                        "footer_and_top_note.py::render_footer_template"
+                      ],
+                      "unique": [
+                        "footer_and_top_note.py::render_top_note_template",
+                        "footer_and_top_note.py::render_footer_template"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "markdown_parser.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "markdown_parser.py::escape_typst_characters",
+                        "markdown_parser.py::markdown_to_html",
+                        "markdown_parser.py::markdown_to_typst",
+                        "markdown_parser.py::to_typst_string"
+                      ],
+                      "essential": [
+                        "markdown_parser.py::escape_typst_characters",
+                        "markdown_parser.py::markdown_to_html",
+                        "markdown_parser.py::markdown_to_typst",
+                        "markdown_parser.py::to_typst_string"
+                      ],
+                      "unique": [
+                        "markdown_parser.py::escape_typst_characters",
+                        "markdown_parser.py::markdown_to_html",
+                        "markdown_parser.py::markdown_to_typst",
+                        "markdown_parser.py::to_typst_string"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "model_processor.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "model_processor.py::process_fields",
+                        "model_processor.py::download_photo_from_url",
+                        "model_processor.py::process_model"
+                      ],
+                      "essential": [
+                        "model_processor.py::process_fields",
+                        "model_processor.py::download_photo_from_url",
+                        "model_processor.py::process_model"
+                      ],
+                      "unique": [
+                        "model_processor.py::process_fields",
+                        "model_processor.py::download_photo_from_url",
+                        "model_processor.py::process_model"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "string_processor.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "string_processor.py::build_keyword_matcher_pattern",
+                        "string_processor.py::apply_string_processors",
+                        "string_processor.py::make_keywords_bold",
+                        "string_processor.py::substitute_placeholders",
+                        "string_processor.py::clean_url"
+                      ],
+                      "essential": [
+                        "string_processor.py::build_keyword_matcher_pattern",
+                        "string_processor.py::apply_string_processors",
+                        "string_processor.py::make_keywords_bold",
+                        "string_processor.py::substitute_placeholders",
+                        "string_processor.py::clean_url"
+                      ],
+                      "unique": [
+                        "string_processor.py::apply_string_processors",
+                        "string_processor.py::build_keyword_matcher_pattern",
+                        "string_processor.py::make_keywords_bold",
+                        "string_processor.py::substitute_placeholders",
+                        "string_processor.py::clean_url"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "templater.py",
+                  "type": "file",
+                  "features": {
+                    "render_command": {
+                      "involved": [
+                        "templater.py::render_full_template",
+                        "templater.py::render_html",
+                        "templater.py::render_single_template",
+                        "templater.py::get_jinja2_environment"
+                      ],
+                      "essential": [
+                        "templater.py::render_full_template",
+                        "templater.py::render_html",
+                        "templater.py::render_single_template",
+                        "templater.py::get_jinja2_environment"
+                      ],
+                      "unique": [
+                        "templater.py::render_full_template",
+                        "templater.py::render_html",
+                        "templater.py::render_single_template",
+                        "templater.py::get_jinja2_environment"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                }
+              ],
+              "features": {
+                "render_command": [
+                  "involved",
+                  "unique",
+                  "essential"
+                ]
+              }
+            }
+          ],
+          "features": {
+            "render_command": [
+              "involved",
+              "unique",
+              "essential"
+            ]
+          }
+        },
+        {
+          "name": "schema",
+          "type": "directory",
+          "children": [
+            {
+              "name": "json_schema_generator.py",
+              "type": "file"
+            },
+            {
+              "name": "override_dictionary.py",
+              "type": "file"
+            },
+            {
+              "name": "pydantic_error_handling.py",
+              "type": "file",
+              "features": {
+                "render_command": {
+                  "involved": [
+                    "pydantic_error_handling.py::get_coordinates_of_a_key_in_a_yaml_object",
+                    "pydantic_error_handling.py::parse_validation_errors",
+                    "pydantic_error_handling.py::get_inner_yaml_object_from_its_key",
+                    "pydantic_error_handling.py::parse_plain_pydantic_error"
+                  ],
+                  "essential": [
+                    "pydantic_error_handling.py::get_coordinates_of_a_key_in_a_yaml_object",
+                    "pydantic_error_handling.py::parse_validation_errors",
+                    "pydantic_error_handling.py::get_inner_yaml_object_from_its_key",
+                    "pydantic_error_handling.py::parse_plain_pydantic_error"
+                  ],
+                  "unique": [
+                    "pydantic_error_handling.py::get_coordinates_of_a_key_in_a_yaml_object",
+                    "pydantic_error_handling.py::parse_validation_errors",
+                    "pydantic_error_handling.py::get_inner_yaml_object_from_its_key",
+                    "pydantic_error_handling.py::parse_plain_pydantic_error"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "rendercv_model_builder.py",
+              "type": "file",
+              "features": {
+                "new_command": {
+                  "involved": [
+                    "rendercv_model_builder.py::build_rendercv_dictionary_and_model",
+                    "rendercv_model_builder.py::build_rendercv_model_from_commented_map",
+                    "rendercv_model_builder.py::build_rendercv_dictionary",
+                    "rendercv_model_builder.py::read_yaml_with_validation_errors"
+                  ],
+                  "essential": [
+                    "rendercv_model_builder.py::build_rendercv_dictionary_and_model",
+                    "rendercv_model_builder.py::build_rendercv_model_from_commented_map",
+                    "rendercv_model_builder.py::build_rendercv_dictionary",
+                    "rendercv_model_builder.py::read_yaml_with_validation_errors"
+                  ]
+                },
+                "render_command": {
+                  "involved": [
+                    "rendercv_model_builder.py::build_rendercv_dictionary",
+                    "rendercv_model_builder.py::get_yaml_error_location",
+                    "rendercv_model_builder.py::build_rendercv_dictionary_and_model",
+                    "rendercv_model_builder.py::build_rendercv_model_from_commented_map",
+                    "rendercv_model_builder.py::read_yaml_with_validation_errors"
+                  ],
+                  "essential": [
+                    "rendercv_model_builder.py::build_rendercv_dictionary",
+                    "rendercv_model_builder.py::get_yaml_error_location",
+                    "rendercv_model_builder.py::build_rendercv_dictionary_and_model",
+                    "rendercv_model_builder.py::build_rendercv_model_from_commented_map",
+                    "rendercv_model_builder.py::read_yaml_with_validation_errors"
+                  ],
+                  "unique": [
+                    "rendercv_model_builder.py::get_yaml_error_location"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "sample_generator.py",
+              "type": "file",
+              "features": {
+                "new_command": {
+                  "involved": [
+                    "sample_generator.py::expand_nested_bullets",
+                    "sample_generator.py::dictionary_to_yaml",
+                    "sample_generator.py::comment_out_section_sub_fields",
+                    "sample_generator.py::rendercv_model_to_dictionary",
+                    "sample_generator.py::create_sample_rendercv_pydantic_model",
+                    "sample_generator.py::create_sample_yaml_input_file",
+                    "sample_generator.py::str_representer"
+                  ],
+                  "essential": [
+                    "sample_generator.py::expand_nested_bullets",
+                    "sample_generator.py::dictionary_to_yaml",
+                    "sample_generator.py::comment_out_section_sub_fields",
+                    "sample_generator.py::rendercv_model_to_dictionary",
+                    "sample_generator.py::create_sample_rendercv_pydantic_model",
+                    "sample_generator.py::create_sample_yaml_input_file",
+                    "sample_generator.py::str_representer"
+                  ]
+                },
+                "render_command": {
+                  "involved": [
+                    "sample_generator.py::create_sample_rendercv_pydantic_model",
+                    "sample_generator.py::create_sample_yaml_input_file",
+                    "sample_generator.py::comment_out_section_sub_fields",
+                    "sample_generator.py::str_representer",
+                    "sample_generator.py::rendercv_model_to_dictionary",
+                    "sample_generator.py::expand_nested_bullets",
+                    "sample_generator.py::dictionary_to_yaml"
+                  ],
+                  "essential": [
+                    "sample_generator.py::create_sample_rendercv_pydantic_model",
+                    "sample_generator.py::create_sample_yaml_input_file",
+                    "sample_generator.py::comment_out_section_sub_fields",
+                    "sample_generator.py::str_representer",
+                    "sample_generator.py::rendercv_model_to_dictionary",
+                    "sample_generator.py::expand_nested_bullets",
+                    "sample_generator.py::dictionary_to_yaml"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "variant_pydantic_model_generator.py",
+              "type": "file",
+              "features": {
+                "create_theme_command": {
+                  "common": [
+                    "variant_pydantic_model_generator.py::create_discriminator_field_spec",
+                    "variant_pydantic_model_generator.py::create_nested_field_spec",
+                    "variant_pydantic_model_generator.py::create_variant_pydantic_model",
+                    "variant_pydantic_model_generator.py::generate_model_name",
+                    "variant_pydantic_model_generator.py::resolve_nested_model",
+                    "variant_pydantic_model_generator.py::validate_defaults_against_base",
+                    "variant_pydantic_model_generator.py::create_simple_field_spec",
+                    "variant_pydantic_model_generator.py::update_description_with_new_default",
+                    "variant_pydantic_model_generator.py::create_nested_model_variant_model",
+                    "variant_pydantic_model_generator.py::sanitize_defaults"
+                  ],
+                  "involved": [
+                    "variant_pydantic_model_generator.py::resolve_nested_model",
+                    "variant_pydantic_model_generator.py::validate_defaults_against_base",
+                    "variant_pydantic_model_generator.py::create_simple_field_spec",
+                    "variant_pydantic_model_generator.py::update_description_with_new_default",
+                    "variant_pydantic_model_generator.py::create_discriminator_field_spec",
+                    "variant_pydantic_model_generator.py::create_nested_model_variant_model",
+                    "variant_pydantic_model_generator.py::sanitize_defaults",
+                    "variant_pydantic_model_generator.py::create_nested_field_spec",
+                    "variant_pydantic_model_generator.py::create_variant_pydantic_model",
+                    "variant_pydantic_model_generator.py::generate_model_name"
+                  ],
+                  "essential": [
+                    "variant_pydantic_model_generator.py::resolve_nested_model",
+                    "variant_pydantic_model_generator.py::validate_defaults_against_base",
+                    "variant_pydantic_model_generator.py::create_simple_field_spec",
+                    "variant_pydantic_model_generator.py::update_description_with_new_default",
+                    "variant_pydantic_model_generator.py::create_discriminator_field_spec",
+                    "variant_pydantic_model_generator.py::create_nested_model_variant_model",
+                    "variant_pydantic_model_generator.py::sanitize_defaults",
+                    "variant_pydantic_model_generator.py::create_nested_field_spec",
+                    "variant_pydantic_model_generator.py::create_variant_pydantic_model",
+                    "variant_pydantic_model_generator.py::generate_model_name"
+                  ]
+                },
+                "new_command": {
+                  "common": [
+                    "variant_pydantic_model_generator.py::create_discriminator_field_spec",
+                    "variant_pydantic_model_generator.py::create_nested_field_spec",
+                    "variant_pydantic_model_generator.py::create_variant_pydantic_model",
+                    "variant_pydantic_model_generator.py::generate_model_name",
+                    "variant_pydantic_model_generator.py::resolve_nested_model",
+                    "variant_pydantic_model_generator.py::validate_defaults_against_base",
+                    "variant_pydantic_model_generator.py::create_simple_field_spec",
+                    "variant_pydantic_model_generator.py::update_description_with_new_default",
+                    "variant_pydantic_model_generator.py::create_nested_model_variant_model",
+                    "variant_pydantic_model_generator.py::sanitize_defaults"
+                  ],
+                  "involved": [
+                    "variant_pydantic_model_generator.py::create_discriminator_field_spec",
+                    "variant_pydantic_model_generator.py::create_nested_field_spec",
+                    "variant_pydantic_model_generator.py::create_variant_pydantic_model",
+                    "variant_pydantic_model_generator.py::generate_model_name",
+                    "variant_pydantic_model_generator.py::resolve_nested_model",
+                    "variant_pydantic_model_generator.py::validate_defaults_against_base",
+                    "variant_pydantic_model_generator.py::create_simple_field_spec",
+                    "variant_pydantic_model_generator.py::update_description_with_new_default",
+                    "variant_pydantic_model_generator.py::create_nested_model_variant_model",
+                    "variant_pydantic_model_generator.py::sanitize_defaults"
+                  ],
+                  "essential": [
+                    "variant_pydantic_model_generator.py::create_discriminator_field_spec",
+                    "variant_pydantic_model_generator.py::create_nested_field_spec",
+                    "variant_pydantic_model_generator.py::create_variant_pydantic_model",
+                    "variant_pydantic_model_generator.py::generate_model_name",
+                    "variant_pydantic_model_generator.py::resolve_nested_model",
+                    "variant_pydantic_model_generator.py::validate_defaults_against_base",
+                    "variant_pydantic_model_generator.py::create_simple_field_spec",
+                    "variant_pydantic_model_generator.py::update_description_with_new_default",
+                    "variant_pydantic_model_generator.py::create_nested_model_variant_model",
+                    "variant_pydantic_model_generator.py::sanitize_defaults"
+                  ]
+                },
+                "render_command": {
+                  "common": [
+                    "variant_pydantic_model_generator.py::create_discriminator_field_spec",
+                    "variant_pydantic_model_generator.py::create_nested_field_spec",
+                    "variant_pydantic_model_generator.py::create_variant_pydantic_model",
+                    "variant_pydantic_model_generator.py::generate_model_name",
+                    "variant_pydantic_model_generator.py::resolve_nested_model",
+                    "variant_pydantic_model_generator.py::validate_defaults_against_base",
+                    "variant_pydantic_model_generator.py::create_simple_field_spec",
+                    "variant_pydantic_model_generator.py::update_description_with_new_default",
+                    "variant_pydantic_model_generator.py::create_nested_model_variant_model",
+                    "variant_pydantic_model_generator.py::sanitize_defaults"
+                  ],
+                  "involved": [
+                    "variant_pydantic_model_generator.py::update_description_with_new_default",
+                    "variant_pydantic_model_generator.py::create_nested_field_spec",
+                    "variant_pydantic_model_generator.py::validate_defaults_against_base",
+                    "variant_pydantic_model_generator.py::create_simple_field_spec",
+                    "variant_pydantic_model_generator.py::create_discriminator_field_spec",
+                    "variant_pydantic_model_generator.py::resolve_nested_model",
+                    "variant_pydantic_model_generator.py::create_nested_model_variant_model",
+                    "variant_pydantic_model_generator.py::create_variant_pydantic_model",
+                    "variant_pydantic_model_generator.py::generate_model_name",
+                    "variant_pydantic_model_generator.py::sanitize_defaults"
+                  ],
+                  "essential": [
+                    "variant_pydantic_model_generator.py::update_description_with_new_default",
+                    "variant_pydantic_model_generator.py::create_nested_field_spec",
+                    "variant_pydantic_model_generator.py::validate_defaults_against_base",
+                    "variant_pydantic_model_generator.py::create_simple_field_spec",
+                    "variant_pydantic_model_generator.py::create_discriminator_field_spec",
+                    "variant_pydantic_model_generator.py::resolve_nested_model",
+                    "variant_pydantic_model_generator.py::create_nested_model_variant_model",
+                    "variant_pydantic_model_generator.py::create_variant_pydantic_model",
+                    "variant_pydantic_model_generator.py::generate_model_name",
+                    "variant_pydantic_model_generator.py::sanitize_defaults"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "yaml_reader.py",
+              "type": "file",
+              "features": {
+                "create_theme_command": {
+                  "common": [
+                    "yaml_reader.py::read_yaml"
+                  ],
+                  "involved": [
+                    "yaml_reader.py::read_yaml"
+                  ],
+                  "essential": [
+                    "yaml_reader.py::read_yaml"
+                  ]
+                },
+                "new_command": {
+                  "common": [
+                    "yaml_reader.py::read_yaml"
+                  ],
+                  "involved": [
+                    "yaml_reader.py::read_yaml"
+                  ],
+                  "essential": [
+                    "yaml_reader.py::read_yaml"
+                  ]
+                },
+                "render_command": {
+                  "common": [
+                    "yaml_reader.py::read_yaml"
+                  ],
+                  "involved": [
+                    "yaml_reader.py::read_yaml"
+                  ],
+                  "essential": [
+                    "yaml_reader.py::read_yaml"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "__init__.py",
+              "type": "file"
+            },
+            {
+              "name": "models",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "base.py",
+                  "type": "file"
+                },
+                {
+                  "name": "custom_error_types.py",
+                  "type": "file"
+                },
+                {
+                  "name": "path.py",
+                  "type": "file",
+                  "features": {
+                    "new_command": {
+                      "involved": [
+                        "path.py::resolve_relative_path",
+                        "path.py::serialize_path"
+                      ],
+                      "essential": [
+                        "path.py::resolve_relative_path",
+                        "path.py::serialize_path"
+                      ]
+                    },
+                    "render_command": {
+                      "involved": [
+                        "path.py::resolve_relative_path",
+                        "path.py::serialize_path"
+                      ],
+                      "essential": [
+                        "path.py::resolve_relative_path",
+                        "path.py::serialize_path"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "rendercv_model.py",
+                  "type": "file",
+                  "features": {
+                    "new_command": {
+                      "involved": [
+                        "rendercv_model.py::RenderCVModel.set_input_file_path"
+                      ],
+                      "essential": [
+                        "rendercv_model.py::RenderCVModel.set_input_file_path"
+                      ]
+                    },
+                    "render_command": {
+                      "involved": [
+                        "rendercv_model.py::RenderCVModel.set_input_file_path"
+                      ],
+                      "essential": [
+                        "rendercv_model.py::RenderCVModel.set_input_file_path"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "validation_context.py",
+                  "type": "file",
+                  "features": {
+                    "new_command": {
+                      "involved": [
+                        "validation_context.py::get_current_date",
+                        "validation_context.py::get_input_file_path"
+                      ],
+                      "essential": [
+                        "validation_context.py::get_current_date",
+                        "validation_context.py::get_input_file_path"
+                      ]
+                    },
+                    "render_command": {
+                      "involved": [
+                        "validation_context.py::get_current_date",
+                        "validation_context.py::get_input_file_path"
+                      ],
+                      "essential": [
+                        "validation_context.py::get_current_date",
+                        "validation_context.py::get_input_file_path"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                },
+                {
+                  "name": "cv",
+                  "type": "directory",
+                  "children": [
+                    {
+                      "name": "custom_connection.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "cv.py",
+                      "type": "file",
+                      "features": {
+                        "new_command": {
+                          "involved": [
+                            "cv.py::Cv.validate_list_or_scalar_fields",
+                            "cv.py::Cv.capture_input_order",
+                            "cv.py::Cv.serialize_phone"
+                          ],
+                          "essential": [
+                            "cv.py::Cv.validate_list_or_scalar_fields",
+                            "cv.py::Cv.capture_input_order",
+                            "cv.py::Cv.serialize_phone"
+                          ]
+                        },
+                        "render_command": {
+                          "involved": [
+                            "cv.py::Cv.rendercv_sections",
+                            "cv.py::Cv.validate_list_or_scalar_fields",
+                            "cv.py::Cv.serialize_phone",
+                            "cv.py::Cv.capture_input_order"
+                          ],
+                          "essential": [
+                            "cv.py::Cv.rendercv_sections",
+                            "cv.py::Cv.validate_list_or_scalar_fields",
+                            "cv.py::Cv.serialize_phone",
+                            "cv.py::Cv.capture_input_order"
+                          ],
+                          "unique": [
+                            "cv.py::Cv.rendercv_sections"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "section.py",
+                      "type": "file",
+                      "features": {
+                        "create_theme_command": {
+                          "common": [
+                            "section.py::get_characteristic_entry_fields",
+                            "section.py::create_section_models"
+                          ],
+                          "involved": [
+                            "section.py::get_characteristic_entry_fields",
+                            "section.py::create_section_models"
+                          ],
+                          "essential": [
+                            "section.py::get_characteristic_entry_fields",
+                            "section.py::create_section_models"
+                          ]
+                        },
+                        "new_command": {
+                          "common": [
+                            "section.py::get_characteristic_entry_fields",
+                            "section.py::create_section_models"
+                          ],
+                          "involved": [
+                            "section.py::validate_section",
+                            "section.py::get_characteristic_entry_fields",
+                            "section.py::create_section_models",
+                            "section.py::get_entry_type_name_and_section_model"
+                          ],
+                          "essential": [
+                            "section.py::validate_section",
+                            "section.py::get_characteristic_entry_fields",
+                            "section.py::create_section_models",
+                            "section.py::get_entry_type_name_and_section_model"
+                          ]
+                        },
+                        "render_command": {
+                          "common": [
+                            "section.py::get_characteristic_entry_fields",
+                            "section.py::create_section_models"
+                          ],
+                          "involved": [
+                            "section.py::validate_section",
+                            "section.py::dictionary_key_to_proper_section_title",
+                            "section.py::get_characteristic_entry_fields",
+                            "section.py::create_section_models",
+                            "section.py::BaseRenderCVSection.snake_case_title",
+                            "section.py::get_rendercv_sections",
+                            "section.py::get_entry_type_name_and_section_model"
+                          ],
+                          "essential": [
+                            "section.py::validate_section",
+                            "section.py::dictionary_key_to_proper_section_title",
+                            "section.py::get_characteristic_entry_fields",
+                            "section.py::create_section_models",
+                            "section.py::BaseRenderCVSection.snake_case_title",
+                            "section.py::get_rendercv_sections",
+                            "section.py::get_entry_type_name_and_section_model"
+                          ],
+                          "unique": [
+                            "section.py::dictionary_key_to_proper_section_title",
+                            "section.py::BaseRenderCVSection.snake_case_title",
+                            "section.py::get_rendercv_sections"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "social_network.py",
+                      "type": "file",
+                      "features": {
+                        "new_command": {
+                          "involved": [
+                            "social_network.py::SocialNetwork.validate_generated_url",
+                            "social_network.py::SocialNetwork.check_username",
+                            "social_network.py::SocialNetwork.url"
+                          ],
+                          "essential": [
+                            "social_network.py::SocialNetwork.validate_generated_url",
+                            "social_network.py::SocialNetwork.check_username",
+                            "social_network.py::SocialNetwork.url"
+                          ]
+                        },
+                        "render_command": {
+                          "involved": [
+                            "social_network.py::SocialNetwork.validate_generated_url",
+                            "social_network.py::SocialNetwork.check_username",
+                            "social_network.py::SocialNetwork.url"
+                          ],
+                          "essential": [
+                            "social_network.py::SocialNetwork.validate_generated_url",
+                            "social_network.py::SocialNetwork.check_username",
+                            "social_network.py::SocialNetwork.url"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "__init__.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "entries",
+                      "type": "directory",
+                      "children": [
+                        {
+                          "name": "bullet.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "education.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "experience.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "normal.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "numbered.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "one_line.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "publication.py",
+                          "type": "file",
+                          "features": {
+                            "new_command": {
+                              "involved": [
+                                "publication.py::BasePublicationEntry.doi_url",
+                                "publication.py::BasePublicationEntry.ignore_url_if_doi_is_given",
+                                "publication.py::BasePublicationEntry.validate_doi_url"
+                              ],
+                              "essential": [
+                                "publication.py::BasePublicationEntry.doi_url",
+                                "publication.py::BasePublicationEntry.ignore_url_if_doi_is_given",
+                                "publication.py::BasePublicationEntry.validate_doi_url"
+                              ]
+                            },
+                            "render_command": {
+                              "involved": [
+                                "publication.py::BasePublicationEntry.doi_url",
+                                "publication.py::BasePublicationEntry.ignore_url_if_doi_is_given",
+                                "publication.py::BasePublicationEntry.validate_doi_url"
+                              ],
+                              "essential": [
+                                "publication.py::BasePublicationEntry.doi_url",
+                                "publication.py::BasePublicationEntry.ignore_url_if_doi_is_given",
+                                "publication.py::BasePublicationEntry.validate_doi_url"
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "name": "reversed_numbered.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "__init__.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "bases",
+                          "type": "directory",
+                          "children": [
+                            {
+                              "name": "entry.py",
+                              "type": "file",
+                              "features": {
+                                "render_command": {
+                                  "involved": [
+                                    "entry.py::BaseEntry.entry_type_in_snake_case"
+                                  ],
+                                  "essential": [
+                                    "entry.py::BaseEntry.entry_type_in_snake_case"
+                                  ],
+                                  "unique": [
+                                    "entry.py::BaseEntry.entry_type_in_snake_case"
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "name": "entry_with_complex_fields.py",
+                              "type": "file",
+                              "features": {
+                                "new_command": {
+                                  "involved": [
+                                    "entry_with_complex_fields.py::BaseEntryWithComplexFields.check_and_adjust_dates",
+                                    "entry_with_complex_fields.py::validate_exact_date",
+                                    "entry_with_complex_fields.py::get_date_object"
+                                  ],
+                                  "essential": [
+                                    "entry_with_complex_fields.py::BaseEntryWithComplexFields.check_and_adjust_dates",
+                                    "entry_with_complex_fields.py::validate_exact_date",
+                                    "entry_with_complex_fields.py::get_date_object"
+                                  ]
+                                },
+                                "render_command": {
+                                  "involved": [
+                                    "entry_with_complex_fields.py::validate_exact_date",
+                                    "entry_with_complex_fields.py::get_date_object",
+                                    "entry_with_complex_fields.py::BaseEntryWithComplexFields.check_and_adjust_dates"
+                                  ],
+                                  "essential": [
+                                    "entry_with_complex_fields.py::validate_exact_date",
+                                    "entry_with_complex_fields.py::get_date_object",
+                                    "entry_with_complex_fields.py::BaseEntryWithComplexFields.check_and_adjust_dates"
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "name": "entry_with_date.py",
+                              "type": "file",
+                              "features": {
+                                "new_command": {
+                                  "involved": [
+                                    "entry_with_date.py::validate_arbitrary_date"
+                                  ],
+                                  "essential": [
+                                    "entry_with_date.py::validate_arbitrary_date"
+                                  ]
+                                },
+                                "render_command": {
+                                  "involved": [
+                                    "entry_with_date.py::validate_arbitrary_date"
+                                  ],
+                                  "essential": [
+                                    "entry_with_date.py::validate_arbitrary_date"
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "name": "__init__.py",
+                              "type": "file"
+                            }
+                          ],
+                          "features": {
+                            "render_command": [
+                              "involved",
+                              "unique",
+                              "essential"
+                            ],
+                            "new_command": [
+                              "essential",
+                              "involved"
+                            ]
+                          }
+                        }
+                      ],
+                      "features": {
+                        "new_command": [
+                          "essential",
+                          "involved"
+                        ],
+                        "render_command": [
+                          "involved",
+                          "unique",
+                          "essential"
+                        ]
+                      }
+                    }
+                  ],
+                  "features": {
+                    "new_command": [
+                      "involved",
+                      "essential",
+                      "common"
+                    ],
+                    "render_command": [
+                      "involved",
+                      "unique",
+                      "essential",
+                      "common"
+                    ],
+                    "create_theme_command": [
+                      "essential",
+                      "common",
+                      "involved"
+                    ]
+                  }
+                },
+                {
+                  "name": "design",
+                  "type": "directory",
+                  "children": [
+                    {
+                      "name": "built_in_design.py",
+                      "type": "file",
+                      "features": {
+                        "create_theme_command": {
+                          "common": [
+                            "built_in_design.py::discover_other_themes"
+                          ],
+                          "involved": [
+                            "built_in_design.py::discover_other_themes"
+                          ],
+                          "essential": [
+                            "built_in_design.py::discover_other_themes"
+                          ]
+                        },
+                        "new_command": {
+                          "common": [
+                            "built_in_design.py::discover_other_themes"
+                          ],
+                          "involved": [
+                            "built_in_design.py::discover_other_themes"
+                          ],
+                          "essential": [
+                            "built_in_design.py::discover_other_themes"
+                          ]
+                        },
+                        "render_command": {
+                          "common": [
+                            "built_in_design.py::discover_other_themes"
+                          ],
+                          "involved": [
+                            "built_in_design.py::discover_other_themes"
+                          ],
+                          "essential": [
+                            "built_in_design.py::discover_other_themes"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "classic_theme.py",
+                      "type": "file",
+                      "features": {
+                        "create_theme_command": {
+                          "common": [
+                            "classic_theme.py::Typography.validate_font_family",
+                            "classic_theme.py::Sections.convert_section_titles_to_snake_case"
+                          ],
+                          "involved": [
+                            "classic_theme.py::Typography.validate_font_family",
+                            "classic_theme.py::Sections.convert_section_titles_to_snake_case"
+                          ],
+                          "essential": [
+                            "classic_theme.py::Typography.validate_font_family",
+                            "classic_theme.py::Sections.convert_section_titles_to_snake_case"
+                          ]
+                        },
+                        "new_command": {
+                          "common": [
+                            "classic_theme.py::Typography.validate_font_family",
+                            "classic_theme.py::Sections.convert_section_titles_to_snake_case"
+                          ],
+                          "involved": [
+                            "classic_theme.py::Typography.validate_font_family",
+                            "classic_theme.py::Sections.convert_section_titles_to_snake_case"
+                          ],
+                          "essential": [
+                            "classic_theme.py::Typography.validate_font_family",
+                            "classic_theme.py::Sections.convert_section_titles_to_snake_case"
+                          ]
+                        },
+                        "render_command": {
+                          "common": [
+                            "classic_theme.py::Typography.validate_font_family",
+                            "classic_theme.py::Sections.convert_section_titles_to_snake_case"
+                          ],
+                          "involved": [
+                            "classic_theme.py::Typography.validate_font_family",
+                            "classic_theme.py::Sections.convert_section_titles_to_snake_case"
+                          ],
+                          "essential": [
+                            "classic_theme.py::Typography.validate_font_family",
+                            "classic_theme.py::Sections.convert_section_titles_to_snake_case"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "color.py",
+                      "type": "file",
+                      "features": {
+                        "create_theme_command": {
+                          "common": [
+                            "color.py::Color.__str__"
+                          ],
+                          "involved": [
+                            "color.py::Color.__str__"
+                          ],
+                          "essential": [
+                            "color.py::Color.__str__"
+                          ]
+                        },
+                        "new_command": {
+                          "common": [
+                            "color.py::Color.__str__"
+                          ],
+                          "involved": [
+                            "color.py::Color.__str__"
+                          ],
+                          "essential": [
+                            "color.py::Color.__str__"
+                          ]
+                        },
+                        "render_command": {
+                          "common": [
+                            "color.py::Color.__str__"
+                          ],
+                          "involved": [
+                            "color.py::Color.__str__"
+                          ],
+                          "essential": [
+                            "color.py::Color.__str__"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "design.py",
+                      "type": "file",
+                      "features": {
+                        "new_command": {
+                          "involved": [
+                            "design.py::validate_design"
+                          ],
+                          "essential": [
+                            "design.py::validate_design"
+                          ]
+                        },
+                        "render_command": {
+                          "involved": [
+                            "design.py::validate_design"
+                          ],
+                          "essential": [
+                            "design.py::validate_design"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "font_family.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "typst_dimension.py",
+                      "type": "file",
+                      "features": {
+                        "create_theme_command": {
+                          "common": [
+                            "typst_dimension.py::validate_typst_dimension"
+                          ],
+                          "involved": [
+                            "typst_dimension.py::validate_typst_dimension"
+                          ],
+                          "essential": [
+                            "typst_dimension.py::validate_typst_dimension"
+                          ]
+                        },
+                        "new_command": {
+                          "common": [
+                            "typst_dimension.py::validate_typst_dimension"
+                          ],
+                          "involved": [
+                            "typst_dimension.py::validate_typst_dimension"
+                          ],
+                          "essential": [
+                            "typst_dimension.py::validate_typst_dimension"
+                          ]
+                        },
+                        "render_command": {
+                          "common": [
+                            "typst_dimension.py::validate_typst_dimension"
+                          ],
+                          "involved": [
+                            "typst_dimension.py::validate_typst_dimension"
+                          ],
+                          "essential": [
+                            "typst_dimension.py::validate_typst_dimension"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "__init__.py",
+                      "type": "file"
+                    }
+                  ],
+                  "features": {
+                    "create_theme_command": [
+                      "involved",
+                      "essential",
+                      "common"
+                    ],
+                    "new_command": [
+                      "involved",
+                      "essential",
+                      "common"
+                    ],
+                    "render_command": [
+                      "involved",
+                      "essential",
+                      "common"
+                    ]
+                  }
+                },
+                {
+                  "name": "locale",
+                  "type": "directory",
+                  "children": [
+                    {
+                      "name": "english_locale.py",
+                      "type": "file",
+                      "features": {
+                        "render_command": {
+                          "involved": [
+                            "english_locale.py::EnglishLocale.language_iso_639_1",
+                            "english_locale.py::EnglishLocale.is_rtl"
+                          ],
+                          "essential": [
+                            "english_locale.py::EnglishLocale.language_iso_639_1",
+                            "english_locale.py::EnglishLocale.is_rtl"
+                          ],
+                          "unique": [
+                            "english_locale.py::EnglishLocale.language_iso_639_1",
+                            "english_locale.py::EnglishLocale.is_rtl"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "locale.py",
+                      "type": "file",
+                      "features": {
+                        "create_theme_command": {
+                          "common": [
+                            "locale.py::discover_other_locales"
+                          ],
+                          "involved": [
+                            "locale.py::discover_other_locales"
+                          ],
+                          "essential": [
+                            "locale.py::discover_other_locales"
+                          ]
+                        },
+                        "new_command": {
+                          "common": [
+                            "locale.py::discover_other_locales"
+                          ],
+                          "involved": [
+                            "locale.py::discover_other_locales"
+                          ],
+                          "essential": [
+                            "locale.py::discover_other_locales"
+                          ]
+                        },
+                        "render_command": {
+                          "common": [
+                            "locale.py::discover_other_locales"
+                          ],
+                          "involved": [
+                            "locale.py::discover_other_locales"
+                          ],
+                          "essential": [
+                            "locale.py::discover_other_locales"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "__init__.py",
+                      "type": "file"
+                    }
+                  ],
+                  "features": {
+                    "render_command": [
+                      "involved",
+                      "unique",
+                      "essential",
+                      "common"
+                    ],
+                    "create_theme_command": [
+                      "essential",
+                      "common",
+                      "involved"
+                    ],
+                    "new_command": [
+                      "essential",
+                      "common",
+                      "involved"
+                    ]
+                  }
+                },
+                {
+                  "name": "settings",
+                  "type": "directory",
+                  "children": [
+                    {
+                      "name": "render_command.py",
+                      "type": "file",
+                      "features": {
+                        "render_command": {
+                          "involved": [
+                            "render_command.py::cli_command_render"
+                          ],
+                          "essential": [
+                            "render_command.py::cli_command_render"
+                          ],
+                          "unique": [
+                            "render_command.py::cli_command_render"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "settings.py",
+                      "type": "file",
+                      "features": {
+                        "new_command": {
+                          "involved": [
+                            "settings.py::Settings.keep_unique_keywords",
+                            "settings.py::Settings.resolve_current_date"
+                          ],
+                          "essential": [
+                            "settings.py::Settings.keep_unique_keywords",
+                            "settings.py::Settings.resolve_current_date"
+                          ]
+                        },
+                        "render_command": {
+                          "involved": [
+                            "settings.py::Settings.resolve_current_date",
+                            "settings.py::Settings.keep_unique_keywords"
+                          ],
+                          "essential": [
+                            "settings.py::Settings.resolve_current_date",
+                            "settings.py::Settings.keep_unique_keywords"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "__init__.py",
+                      "type": "file"
+                    }
+                  ],
+                  "features": {
+                    "render_command": [
+                      "involved",
+                      "unique",
+                      "essential"
+                    ],
+                    "new_command": [
+                      "essential",
+                      "involved"
+                    ]
+                  }
+                }
+              ],
+              "features": {
+                "new_command": [
+                  "involved",
+                  "essential",
+                  "common"
+                ],
+                "render_command": [
+                  "involved",
+                  "unique",
+                  "essential",
+                  "common"
+                ],
+                "create_theme_command": [
+                  "involved",
+                  "essential",
+                  "common"
+                ]
+              }
+            }
+          ],
+          "features": {
+            "render_command": [
+              "involved",
+              "unique",
+              "essential",
+              "common"
+            ],
+            "new_command": [
+              "involved",
+              "essential",
+              "common"
+            ],
+            "create_theme_command": [
+              "involved",
+              "essential",
+              "common"
+            ]
+          }
+        }
+      ],
+      "features": {
+        "create_theme_command": [
+          "involved",
+          "unique",
+          "essential",
+          "common"
+        ],
+        "new_command": [
+          "involved",
+          "essential",
+          "common"
+        ],
+        "render_command": [
+          "involved",
+          "unique",
+          "essential",
+          "common"
+        ]
+      }
+    }
+  ],
+  "features": {
+    "create_theme_command": [
+      "essential",
+      "involved",
+      "common",
+      "unique"
+    ],
+    "new_command": [
+      "essential",
+      "involved",
+      "common"
+    ],
+    "render_command": [
+      "essential",
+      "involved",
+      "common",
+      "unique"
+    ]
+  }
+}

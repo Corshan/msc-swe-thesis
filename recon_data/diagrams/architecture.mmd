@@ -1,0 +1,310 @@
+%%{init: {'flowchart': {'curve': 'linear'}}}%%
+graph LR
+    subgraph Features
+        F0["create_theme_command"]
+        F1["new_command"]
+        F2["render_command"]
+    end
+    subgraph Groups
+        G3(["create_theme_command, new_command, render_command"])
+        G14(["create_theme_command & new_command"])
+        G16(["Only create_theme_command"])
+        G19(["new_command & render_command"])
+        G35(["Only render_command"])
+    end
+    subgraph Components
+        C47("path_resolver.py")
+        C7("section.py")
+        C22("validation_context.py")
+        C12("locale.py")
+        C10("color.py::Color")
+        C17("create_init_file_for_theme.py")
+        C38("progress_panel.py::ProgressPanel")
+        C18("create_theme_command.py")
+        C24("path.py")
+        C13("classic_theme.py::Typography")
+        C31("design.py")
+        C53("footer_and_top_note.py")
+        C23("cv.py::Cv")
+        C11("yaml_reader.py")
+        C37("date.py")
+        C20("rendercv_model.py::RenderCVModel")
+        C34("entry_with_complex_fields.py")
+        C26("print_welcome.py")
+        C54("typst.py")
+        C49("markdown.py")
+        C45("pdf_png.py")
+        C56("run_rendercv.py")
+        C55("watcher.py")
+        C59("parse_override_arguments.py")
+        C5("classic_theme.py::Sections")
+        C8("typst_dimension.py")
+        C27("social_network.py::SocialNetwork")
+        C36("entry_templates_from_input.py")
+        C6("error_handler.py")
+        C51("watcher.py::EventHandler")
+        C43("markdown_parser.py")
+        C4("variant_pydantic_model_generator.py")
+        C21("sample_generator.py")
+        C33("new_command.py")
+        C50("english_locale.py::EnglishLocale")
+        C25("publication.py::BasePublicationEntry")
+        C29("entry_with_date.py")
+        C30("rendercv_model_builder.py")
+        C58("entry.py::BaseEntry")
+        C9("built_in_design.py")
+        C42("model_processor.py")
+        C46("render_command.py")
+        C52("progress_panel.py")
+        C40("html.py")
+        C39("string_processor.py")
+        C28("entry_with_complex_fields.py::BaseEntryWithComplexFields")
+        C41("connections.py")
+        C57("section.py::BaseRenderCVSection")
+        C32("settings.py::Settings")
+        C48("templater.py")
+        C15("copy_templates.py")
+        C44("pydantic_error_handling.py")
+    end
+    F0 ==> G3
+    F1 ==> G3
+    F2 ==> G3
+    G3 --> C4
+    G3 --> C5
+    G3 --> C6
+    G3 --> C7
+    G3 --> C8
+    G3 --> C9
+    G3 --> C10
+    G3 --> C11
+    G3 --> C12
+    G3 --> C13
+    F0 ==> G14
+    F1 ==> G14
+    G14 --> C15
+    F0 ==> G16
+    G16 --> C17
+    G16 --> C18
+    F1 ==> G19
+    F2 ==> G19
+    G19 --> C20
+    G19 --> C21
+    G19 --> C22
+    G19 --> C23
+    G19 --> C24
+    G19 --> C25
+    G19 --> C26
+    G19 --> C27
+    G19 --> C28
+    G19 --> C29
+    G19 --> C30
+    G19 --> C31
+    G19 --> C32
+    G19 --> C33
+    G19 --> C34
+    F2 ==> G35
+    G35 --> C36
+    G35 --> C37
+    G35 --> C38
+    G35 --> C39
+    G35 --> C40
+    G35 --> C41
+    G35 --> C42
+    G35 --> C43
+    G35 --> C44
+    G35 --> C45
+    G35 --> C46
+    G35 --> C47
+    G35 --> C48
+    G35 --> C49
+    G35 --> C50
+    G35 --> C51
+    G35 --> C52
+    G35 --> C53
+    G35 --> C54
+    G35 --> C55
+    G35 --> C56
+    G35 --> C57
+    G35 --> C58
+    G35 --> C59
+    classDef styleF0 fill:#ff595e,stroke:#333,stroke-width:2px,color:#000;
+    class F0 styleF0;
+    classDef styleF1 fill:#ffca3a,stroke:#333,stroke-width:2px,color:#000;
+    class F1 styleF1;
+    classDef styleF2 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class F2 styleF2;
+    classDef styleG3 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class G3 styleG3;
+    classDef styleG14 fill:#d95f02,stroke:#333,stroke-width:2px,color:#000;
+    class G14 styleG14;
+    classDef styleG16 fill:#ff595e,stroke:#333,stroke-width:2px,color:#000;
+    class G16 styleG16;
+    classDef styleG19 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class G19 styleG19;
+    classDef styleG35 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class G35 styleG35;
+    classDef styleC4 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C4 styleC4;
+    classDef styleC5 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C5 styleC5;
+    classDef styleC6 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C6 styleC6;
+    classDef styleC7 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C7 styleC7;
+    classDef styleC8 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C8 styleC8;
+    classDef styleC9 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C9 styleC9;
+    classDef styleC10 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C10 styleC10;
+    classDef styleC11 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C11 styleC11;
+    classDef styleC12 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C12 styleC12;
+    classDef styleC13 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    class C13 styleC13;
+    classDef styleC15 fill:#d95f02,stroke:#333,stroke-width:2px,color:#000;
+    class C15 styleC15;
+    classDef styleC17 fill:#ff595e,stroke:#333,stroke-width:2px,color:#000;
+    class C17 styleC17;
+    classDef styleC18 fill:#ff595e,stroke:#333,stroke-width:2px,color:#000;
+    class C18 styleC18;
+    classDef styleC20 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C20 styleC20;
+    classDef styleC21 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C21 styleC21;
+    classDef styleC22 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C22 styleC22;
+    classDef styleC23 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C23 styleC23;
+    classDef styleC24 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C24 styleC24;
+    classDef styleC25 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C25 styleC25;
+    classDef styleC26 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C26 styleC26;
+    classDef styleC27 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C27 styleC27;
+    classDef styleC28 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C28 styleC28;
+    classDef styleC29 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C29 styleC29;
+    classDef styleC30 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C30 styleC30;
+    classDef styleC31 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C31 styleC31;
+    classDef styleC32 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C32 styleC32;
+    classDef styleC33 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C33 styleC33;
+    classDef styleC34 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    class C34 styleC34;
+    classDef styleC36 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C36 styleC36;
+    classDef styleC37 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C37 styleC37;
+    classDef styleC38 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C38 styleC38;
+    classDef styleC39 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C39 styleC39;
+    classDef styleC40 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C40 styleC40;
+    classDef styleC41 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C41 styleC41;
+    classDef styleC42 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C42 styleC42;
+    classDef styleC43 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C43 styleC43;
+    classDef styleC44 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C44 styleC44;
+    classDef styleC45 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C45 styleC45;
+    classDef styleC46 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C46 styleC46;
+    classDef styleC47 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C47 styleC47;
+    classDef styleC48 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C48 styleC48;
+    classDef styleC49 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C49 styleC49;
+    classDef styleC50 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C50 styleC50;
+    classDef styleC51 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C51 styleC51;
+    classDef styleC52 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C52 styleC52;
+    classDef styleC53 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C53 styleC53;
+    classDef styleC54 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C54 styleC54;
+    classDef styleC55 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C55 styleC55;
+    classDef styleC56 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C56 styleC56;
+    classDef styleC57 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C57 styleC57;
+    classDef styleC58 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C58 styleC58;
+    classDef styleC59 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    class C59 styleC59;
+    linkStyle 0 stroke:#ff595e,stroke-width:3px;
+    linkStyle 1 stroke:#ffca3a,stroke-width:3px;
+    linkStyle 2 stroke:#8ac926,stroke-width:3px;
+    linkStyle 3 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 4 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 5 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 6 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 7 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 8 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 9 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 10 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 11 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 12 stroke:#1b9e77,stroke-width:2px;
+    linkStyle 13 stroke:#ff595e,stroke-width:3px;
+    linkStyle 14 stroke:#ffca3a,stroke-width:3px;
+    linkStyle 15 stroke:#d95f02,stroke-width:2px;
+    linkStyle 16 stroke:#ff595e,stroke-width:3px;
+    linkStyle 17 stroke:#ff595e,stroke-width:2px;
+    linkStyle 18 stroke:#ff595e,stroke-width:2px;
+    linkStyle 19 stroke:#ffca3a,stroke-width:3px;
+    linkStyle 20 stroke:#8ac926,stroke-width:3px;
+    linkStyle 21 stroke:#7570b3,stroke-width:2px;
+    linkStyle 22 stroke:#7570b3,stroke-width:2px;
+    linkStyle 23 stroke:#7570b3,stroke-width:2px;
+    linkStyle 24 stroke:#7570b3,stroke-width:2px;
+    linkStyle 25 stroke:#7570b3,stroke-width:2px;
+    linkStyle 26 stroke:#7570b3,stroke-width:2px;
+    linkStyle 27 stroke:#7570b3,stroke-width:2px;
+    linkStyle 28 stroke:#7570b3,stroke-width:2px;
+    linkStyle 29 stroke:#7570b3,stroke-width:2px;
+    linkStyle 30 stroke:#7570b3,stroke-width:2px;
+    linkStyle 31 stroke:#7570b3,stroke-width:2px;
+    linkStyle 32 stroke:#7570b3,stroke-width:2px;
+    linkStyle 33 stroke:#7570b3,stroke-width:2px;
+    linkStyle 34 stroke:#7570b3,stroke-width:2px;
+    linkStyle 35 stroke:#7570b3,stroke-width:2px;
+    linkStyle 36 stroke:#8ac926,stroke-width:3px;
+    linkStyle 37 stroke:#8ac926,stroke-width:2px;
+    linkStyle 38 stroke:#8ac926,stroke-width:2px;
+    linkStyle 39 stroke:#8ac926,stroke-width:2px;
+    linkStyle 40 stroke:#8ac926,stroke-width:2px;
+    linkStyle 41 stroke:#8ac926,stroke-width:2px;
+    linkStyle 42 stroke:#8ac926,stroke-width:2px;
+    linkStyle 43 stroke:#8ac926,stroke-width:2px;
+    linkStyle 44 stroke:#8ac926,stroke-width:2px;
+    linkStyle 45 stroke:#8ac926,stroke-width:2px;
+    linkStyle 46 stroke:#8ac926,stroke-width:2px;
+    linkStyle 47 stroke:#8ac926,stroke-width:2px;
+    linkStyle 48 stroke:#8ac926,stroke-width:2px;
+    linkStyle 49 stroke:#8ac926,stroke-width:2px;
+    linkStyle 50 stroke:#8ac926,stroke-width:2px;
+    linkStyle 51 stroke:#8ac926,stroke-width:2px;
+    linkStyle 52 stroke:#8ac926,stroke-width:2px;
+    linkStyle 53 stroke:#8ac926,stroke-width:2px;
+    linkStyle 54 stroke:#8ac926,stroke-width:2px;
+    linkStyle 55 stroke:#8ac926,stroke-width:2px;
+    linkStyle 56 stroke:#8ac926,stroke-width:2px;
+    linkStyle 57 stroke:#8ac926,stroke-width:2px;
+    linkStyle 58 stroke:#8ac926,stroke-width:2px;
+    linkStyle 59 stroke:#8ac926,stroke-width:2px;
+    linkStyle 60 stroke:#8ac926,stroke-width:2px;

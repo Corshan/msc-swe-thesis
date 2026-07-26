@@ -1,0 +1,271 @@
+%%{init: {'flowchart': {'curve': 'linear'}}}%%
+graph LR
+    N0["📁 src"]
+    N1["📁 rendercv"]
+    N2("📄 exception.py")
+    N3("📄 __init__.py")
+    N4("📄 __main__.py")
+    N5["📁 cli"]
+    N6("📄 app.py")
+    N7("📄 copy_templates.py")
+    N8("📄 entry_point.py")
+    N9("📄 error_handler.py")
+    N10("📄 __init__.py")
+    N11["📁 create_theme_command"]
+    N12("📄 create_init_file_for_theme.py")
+    N13("📄 create_theme_command.py")
+    N14("📄 __init__.py")
+    N15["📁 new_command"]
+    N16("📄 new_command.py")
+    N17("📄 print_welcome.py")
+    N18("📄 __init__.py")
+    N19["📁 render_command"]
+    N20("📄 parse_override_arguments.py")
+    N21("📄 progress_panel.py")
+    N22("📄 render_command.py")
+    N23("📄 run_rendercv.py")
+    N24("📄 watcher.py")
+    N25("📄 __init__.py")
+    N26["📁 renderer"]
+    N27("📄 html.py")
+    N28("📄 markdown.py")
+    N29("📄 path_resolver.py")
+    N30("📄 pdf_png.py")
+    N31("📄 typst.py")
+    N32("📄 __init__.py")
+    N33["📁 templater"]
+    N34("📄 connections.py")
+    N35("📄 date.py")
+    N36("📄 entry_templates_from_input.py")
+    N37("📄 footer_and_top_note.py")
+    N38("📄 markdown_parser.py")
+    N39("📄 model_processor.py")
+    N40("📄 string_processor.py")
+    N41("📄 templater.py")
+    N42("📄 __init__.py")
+    N43["📁 schema"]
+    N44("📄 json_schema_generator.py")
+    N45("📄 override_dictionary.py")
+    N46("📄 pydantic_error_handling.py")
+    N47("📄 rendercv_model_builder.py")
+    N48("📄 sample_generator.py")
+    N49("📄 variant_pydantic_model_generator.py")
+    N50("📄 yaml_reader.py")
+    N51("📄 __init__.py")
+    N52["📁 models"]
+    N53("📄 base.py")
+    N54("📄 custom_error_types.py")
+    N55("📄 path.py")
+    N56("📄 rendercv_model.py")
+    N57("📄 validation_context.py")
+    N58("📄 __init__.py")
+    N59["📁 cv"]
+    N60("📄 custom_connection.py")
+    N61("📄 cv.py")
+    N62("📄 section.py")
+    N63("📄 social_network.py")
+    N64("📄 __init__.py")
+    N65["📁 entries"]
+    N66("📄 bullet.py")
+    N67("📄 education.py")
+    N68("📄 experience.py")
+    N69("📄 normal.py")
+    N70("📄 numbered.py")
+    N71("📄 one_line.py")
+    N72("📄 publication.py")
+    N73("📄 reversed_numbered.py")
+    N74("📄 __init__.py")
+    N75["📁 bases"]
+    N76("📄 entry.py")
+    N77("📄 entry_with_complex_fields.py")
+    N78("📄 entry_with_date.py")
+    N79("📄 __init__.py")
+    N80["📁 design"]
+    N81("📄 built_in_design.py")
+    N82("📄 classic_theme.py")
+    N83("📄 color.py")
+    N84("📄 design.py")
+    N85("📄 font_family.py")
+    N86("📄 typst_dimension.py")
+    N87("📄 __init__.py")
+    N88["📁 locale"]
+    N89("📄 english_locale.py")
+    N90("📄 locale.py")
+    N91("📄 __init__.py")
+    N92["📁 settings"]
+    N93("📄 render_command.py")
+    N94("📄 settings.py")
+    N95("📄 __init__.py")
+    N1 --> N5
+    N52 --> N56
+    N65 --> N74
+    N92 --> N93
+    N5 --> N8
+    N52 --> N53
+    N19 --> N25
+    N65 --> N66
+    N59 --> N64
+    N75 --> N77
+    N5 --> N11
+    N1 --> N2
+    N0 --> N1
+    N33 --> N41
+    N65 --> N75
+    N88 --> N90
+    N65 --> N72
+    N15 --> N16
+    N65 --> N70
+    N43 --> N52
+    N65 --> N71
+    N15 --> N18
+    N65 --> N67
+    N52 --> N59
+    N19 --> N24
+    N80 --> N84
+    N43 --> N44
+    N26 --> N28
+    N43 --> N51
+    N11 --> N13
+    N33 --> N42
+    N59 --> N61
+    N33 --> N37
+    N80 --> N87
+    N80 --> N85
+    N33 --> N36
+    N43 --> N45
+    N26 --> N33
+    N43 --> N46
+    N52 --> N54
+    N75 --> N79
+    N26 --> N32
+    N5 --> N7
+    N43 --> N50
+    N92 --> N94
+    N75 --> N76
+    N59 --> N60
+    N80 --> N82
+    N1 --> N43
+    N52 --> N88
+    N65 --> N68
+    N5 --> N9
+    N65 --> N73
+    N52 --> N80
+    N11 --> N12
+    N19 --> N20
+    N52 --> N92
+    N33 --> N35
+    N15 --> N17
+    N26 --> N30
+    N80 --> N83
+    N43 --> N47
+    N88 --> N89
+    N80 --> N86
+    N33 --> N40
+    N52 --> N57
+    N26 --> N31
+    N52 --> N58
+    N43 --> N48
+    N19 --> N22
+    N5 --> N19
+    N75 --> N78
+    N5 --> N15
+    N19 --> N21
+    N5 --> N10
+    N33 --> N39
+    N26 --> N27
+    N52 --> N55
+    N65 --> N69
+    N33 --> N34
+    N92 --> N95
+    N5 --> N6
+    N19 --> N23
+    N43 --> N49
+    N80 --> N81
+    N59 --> N63
+    N33 --> N38
+    N1 --> N3
+    N59 --> N62
+    N1 --> N4
+    N11 --> N14
+    N59 --> N65
+    N26 --> N29
+    N88 --> N91
+    N1 --> N26
+    style N0 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N1 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N5 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N7 fill:#d95f02,stroke:#333,stroke-width:2px,color:#000;
+    style N9 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N11 fill:#ff595e,stroke:#333,stroke-width:2px,color:#000;
+    style N12 fill:#ff595e,stroke:#333,stroke-width:2px,color:#000;
+    style N13 fill:#ff595e,stroke:#333,stroke-width:2px,color:#000;
+    style N15 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N16 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N17 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N19 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N20 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N21 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N22 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N23 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N24 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N26 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N27 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N28 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N29 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N30 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N31 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N33 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N34 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N35 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N36 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N37 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N38 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N39 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N40 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N41 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N43 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N46 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N47 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N48 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N49 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N50 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N52 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N55 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N56 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N57 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N59 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N61 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N62 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N63 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N65 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N72 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N75 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N76 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N77 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N78 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N80 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N81 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N82 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N83 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N84 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N86 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N88 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N89 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N90 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+    style N92 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    style N93 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+    style N94 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    subgraph Legend
+        N96["create_theme_command"]
+        style N96 fill:#ff595e,stroke:#333,stroke-width:2px,color:#000;
+        N97["new_command"]
+        style N97 fill:#ffca3a,stroke:#333,stroke-width:2px,color:#000;
+        N98["render_command"]
+        style N98 fill:#8ac926,stroke:#333,stroke-width:2px,color:#000;
+        N99["create_theme_command & new_command & render_command"]
+        style N99 fill:#1b9e77,stroke:#333,stroke-width:2px,color:#000;
+        N100["create_theme_command & new_command"]
+        style N100 fill:#d95f02,stroke:#333,stroke-width:2px,color:#000;
+        N101["new_command & render_command"]
+        style N101 fill:#7570b3,stroke:#333,stroke-width:2px,color:#000;
+    end

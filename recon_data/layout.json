@@ -1,0 +1,416 @@
+{
+  "name": "src",
+  "type": "directory",
+  "children": [
+    {
+      "name": "rendercv",
+      "type": "directory",
+      "children": [
+        {
+          "name": "exception.py",
+          "type": "file"
+        },
+        {
+          "name": "__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "__main__.py",
+          "type": "file"
+        },
+        {
+          "name": "cli",
+          "type": "directory",
+          "children": [
+            {
+              "name": "app.py",
+              "type": "file"
+            },
+            {
+              "name": "copy_templates.py",
+              "type": "file"
+            },
+            {
+              "name": "entry_point.py",
+              "type": "file"
+            },
+            {
+              "name": "error_handler.py",
+              "type": "file"
+            },
+            {
+              "name": "__init__.py",
+              "type": "file"
+            },
+            {
+              "name": "create_theme_command",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "create_init_file_for_theme.py",
+                  "type": "file"
+                },
+                {
+                  "name": "create_theme_command.py",
+                  "type": "file"
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                }
+              ]
+            },
+            {
+              "name": "new_command",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "new_command.py",
+                  "type": "file"
+                },
+                {
+                  "name": "print_welcome.py",
+                  "type": "file"
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                }
+              ]
+            },
+            {
+              "name": "render_command",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "parse_override_arguments.py",
+                  "type": "file"
+                },
+                {
+                  "name": "progress_panel.py",
+                  "type": "file"
+                },
+                {
+                  "name": "render_command.py",
+                  "type": "file"
+                },
+                {
+                  "name": "run_rendercv.py",
+                  "type": "file"
+                },
+                {
+                  "name": "watcher.py",
+                  "type": "file"
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "renderer",
+          "type": "directory",
+          "children": [
+            {
+              "name": "html.py",
+              "type": "file"
+            },
+            {
+              "name": "markdown.py",
+              "type": "file"
+            },
+            {
+              "name": "path_resolver.py",
+              "type": "file"
+            },
+            {
+              "name": "pdf_png.py",
+              "type": "file"
+            },
+            {
+              "name": "typst.py",
+              "type": "file"
+            },
+            {
+              "name": "__init__.py",
+              "type": "file"
+            },
+            {
+              "name": "templater",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "connections.py",
+                  "type": "file"
+                },
+                {
+                  "name": "date.py",
+                  "type": "file"
+                },
+                {
+                  "name": "entry_templates_from_input.py",
+                  "type": "file"
+                },
+                {
+                  "name": "footer_and_top_note.py",
+                  "type": "file"
+                },
+                {
+                  "name": "markdown_parser.py",
+                  "type": "file"
+                },
+                {
+                  "name": "model_processor.py",
+                  "type": "file"
+                },
+                {
+                  "name": "string_processor.py",
+                  "type": "file"
+                },
+                {
+                  "name": "templater.py",
+                  "type": "file"
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "schema",
+          "type": "directory",
+          "children": [
+            {
+              "name": "json_schema_generator.py",
+              "type": "file"
+            },
+            {
+              "name": "override_dictionary.py",
+              "type": "file"
+            },
+            {
+              "name": "pydantic_error_handling.py",
+              "type": "file"
+            },
+            {
+              "name": "rendercv_model_builder.py",
+              "type": "file"
+            },
+            {
+              "name": "sample_generator.py",
+              "type": "file"
+            },
+            {
+              "name": "variant_pydantic_model_generator.py",
+              "type": "file"
+            },
+            {
+              "name": "yaml_reader.py",
+              "type": "file"
+            },
+            {
+              "name": "__init__.py",
+              "type": "file"
+            },
+            {
+              "name": "models",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "base.py",
+                  "type": "file"
+                },
+                {
+                  "name": "custom_error_types.py",
+                  "type": "file"
+                },
+                {
+                  "name": "path.py",
+                  "type": "file"
+                },
+                {
+                  "name": "rendercv_model.py",
+                  "type": "file"
+                },
+                {
+                  "name": "validation_context.py",
+                  "type": "file"
+                },
+                {
+                  "name": "__init__.py",
+                  "type": "file"
+                },
+                {
+                  "name": "cv",
+                  "type": "directory",
+                  "children": [
+                    {
+                      "name": "custom_connection.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "cv.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "section.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "social_network.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "__init__.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "entries",
+                      "type": "directory",
+                      "children": [
+                        {
+                          "name": "bullet.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "education.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "experience.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "normal.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "numbered.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "one_line.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "publication.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "reversed_numbered.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "__init__.py",
+                          "type": "file"
+                        },
+                        {
+                          "name": "bases",
+                          "type": "directory",
+                          "children": [
+                            {
+                              "name": "entry.py",
+                              "type": "file"
+                            },
+                            {
+                              "name": "entry_with_complex_fields.py",
+                              "type": "file"
+                            },
+                            {
+                              "name": "entry_with_date.py",
+                              "type": "file"
+                            },
+                            {
+                              "name": "__init__.py",
+                              "type": "file"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "design",
+                  "type": "directory",
+                  "children": [
+                    {
+                      "name": "built_in_design.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "classic_theme.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "color.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "design.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "font_family.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "typst_dimension.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "__init__.py",
+                      "type": "file"
+                    }
+                  ]
+                },
+                {
+                  "name": "locale",
+                  "type": "directory",
+                  "children": [
+                    {
+                      "name": "english_locale.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "locale.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "__init__.py",
+                      "type": "file"
+                    }
+                  ]
+                },
+                {
+                  "name": "settings",
+                  "type": "directory",
+                  "children": [
+                    {
+                      "name": "render_command.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "settings.py",
+                      "type": "file"
+                    },
+                    {
+                      "name": "__init__.py",
+                      "type": "file"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

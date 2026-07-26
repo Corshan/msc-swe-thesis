@@ -14,7 +14,7 @@ class ProjectPaths:
     @classmethod
     def from_root(self, project_path: str, project_src_path: str) -> 'ProjectPaths':
         root = Path(project_path)
-        output_dir = root / "recon_data"
+        output_dir = Path.cwd() / "recon_data"
         return self(
             root=root,
             src=Path(project_src_path),

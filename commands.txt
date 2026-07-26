@@ -1,0 +1,9 @@
+uv run tool instrument  -p "C:\Users\corey\Documents\projects\rendercv" -s "C:\Users\corey\Documents\projects\rendercv\src\" -l python
+uv run tool trace  -p "C:\Users\corey\Documents\projects\rendercv" -tc "pytest tests/cli/new_command" -tn "new_command"
+uv run tool trace  -p "C:\Users\corey\Documents\projects\rendercv" -tc "pytest tests/cli/render_command" -tn "render_command"
+uv run tool trace  -p "C:\Users\corey\Documents\projects\rendercv" -tc "pytest tests/cli/create_theme_command" -tn "create_theme_command"
+uv run tool compute -p "C:\Users\corey\Documents\projects\rendercv"
+uv run tool diagram -p "C:\Users\corey\Documents\projects\rendercv"
+uv run tool structure-diagram -p "C:\Users\corey\Documents\projects\rendercv"
+uv run tool layout -p "C:\Users\corey\Documents\projects\rendercv" -s "C:\Users\corey\Documents\projects\rendercv\src\" -e ".py"
+uv run tool decompose -p "C:\Users\corey\Documents\projects\rendercv"
