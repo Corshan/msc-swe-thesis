@@ -1,0 +1,66 @@
+{
+  "metrics": {
+    "cohesion": {
+      "YAML Parsing": 0,
+      "Data Validation": 73,
+      "Templating": 13,
+      "Markdown Parsing": 0,
+      "Compilation": 4,
+      "CLI": 16
+    },
+    "coupling": {
+      "YAML Parsing": 0,
+      "Data Validation": 4,
+      "Templating": 14,
+      "Markdown Parsing": 0,
+      "Compilation": 10,
+      "CLI": 10
+    },
+    "coupling_matrix": {
+      "YAML Parsing": {
+        "Data Validation": 0,
+        "Templating": 0,
+        "Markdown Parsing": 0,
+        "Compilation": 0,
+        "CLI": 0
+      },
+      "Data Validation": {
+        "YAML Parsing": 4,
+        "Templating": 0,
+        "Markdown Parsing": 0,
+        "Compilation": 0,
+        "CLI": 0
+      },
+      "Templating": {
+        "YAML Parsing": 0,
+        "Data Validation": 11,
+        "Markdown Parsing": 3,
+        "Compilation": 0,
+        "CLI": 0
+      },
+      "Markdown Parsing": {
+        "YAML Parsing": 0,
+        "Data Validation": 0,
+        "Templating": 0,
+        "Compilation": 0,
+        "CLI": 0
+      },
+      "Compilation": {
+        "YAML Parsing": 0,
+        "Data Validation": 5,
+        "Templating": 5,
+        "Markdown Parsing": 0,
+        "CLI": 0
+      },
+      "CLI": {
+        "YAML Parsing": 0,
+        "Data Validation": 6,
+        "Templating": 0,
+        "Markdown Parsing": 0,
+        "Compilation": 4
+      }
+    },
+    "average_cohesion": 17.666666666666668,
+    "average_coupling": 6.333333333333333
+  }
+}
