@@ -1,0 +1,52 @@
+{
+  "metrics": {
+    "cohesion": {
+      "Commands": 7,
+      "Parsing": 0,
+      "Render Engine": 5,
+      "Models": 47,
+      "Utilities": 19
+    },
+    "coupling": {
+      "Commands": 24,
+      "Parsing": 1,
+      "Render Engine": 29,
+      "Models": 17,
+      "Utilities": 17
+    },
+    "coupling_matrix": {
+      "Commands": {
+        "Parsing": 0,
+        "Render Engine": 4,
+        "Models": 3,
+        "Utilities": 17
+      },
+      "Parsing": {
+        "Commands": 0,
+        "Render Engine": 0,
+        "Models": 0,
+        "Utilities": 1
+      },
+      "Render Engine": {
+        "Commands": 0,
+        "Parsing": 2,
+        "Models": 13,
+        "Utilities": 14
+      },
+      "Models": {
+        "Commands": 0,
+        "Parsing": 2,
+        "Render Engine": 0,
+        "Utilities": 15
+      },
+      "Utilities": {
+        "Commands": 0,
+        "Parsing": 3,
+        "Render Engine": 5,
+        "Models": 9
+      }
+    },
+    "average_cohesion": 15.6,
+    "average_coupling": 17.6
+  }
+}
